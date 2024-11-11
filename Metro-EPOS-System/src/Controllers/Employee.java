@@ -11,7 +11,37 @@ public abstract class Employee {
     private String leavingDate;
     private boolean isActive;
 private Branch branch;
+private boolean firstTime;
 
+    public Employee(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.employeeNumber = employeeNumber;
+        this.branchCode = branchCode;
+        this.salary = salary;
+        this.joiningDate = joiningDate;
+        this.leavingDate = leavingDate;
+        this.isActive = isActive;
+        this.branch = branch;
+        this.firstTime = firstTime;
+    }
+
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    public boolean isFirstTime() {
+        return firstTime;
+    }
+
+    public void setFirstTime(boolean firstTime) {
+        this.firstTime = firstTime;
+    }
+
+    public Branch getBranch() {
+        return branch;
+    }
 
     public String getName() {
         return name;
