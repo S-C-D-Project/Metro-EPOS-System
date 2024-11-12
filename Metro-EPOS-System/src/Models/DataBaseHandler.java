@@ -1,9 +1,6 @@
 package Models;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DataBaseHandler {
 
@@ -15,6 +12,23 @@ public class DataBaseHandler {
         // InternerConnection ki Class se Connection lya
         try (Connection connection = InternetConnection.getConnection()){
 
+            double salesTax = 0.0;
+            String sql = "EXEC GetSalesTaxPrice";
+
+            try (Statement statement = connection.createStatement()) {
+                ResultSet resultSet = statement.executeQuery(sql);
+
+                if (resultSet.next()) {
+                    salesTax = resultSet.getDouble("price");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            salesTax/=100;
+            salesTax*=originalPrice;
+
+            salePrice+= (int) salesTax;
             CallableStatement callableStatement = connection.prepareCall(storedProcCall);
 
 
