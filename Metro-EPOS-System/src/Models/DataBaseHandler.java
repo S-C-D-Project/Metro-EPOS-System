@@ -8,7 +8,7 @@ public class DataBaseHandler {
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
                                  int stockQuantity) {
 
-        String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
 
         int productId = -1;
 
@@ -25,7 +25,7 @@ public class DataBaseHandler {
                 e.printStackTrace();
             }
 
-
+double temporary=salesTax;
             salesTax = salesTax / 100 * originalPrice;
             salePrice += (int) salesTax;
 
@@ -41,7 +41,7 @@ public class DataBaseHandler {
                 callableStatement.setDouble(7, pricePerUnit);  // PricePerUnit (FLOAT)
                 callableStatement.setInt(8, stockQuantity);   // ProductSize (NVARCHAR)
                 callableStatement.setString(9, productSize);    // StockQuantity (INT)
-
+                callableStatement.setDouble(11,temporary);
 
                 callableStatement.registerOutParameter(10, java.sql.Types.INTEGER);  // Output ProductID
 

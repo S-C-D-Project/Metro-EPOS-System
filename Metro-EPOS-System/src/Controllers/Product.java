@@ -16,10 +16,14 @@ public class Product {
     private int salePrice;
     private double pricePerUnit;
     private int stockQuantity;
+    private double salesTax;
 
-    public Product(String productName, String contactInfo, String category, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity,int branchid,String productSize) {
+    public int getBranchId() {
+        return branchId;
+    }
 
-        this.branchId = branchid;
+    public Product(int branchId, String productName, String contactInfo, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax) {
+        this.branchId = branchId;
         this.productName = productName;
         this.contactInfo = contactInfo;
         this.category = category;
@@ -28,8 +32,20 @@ public class Product {
         this.salePrice = salePrice;
         this.pricePerUnit = pricePerUnit;
         this.stockQuantity = stockQuantity;
+        this.salesTax = salesTax;
     }
 
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
+    }
+
+    public double getSalesTax() {
+        return salesTax;
+    }
+
+    public void setSalesTax(double salesTax) {
+        this.salesTax = salesTax;
+    }
     public int getBranchid() {
         return branchId;
     }
