@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DataBaseHandler {
 
-    public int insertProductData(int branchId,String productName, String contactInfo, String category, double originalPrice, int salePrice, double pricePerUnit, double pricePerCarton, int stockQuantity) {
+    public int insertProductData(int branchId,String productName, String contactInfo, String category, double originalPrice, int salePrice, double pricePerUnit, String ProductSize, int stockQuantity) {
 
         // procedure call krne ka format
         String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?)}";
@@ -25,7 +25,7 @@ public class DataBaseHandler {
             callableStatement.setDouble(5, originalPrice);  // OriginalPrice
             callableStatement.setInt(6, salePrice);       // SalePrice
             callableStatement.setDouble(7, pricePerUnit); // PricePerUnit
-            callableStatement.setDouble(8, pricePerCarton); // PricePerCarton
+            callableStatement.setString(8, ProductSize); // ProductSize
             callableStatement.setInt(9, stockQuantity);   // StockQuantity
 
             // Register the OUTPUT parameter
