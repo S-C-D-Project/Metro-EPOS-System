@@ -1,6 +1,8 @@
 package Controllers;
 
 import Models.DataBaseHandler;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Bill {
@@ -30,20 +32,22 @@ public class Bill {
 
     public int calculateBill(boolean isVendor) {
         double totalAmount = 0;
+double salesTax=0;
         for (Product product : productList) {
-            totalAmount += isVendor ? product.getOriginalPrice() : product.getSalePrice();
+            totalAmount += isVendor ? (product.getOriginalPrice()+ product.getSalesTax()) : product.getSalePrice();
+            salesTax+= product.getSalesTax();
         }
-        salesTaxAmount = (int) ((totalAmount * salesTax) / 100);
-        totalAmount += salesTaxAmount + additionalCharges - discount;
+        salesTaxAmount = (int) salesTax;
+        totalAmount += additionalCharges - discount;
         this.totalbill = (int) totalAmount;
         return totalbill;
     }
 
-    public Bill addProduct(int id, boolean isVendor) {
+    public Bill addProduct(int productId,int branchId ,boolean isVendor) throws SQLException {
         if (productList.isEmpty()) {
-            salesTax = DataBaseHandler.getSalesTax();
+           salesTax = DataBaseHandler.getInstance().getSalesTax();
         }
-        Product newProduct = DataBaseHandler.checkProduct(id);
+        Product newProduct = DataBaseHandler.getProduct(productId,branchId);
         if (newProduct != null) {
             productList.add(newProduct);
             calculateBill(isVendor);
@@ -54,7 +58,7 @@ public class Bill {
     }
 
     public Bill removeProduct(int id, boolean isVendor) {
-        productList.removeIf(product -> product.getId() == id);
+        productList.removeIf(product ->product.getProductId() == id);
         calculateBill(isVendor);
         return this;
     }
@@ -69,5 +73,9 @@ public class Bill {
         this.discount = discount;
         calculateBill(isVendor);
         return this;
+    }
+    public Bill saveBill(int cashAmount){
+        this.cashAmount=cashAmount;
+        return this ;
     }
 }
