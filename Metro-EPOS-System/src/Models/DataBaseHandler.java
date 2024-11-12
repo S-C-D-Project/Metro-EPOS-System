@@ -6,9 +6,9 @@ public class DataBaseHandler {
 
     public int insertProductData(int branchId, String productName, String category,
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
-                                 int stockQuantity) {
+                                 int stockQuantity,String Manufacturer) {
 
-        String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
 
         int productId = -1;
 
@@ -41,7 +41,7 @@ double temporary=salesTax;
                 callableStatement.setInt(7, stockQuantity);   // ProductSize (NVARCHAR)
                 callableStatement.setString(8, productSize);    // StockQuantity (INT)
                 callableStatement.setDouble(10,temporary);
-
+                callableStatement.setString(11,Manufacturer);
                 callableStatement.registerOutParameter(9, java.sql.Types.INTEGER);  // Output ProductID
 
 
