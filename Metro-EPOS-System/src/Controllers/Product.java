@@ -1,24 +1,49 @@
 package Controllers;
 
+import Models.InternetConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class Product {
+    private int branchId;
     private String productName;
     private String contactInfo;
     private String category;
+    private String productSize;
     private double originalPrice;
     private int salePrice;
     private double pricePerUnit;
-    private double pricePerCarton;
     private int stockQuantity;
 
-    public Product(String productName, String contactInfo, String category, double originalPrice, int salePrice, double pricePerUnit, double pricePerCarton, int stockQuantity) {
+    public Product(String productName, String contactInfo, String category, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity,int branchid,String productSize) {
+
+        this.branchId = branchid;
         this.productName = productName;
         this.contactInfo = contactInfo;
         this.category = category;
+        this.productSize = productSize;
         this.originalPrice = originalPrice;
         this.salePrice = salePrice;
         this.pricePerUnit = pricePerUnit;
-        this.pricePerCarton = pricePerCarton;
         this.stockQuantity = stockQuantity;
+    }
+
+    public int getBranchid() {
+        return branchId;
+    }
+
+    public void setBranchid(int branchid) {
+        this.branchId = branchid;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 
     // Getters and Setters
@@ -68,14 +93,6 @@ public class Product {
 
     public void setPricePerUnit(double pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
-    }
-
-    public double getPricePerCarton() {
-        return pricePerCarton;
-    }
-
-    public void setPricePerCarton(double pricePerCarton) {
-        this.pricePerCarton = pricePerCarton;
     }
 
     public int getStockQuantity() {
