@@ -4,11 +4,11 @@ import java.sql.*;
 
 public class DataBaseHandler {
 
-    public int insertProductData(int branchId, String productName, String contactInfo, String category,
+    public int insertProductData(int branchId, String productName, String category,
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
                                  int stockQuantity) {
 
-        String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}";
+        String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         int productId = -1;
 
@@ -34,22 +34,21 @@ double temporary=salesTax;
                 // Set input parameters (9 parameters)
                 callableStatement.setInt(1, branchId);         // BranchID (INT)
                 callableStatement.setString(2, productName);   // ProductName (NVARCHAR)
-                callableStatement.setString(3, contactInfo);   // ContactInfo (NVARCHAR)
-                callableStatement.setString(4, category);      // Category (NVARCHAR)
-                callableStatement.setDouble(5, originalPrice); // OriginalPrice (FLOAT)
-                callableStatement.setInt(6, salePrice);        // SalePrice (INT)
-                callableStatement.setDouble(7, pricePerUnit);  // PricePerUnit (FLOAT)
-                callableStatement.setInt(8, stockQuantity);   // ProductSize (NVARCHAR)
-                callableStatement.setString(9, productSize);    // StockQuantity (INT)
-                callableStatement.setDouble(11,temporary);
+                callableStatement.setString(3, category);      // Category (NVARCHAR)
+                callableStatement.setDouble(4, originalPrice); // OriginalPrice (FLOAT)
+                callableStatement.setInt(5, salePrice);        // SalePrice (INT)
+                callableStatement.setDouble(6, pricePerUnit);  // PricePerUnit (FLOAT)
+                callableStatement.setInt(7, stockQuantity);   // ProductSize (NVARCHAR)
+                callableStatement.setString(8, productSize);    // StockQuantity (INT)
+                callableStatement.setDouble(10,temporary);
 
-                callableStatement.registerOutParameter(10, java.sql.Types.INTEGER);  // Output ProductID
+                callableStatement.registerOutParameter(9, java.sql.Types.INTEGER);  // Output ProductID
 
 
                 callableStatement.executeUpdate();
 
 
-                productId = callableStatement.getInt(10);
+                productId = callableStatement.getInt(9);
 
             } catch (SQLException e) {
                 e.printStackTrace();
