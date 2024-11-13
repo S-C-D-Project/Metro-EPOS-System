@@ -1,6 +1,6 @@
 package Controllers;
 
-import Models.InternetConnection;
+import Models.DataBaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

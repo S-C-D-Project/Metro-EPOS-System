@@ -40,7 +40,7 @@ public class DataBaseHandler {
         String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         int productId = -1;
 
-        try (Connection connection = InternetConnection.getConnection()) {
+        try (Connection connection = DataBaseConnection.getConnection()) {
             double salesTax = 0.0;
             String sql = "EXEC GetSalesTaxPrice";
             try (Statement statement = connection.createStatement()) {
