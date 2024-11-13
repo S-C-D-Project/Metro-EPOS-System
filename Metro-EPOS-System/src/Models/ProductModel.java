@@ -10,17 +10,16 @@ import java.sql.SQLException;
 public class ProductModel {
     public static Product getProduct(int productId, Connection connection, int branchId) {
         Product product = null;
-        String sql = "EXEC GetProduct @ProductID = ?";
+        String sql = "EXEC GetProduct @ProductID = ?, @branchid=?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, productId);
+            statement.setInt(2,branchId);
 
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                // Retrieve product data from the ResultSet and create a Product object
                 String productName = resultSet.getString("productName");
-                String contactInfo = resultSet.getString("contactInfo");
                 String category = resultSet.getString("category");
                 String productSize = resultSet.getString("productSize");
 
@@ -31,7 +30,7 @@ public class ProductModel {
                 double salesTax=resultSet.getDouble("salesTax");
 
                 // Create Product object and pass all necessary parameters
-                product = new Product(productId,branchId, productName, contactInfo, category, productSize, originalPrice, salePrice, pricePerUnit, stockQuantity, salesTax);
+                product = new Product(productId,branchId, productName, category, productSize, originalPrice, salePrice, pricePerUnit, stockQuantity, salesTax);
             }
         } catch (SQLException e) {
             e.printStackTrace();

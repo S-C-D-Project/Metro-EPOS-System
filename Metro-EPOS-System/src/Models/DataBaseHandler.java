@@ -12,7 +12,7 @@ public class DataBaseHandler {
 
 
     private DataBaseHandler() throws SQLException {
-        connection = Models.InternetConnection.getConnection();
+        connection = DataBaseConnection.getConnection();
     }
 
 
@@ -27,13 +27,16 @@ public class DataBaseHandler {
         return TaxModel.getSalesTax(connection);
     }
 
-    public static Product getProduct(int productId,int branchId) {
+    public static Product getProduct(int productId, int branchId) {
 
-        return ProductModel.getProduct(productId,connection,branchId);
+        return ProductModel.getProduct(productId, connection, branchId);
     }
-public static boolean saveBill(Bill bill){
 
-}
+    public static int saveBill(Bill bill) {
+        return BillModel.saveBill(connection, bill.getCashAmount(), bill.getReturnAmount(), bill.getTotalbill(), bill.getAdditionalCharges(), bill.getSalesTaxAmount(), bill.getDiscount(), bill.getProductList());
+
+    }
+
     public static void main(String[] args) throws SQLException {
 
     }

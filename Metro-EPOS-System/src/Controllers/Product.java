@@ -1,16 +1,9 @@
 package Controllers;
 
-import Models.InternetConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 public class Product {
     private int productId;
     private int branchId;
     private String productName;
-    private String contactInfo;
     private String category;
     private String productSize;
     private double originalPrice;
@@ -31,11 +24,10 @@ public class Product {
         return salesTax;
     }
 
-    public Product(int productId, int branchId, String productName, String contactInfo, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax) {
+    public Product(int productId, int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax) {
         this.productId = productId;
         this.branchId = branchId;
         this.productName = productName;
-        this.contactInfo = contactInfo;
         this.category = category;
         this.productSize = productSize;
         this.originalPrice = originalPrice;
@@ -61,13 +53,7 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getContactInfo() {
-        return contactInfo;
-    }
 
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
-    }
 
     public String getCategory() {
         return category;
