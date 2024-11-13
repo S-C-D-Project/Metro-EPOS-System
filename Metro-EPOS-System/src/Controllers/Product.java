@@ -1,12 +1,13 @@
 package Controllers;
 
-import Models.InternetConnection;
+import Models.DataBaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Product {
+    private int productId;
     private int branchId;
     private String productName;
     private String category;
@@ -16,17 +17,12 @@ public class Product {
     private double pricePerUnit;
     private int stockQuantity;
     private double salesTax;
-    private String Manufacturer;
-    public int getBranchId() {
-        return branchId;
-    }
+    private String manufacturer;
 
-
-
-    public Product(int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax, String Manufacturer) {
+    public Product(int productId, int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax) {
+        this.productId = productId;
         this.branchId = branchId;
         this.productName = productName;
-
         this.category = category;
         this.productSize = productSize;
         this.originalPrice = originalPrice;
@@ -34,43 +30,37 @@ public class Product {
         this.pricePerUnit = pricePerUnit;
         this.stockQuantity = stockQuantity;
         this.salesTax = salesTax;
-        this.Manufacturer = Manufacturer;
+    }
+
+    public Product(int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax, String manufacturer) {
+        this.branchId = branchId;
+        this.productName = productName;
+        this.category = category;
+        this.productSize = productSize;
+        this.originalPrice = originalPrice;
+        this.salePrice = salePrice;
+        this.pricePerUnit = pricePerUnit;
+        this.stockQuantity = stockQuantity;
+        this.salesTax = salesTax;
+        this.manufacturer = manufacturer;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getBranchId() {
+        return branchId;
     }
 
     public void setBranchId(int branchId) {
         this.branchId = branchId;
     }
-    public String getManufacturer() {
-        return Manufacturer;
-    }
 
-    public void setManufacturer(String manufacturer) {
-        Manufacturer = manufacturer;
-    }
-    public double getSalesTax() {
-        return salesTax;
-    }
-
-    public void setSalesTax(double salesTax) {
-        this.salesTax = salesTax;
-    }
-    public int getBranchid() {
-        return branchId;
-    }
-
-    public void setBranchid(int branchid) {
-        this.branchId = branchid;
-    }
-
-    public String getProductSize() {
-        return productSize;
-    }
-
-    public void setProductSize(String productSize) {
-        this.productSize = productSize;
-    }
-
-    // Getters and Setters
     public String getProductName() {
         return productName;
     }
@@ -85,6 +75,14 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getProductSize() {
+        return productSize;
+    }
+
+    public void setProductSize(String productSize) {
+        this.productSize = productSize;
     }
 
     public double getOriginalPrice() {
@@ -117,5 +115,21 @@ public class Product {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public double getSalesTax() {
+        return salesTax;
+    }
+
+    public void setSalesTax(double salesTax) {
+        this.salesTax = salesTax;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }

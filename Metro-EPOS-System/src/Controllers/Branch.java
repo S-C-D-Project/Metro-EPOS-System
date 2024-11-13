@@ -1,6 +1,7 @@
 package Controllers;
 
 public class Branch {
+
     private String name;
     private int code;
     private String address;
