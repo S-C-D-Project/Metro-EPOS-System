@@ -3,23 +3,23 @@ package Controllers;
 import java.util.ArrayList;
 
 public class Vendor {
-    private String vendorId;
+    private int vendorId;
     private String name;
     private String contactInfo;
     private ArrayList<Product> productList;
 
-    public Vendor(String vendorId, String name, String contactInfo, ArrayList<Product> productList) {
+    public Vendor(int vendorId, String name, String contactInfo, ArrayList<Product> productList) {
         this.vendorId = vendorId;
         this.name = name;
         this.contactInfo = contactInfo;
         this.productList = productList != null ? productList : new ArrayList<Product>();
     }
 
-    public String getVendorId() {
+    public int getVendorId() {
         return vendorId;
     }
 
-    public void setVendorId(String vendorId) {
+    public void setVendorId(int vendorId) {
         this.vendorId = vendorId;
     }
 
