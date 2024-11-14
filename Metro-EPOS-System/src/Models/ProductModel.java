@@ -39,5 +39,24 @@ public class ProductModel {
         return product;
     }
 
+    public static boolean productExists(String productName, int branchId, Connection connection) {
+        boolean exists = false;
+        String sql = "SELECT COUNT(*) FROM Products WHERE productName = ? AND branchId = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, productName);
+            statement.setInt(2, branchId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                exists = resultSet.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return exists;
+    }
 
 }

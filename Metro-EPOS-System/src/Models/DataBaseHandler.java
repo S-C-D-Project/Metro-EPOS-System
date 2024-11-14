@@ -37,21 +37,16 @@ public class DataBaseHandler {
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
                                  int stockQuantity, String manufacturer) {
 
+        if (ProductModel.productExists(productName, branchId, connection)) {
+            System.out.println("Error: Product with name '" + productName + "' already exists in branch " + branchId);
+            return -1;
+        }
+
         String storedProcCall = "{CALL InsertProductData(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         int productId = -1;
 
         try (Connection connection = DataBaseConnection.getConnection()) {
-            double salesTax = 0.0;
-            String sql = "EXEC GetSalesTaxPrice";
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(sql);
-                if (resultSet.next()) {
-                    salesTax = resultSet.getDouble("price");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
+            double salesTax =  getSalesTax();
             double temporary = salesTax;
             salesTax = salesTax / 100 * originalPrice;
             salePrice += (int) salesTax;
@@ -82,7 +77,38 @@ public class DataBaseHandler {
 
         return productId;
     }
+    public int insertVendorData( String VendorName, int vendorId,
+                                 String contactInfo) {
 
+        if (VendorModel.vendorExists(VendorName, connection)) {
+            System.out.println("Error: Vendor with name '" + VendorName );
+            return -1;
+        }
+
+        String storedProcCall = "{CALL InsertVendorData(?, ?, ?,)}";
+        int VendorId = -1;
+
+        try (Connection connection = DataBaseConnection.getConnection()) {
+
+
+            try (CallableStatement callableStatement = connection.prepareCall(storedProcCall)) {
+                callableStatement.setString(1, VendorName);     //
+                callableStatement.setString(2, contactInfo);   //
+                callableStatement.registerOutParameter(3, java.sql.Types.INTEGER);  // Output VendorID
+
+                callableStatement.executeUpdate();
+                VendorId = callableStatement.getInt(3);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return VendorId;
+    }
     public static void main(String[] args) throws SQLException {
         // Main method implementation, if needed
     }
