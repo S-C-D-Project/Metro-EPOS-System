@@ -3,20 +3,18 @@ package Models;
 import Controllers.Product;
 import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 import com.microsoft.sqlserver.jdbc.SQLServerCallableStatement;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
+
+import java.sql.*;
+import java.util.Date;
 import java.util.ArrayList;
 
 public class BillModel {
     public static int saveBill(Connection connection, int cashAmount, int returnAmount, int totalbill,
                                int additionalCharges, double salesTaxAmount, double discount,
-                               ArrayList<Product> productList) {
+                               ArrayList<Product> productList) throws SQLException{
         int billId = -1;
-        String sql = "{CALL SaveBill(?, ?, ?, ?, ?, ?, ?, ?)}"; // Simplified SQL call syntax
-
-        try (CallableStatement stmt = connection.prepareCall(sql)) {
+        String sql = "{CALL SaveBill(?, ?, ?, ?, ?, ?, ?, ?)}";
+        CallableStatement stmt = connection.prepareCall(sql);
             SQLServerCallableStatement sqlServerStmt = (SQLServerCallableStatement) stmt;
 
             sqlServerStmt.setInt(1, cashAmount);
@@ -26,7 +24,6 @@ public class BillModel {
             sqlServerStmt.setDouble(5, salesTaxAmount);
             sqlServerStmt.setDouble(6, discount);
 
-            // Setup for product table
             SQLServerDataTable productTable = new SQLServerDataTable();
             productTable.addColumnMetadata("productId", Types.INTEGER);
             productTable.addColumnMetadata("quantity", Types.INTEGER);
@@ -42,9 +39,9 @@ public class BillModel {
             sqlServerStmt.execute();
             billId = sqlServerStmt.getInt(8);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+
+
         return billId;
     }
 }

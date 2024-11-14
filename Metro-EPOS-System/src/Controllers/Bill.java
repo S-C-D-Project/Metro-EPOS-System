@@ -4,6 +4,7 @@ import Models.DataBaseHandler;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -11,6 +12,7 @@ public class Bill {
     private ArrayList<Product> productList;
     private int cashAmount, returnAmount, totalbill, additionalCharges, salesTaxAmount;
     private double discount, salesTax;
+
 
     public ArrayList<Product> getProductList() {
         return productList;
@@ -163,7 +165,7 @@ public class Bill {
         return this;
     }
 
-    public Bill saveBill(int cashAmount) {
+    public Bill saveBill(int cashAmount) throws SQLException {
         this.cashAmount = cashAmount;
         this.returnAmount=cashAmount-totalbill;
         if(this.returnAmount<0){
@@ -174,92 +176,92 @@ public class Bill {
         return this;
     }
 
-//    public static void main(String[] args) {
-//        Scanner scanner = new Scanner(System.in);
-//        Bill currentBill = new Bill();
-//        int choice;
-//        boolean isVendor = false;  // Assuming this is set based on user role (e.g., false for customer, true for vendor)
-//
-//        do {
-//            System.out.println("\nMenu:");
-//            System.out.println("1. Add Product");
-//            System.out.println("2. View Current Bill");
-//            System.out.println("3. Remove Product");
-//            System.out.println("4. Add Additional Charges");
-//            System.out.println("5. Add Discount");
-//            System.out.println("6. Save Bill");
-//            System.out.println("7. Exit");
-//            System.out.print("Enter your choice: ");
-//            choice = scanner.nextInt();
-//
-//            switch (choice) {
-//                case 1:
-//                    System.out.print("Enter Product ID: ");
-//                    int productId = scanner.nextInt();
-//                    System.out.print("Enter Branch ID: ");
-//                    int branchId = scanner.nextInt();
-//
-//                    System.out.print("Enter Quantity: ");
-//                    int quantity = scanner.nextInt();
-//                    try {
-//                        if(currentBill.addProduct(productId, branchId, isVendor,quantity)!=null){
-//                        System.out.println("Product added successfully!");}
-//                        else{
-//                            System.out.println("Product not added !");
-//                        }
-//                    } catch (SQLException e) {
-//                        System.out.println("Error adding product: " + e.getMessage());
-//                    }
-//                    break;
-//
-//                case 2:
-//                    currentBill.calculateBill(isVendor);
-//                    System.out.println("\nCurrent Bill:");
-//                    System.out.println("Total: $" + currentBill.getTotalbill());
-//                    System.out.println("Sales Tax: $" + currentBill.getSalesTaxAmount());
-//                    System.out.println("Discount: $" + currentBill.getDiscount());
-//                    System.out.println("Additional Charges: $" + currentBill.getAdditionalCharges());
-//                    System.out.println("Amount Due: $" + (currentBill.getTotalbill() - currentBill.getDiscount() + currentBill.getAdditionalCharges()));
-//                    break;
-//
-//                case 3:
-//                    System.out.print("Enter Product ID to remove: ");
-//                    int removeProductId = scanner.nextInt();
-//                    currentBill.removeProduct(removeProductId, isVendor);
-//                    System.out.println("Product removed successfully!");
-//                    break;
-//
-//                case 4:
-//                    System.out.print("Enter Additional Charges: ");
-//                    int additionalAmount = scanner.nextInt();
-//                    currentBill.addAdditionalAmount(additionalAmount, isVendor);
-//                    System.out.println("Additional charges added.");
-//                    break;
-//
-//                case 5:
-//                    System.out.print("Enter Discount Amount: ");
-//                    double discountAmount = scanner.nextDouble();
-//                    currentBill.addDiscount(discountAmount, isVendor);
-//                    System.out.println("Discount added.");
-//                    break;
-//
-//                case 6:
-//                    System.out.print("Enter Cash Amount: ");
-//                    int cashAmount = scanner.nextInt();
-//                    currentBill.saveBill(cashAmount);
-//                    System.out.println("Bill saved successfully!");
-//                    break;
-//
-//                case 7:
-//                    System.out.println("Exiting...");
-//                    break;
-//
-//                default:
-//                    System.out.println("Invalid choice. Please try again.");
-//            }
-//        } while (choice != 7);
-//
-//        scanner.close();
-//    }
+
+    public static void main(String[] args) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        Bill currentBill = new Bill();
+        int choice;
+        boolean isVendor = false;
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. Add Product");
+            System.out.println("2. View Current Bill");
+            System.out.println("3. Remove Product");
+            System.out.println("4. Add Additional Charges");
+            System.out.println("5. Add Discount");
+            System.out.println("6. Save Bill");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Product ID: ");
+                    int productId = scanner.nextInt();
+                    System.out.print("Enter Branch ID: ");
+                    int branchId = scanner.nextInt();
+
+                    System.out.print("Enter Quantity: ");
+                    int quantity = scanner.nextInt();
+                    try {
+                        if(currentBill.addProduct(productId, branchId, isVendor,quantity)!=null){
+                        System.out.println("Product added successfully!");}
+                        else{
+                            System.out.println("Product not added !");
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Error adding product: " + e.getMessage());
+                    }
+                    break;
+
+                case 2:
+                    currentBill.calculateBill(isVendor);
+                    System.out.println("\nCurrent Bill:");
+                    System.out.println("Total: $" + currentBill.getTotalbill());
+                    System.out.println("Sales Tax: $" + currentBill.getSalesTaxAmount());
+                    System.out.println("Discount: $" + currentBill.getDiscount());
+                    System.out.println("Additional Charges: $" + currentBill.getAdditionalCharges());
+                    System.out.println("Amount Due: $" + (currentBill.getTotalbill() - currentBill.getDiscount() + currentBill.getAdditionalCharges()));
+                    break;
+
+                case 3:
+                    System.out.print("Enter Product ID to remove: ");
+                    int removeProductId = scanner.nextInt();
+                    currentBill.removeProduct(removeProductId, isVendor);
+                    System.out.println("Product removed successfully!");
+                    break;
+
+                case 4:
+                    System.out.print("Enter Additional Charges: ");
+                    int additionalAmount = scanner.nextInt();
+                    currentBill.addAdditionalAmount(additionalAmount, isVendor);
+                    System.out.println("Additional charges added.");
+                    break;
+
+                case 5:
+                    System.out.print("Enter Discount Amount: ");
+                    double discountAmount = scanner.nextDouble();
+                    currentBill.addDiscount(discountAmount, isVendor);
+                    System.out.println("Discount added.");
+                    break;
+
+                case 6:
+                    System.out.print("Enter Cash Amount: ");
+                    int cashAmount = scanner.nextInt();
+                    currentBill.saveBill(cashAmount);
+                    System.out.println("Bill saved successfully!");
+                    break;
+
+                case 7:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 7);
+
+        scanner.close();
+    }
     }
 
