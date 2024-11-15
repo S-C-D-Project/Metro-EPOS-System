@@ -1,5 +1,6 @@
 package Views.Cashier;
 import Views.Decorate.Theme;
+import Views.UIHandler;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -24,6 +25,8 @@ public class SalesData extends Theme {
     private JButton printButton;
     private JButton fixButton;
 
+    private Image saleLogo;
+
     private double discount;
     private ArrayList<String> list;
 
@@ -37,12 +40,14 @@ public class SalesData extends Theme {
         super.setText("Cashier");
         super.setLogoutLogo();
         super.setProfileLogo("Metro-EPOS-System/Images/CashierLogo.png");
-        super.setRectangle(48,272);
 
         setNames(name,branchID);
         setHeading();
+        setLogo();
         setFields();
         setButtons();
+
+        super.setRectangle(48,272);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -77,6 +82,14 @@ public class SalesData extends Theme {
         add(total);
         add(user);
         add(branchID);
+    }
+
+    private void setLogo() {
+        saleLogo = new ImageIcon("Metro-EPOS-System/Images/SalesIconGreen.png").getImage();
+        Image scaledImage = saleLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+        logoLabel.setBounds(78, 277, 20, 20);
+        add(logoLabel);
     }
 
     private void setFields(){
@@ -157,6 +170,7 @@ public class SalesData extends Theme {
         JLabel product = new JLabel("Product");
         JLabel qty = new JLabel("Qty");
         JLabel price = new JLabel("Price");
+        JLabel salesData = new JLabel("Sales Data");
 
         enterProductID.setForeground(super.getSecondHeadingColor());
         enterQty.setForeground(super.getSecondHeadingColor());
@@ -165,6 +179,7 @@ public class SalesData extends Theme {
         product.setForeground(super.getThirdHeadingColor());
         qty.setForeground(super.getThirdHeadingColor());
         price.setForeground(super.getThirdHeadingColor());
+        salesData.setForeground(super.getSideMenuSelectedTextColor());
 
         enterProductID.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
         enterQty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
@@ -173,11 +188,14 @@ public class SalesData extends Theme {
         product.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
         qty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
         price.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        salesData.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,13));
 
         enterProductID.setBounds(313,187,158,22);
         enterQty.setBounds(313,237,148,22);
         totalRS.setBounds(326,312,124,30);
         enterDiscount.setBounds(626,316,179,22);
+
+        salesData.setBounds(110,283,86,10);
 
         product.setBounds(356,365,73,24);
         qty.setBounds(465,365,48,24);
@@ -190,9 +208,10 @@ public class SalesData extends Theme {
         add(product);
         add(qty);
         add(price);
+        add(salesData);
     }
 
-    public void setValues(ArrayList<String> l, double dis)
+    public void setValues(ArrayList<String> l, double dis, JFrame f)
     {
         list = l;
         discount = dis;
@@ -200,7 +219,7 @@ public class SalesData extends Theme {
         if(list!=null) {
             for (int i = 0; i < list.size(); i++) {
                 String[] line = list.get(i).split(",");
-                sum = sum + Integer.parseInt(line[2]);
+                sum = sum + Double.parseDouble(line[2]);
             }
             sum = sum - ( sum * discount/100);
         }
@@ -284,6 +303,27 @@ public class SalesData extends Theme {
                             qty.setFocusable(true);
                             qty.setEditable(true);
                         } else {
+                            if(!isNumbers(qty.getText()) || qty.getText().equals("0") || qty.getText().isEmpty()){
+                                JOptionPane.showMessageDialog(f,"Invalid Quantity","Error",JOptionPane.ERROR_MESSAGE);
+                                refreshPanel(list,dis,f);
+                            }
+                            else{
+                                int originalQuantity = (int) (Double.parseDouble(price.getText())/UIHandler.getProductPriceUsingName(product.getText()));
+                                double calc = Double.parseDouble(qty.getText()) * (Double.parseDouble(price.getText())/Double.parseDouble(String.valueOf(originalQuantity)));
+                                String originalPrice = price.getText();
+                                price.setText(String.valueOf(calc));
+
+                                for(int j=0; j<list.size(); j++)
+                                {
+                                    String[] search = list.get(j).split(",");
+                                    if(search[0].equals(product.getText()) && search[1].equals(String.valueOf(originalQuantity)) && search[2].equals(originalPrice)){
+                                        list.set(j,product.getText()+","+qty.getText()+","+price.getText());
+                                        break;
+                                    }
+                                }
+
+                                refreshPanel(list,dis,f);
+                            }
                             qty.setFocusable(false);
                             qty.setEditable(false);
                             edit.setText("<html><u>Edit</u></html>");
@@ -305,6 +345,16 @@ public class SalesData extends Theme {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         int result = JOptionPane.showConfirmDialog(null, "Delete Product: " + product.getText() + "\nDo you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                        if (result == JOptionPane.YES_OPTION) {
+                            for(int j=0; j<list.size(); j++){
+                                String[] search = list.get(j).split(",");
+                                if(search[0].equals(product.getText()) && search[1].equals(qty.getText()) && search[2].equals(price.getText())){
+                                    list.remove(j);
+                                    break;
+                                }
+                            }
+                        }
+                        refreshPanel(list,dis,f);
                     }
 
                     @Override
@@ -342,21 +392,21 @@ public class SalesData extends Theme {
         scroll = new JScrollPane(panel);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.setPreferredSize(new Dimension(1000, 431));
-        scroll.setBounds(313, 401, 1000, 431);
+        scroll.setPreferredSize(new Dimension(1000, 328));
+        scroll.setBounds(313, 401, 1000, 328);
         scroll.setBorder(null);
 
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, double discount) {
+    public void refreshPanel(ArrayList<String> newList, double discount, JFrame f) {
         if (scroll != null) {
             remove(scroll);
             total.setText("");
             discountBox.setText("");
             super.removeInfoField();
         }
-        setValues(newList,discount);
+        setValues(newList,discount,f);
         super.setInfoField();
         revalidate();
         repaint();
@@ -374,4 +424,14 @@ public class SalesData extends Theme {
     public double getDiscountValue(){return discount;}
     public ArrayList<String> getList(){return list;}
     public JPanel getPanel(){return this;}
+
+    public static boolean isNumbers(String line) {
+        for(int i=0; i<line.length(); i++){
+            char c = line.charAt(i);
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

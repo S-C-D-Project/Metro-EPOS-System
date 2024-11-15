@@ -15,7 +15,7 @@ public class GUI_Manager
         frame f = new frame();
 
         sales = new SalesData("Asfandyar","1234");
-        sales.refreshPanel(null,0);
+        sales.refreshPanel(null,0,f.getFrame());
 
         //-------------------CASHIER PANEL LOGIC----------------------------
         sales.getEnterButton().addActionListener(e->{
@@ -36,14 +36,14 @@ public class GUI_Manager
                     list=new ArrayList<>();
                 }
                 list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(pID), Integer.parseInt(qty)));
-                sales.refreshPanel(list,discount);
+                sales.refreshPanel(list,discount,f.getFrame());
             }
         });
         sales.getLogoutButton().addActionListener(e->{
             JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
         });
         sales.getPrintButton().addActionListener(e->{
-            JOptionPane.showMessageDialog(f.getFrame(),"Print Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
+            sales.refreshPanel(null,0,f.getFrame());
         });
         sales.getFixButton().addActionListener(e->{
             String discountStr = sales.getDiscount();
@@ -53,7 +53,7 @@ public class GUI_Manager
                 JOptionPane.showMessageDialog(f.getFrame(),"Invalid Discount","Error",JOptionPane.ERROR_MESSAGE);
             }
             else{
-                sales.refreshPanel(list, Double.parseDouble(discountStr));
+                sales.refreshPanel(list, Double.parseDouble(discountStr),f.getFrame());
             }
         });
 
