@@ -31,7 +31,7 @@ public class SalesData extends Theme {
         super.setLineSizeCustom(313,399,2);
         super.setText("Cashier");
         super.setLogoutLogo();
-        super.setProfileLogo("Images/CashierLogo.png");
+        super.setProfileLogo("Metro-EPOS-System/Images/CashierLogo.png");
         super.setRectangle(48,272);
 
         setNames(name,branchID);
