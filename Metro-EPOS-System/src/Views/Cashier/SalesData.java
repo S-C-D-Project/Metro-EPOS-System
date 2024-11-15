@@ -24,6 +24,8 @@ public class SalesData extends Theme {
     private JButton printButton;
     private JButton fixButton;
 
+    private Image saleLogo;
+
     private double discount;
     private ArrayList<String> list;
 
@@ -37,12 +39,14 @@ public class SalesData extends Theme {
         super.setText("Cashier");
         super.setLogoutLogo();
         super.setProfileLogo("Metro-EPOS-System/Images/CashierLogo.png");
-        super.setRectangle(48,272);
 
         setNames(name,branchID);
         setHeading();
+        setLogo();
         setFields();
         setButtons();
+
+        super.setRectangle(48,272);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -77,6 +81,14 @@ public class SalesData extends Theme {
         add(total);
         add(user);
         add(branchID);
+    }
+
+    private void setLogo() {
+        saleLogo = new ImageIcon("Metro-EPOS-System/Images/SalesIconGreen.png").getImage();
+        Image scaledImage = saleLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+        logoLabel.setBounds(78, 277, 20, 20);
+        add(logoLabel);
     }
 
     private void setFields(){
@@ -157,6 +169,7 @@ public class SalesData extends Theme {
         JLabel product = new JLabel("Product");
         JLabel qty = new JLabel("Qty");
         JLabel price = new JLabel("Price");
+        JLabel salesData = new JLabel("Sales Data");
 
         enterProductID.setForeground(super.getSecondHeadingColor());
         enterQty.setForeground(super.getSecondHeadingColor());
@@ -165,6 +178,7 @@ public class SalesData extends Theme {
         product.setForeground(super.getThirdHeadingColor());
         qty.setForeground(super.getThirdHeadingColor());
         price.setForeground(super.getThirdHeadingColor());
+        salesData.setForeground(super.getSideMenuSelectedTextColor());
 
         enterProductID.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
         enterQty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
@@ -173,11 +187,14 @@ public class SalesData extends Theme {
         product.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
         qty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
         price.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        salesData.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,13));
 
         enterProductID.setBounds(313,187,158,22);
         enterQty.setBounds(313,237,148,22);
         totalRS.setBounds(326,312,124,30);
         enterDiscount.setBounds(626,316,179,22);
+
+        salesData.setBounds(110,283,86,10);
 
         product.setBounds(356,365,73,24);
         qty.setBounds(465,365,48,24);
@@ -190,6 +207,7 @@ public class SalesData extends Theme {
         add(product);
         add(qty);
         add(price);
+        add(salesData);
     }
 
     public void setValues(ArrayList<String> l, double dis)
