@@ -74,4 +74,24 @@ public class Theme extends JPanel {
         RoundEdges.roundEdges(rectangle, 50, sideMenuSelectedButtonColor);
         add(rectangle);
     }
+    
+    public void setProfileLogo(String path)
+    {
+        profile = new ImageIcon(path).getImage();
+    }
+
+    public void setLogoutLogo()
+    {
+        JLabel logout = new JLabel("Logout");
+        logout.setForeground(sideMenuTextColor);
+        logout.setFont(new Font("Inter",Font.PLAIN,15));
+        logout.setBounds(70,684,58,19);
+        add(logout);
+        logo = new ImageIcon("Images/LogoutLogo.png").getImage();
+    }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(logo, 44, 685,18,18, this);
+        g.drawImage(profile, 97, 88,80,80, this);
+    }
 }
