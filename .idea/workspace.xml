@@ -79,6 +79,11 @@
     "last_opened_file_path": "E:/Metro-EPOS-System/Metro-EPOS-System/Images"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Metro-EPOS-System\Metro-EPOS-System\Images" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="GUI_Manager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Views.GUI_Manager" />

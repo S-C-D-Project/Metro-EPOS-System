@@ -37,4 +37,19 @@ public class Theme extends JPanel {
         thirdHeadingColor = new Color(128,156,19);
         setBackground(sideMenuBackgroundColor);
     }
+
+    public void setLineSize5(int x, int y){
+        JLabel line = new JLabel();
+        line.setBackground(lineColor1);
+        line.setBounds(x,y,1000,5);
+        line.setOpaque(true);
+        add(line);
+    }
+    public void setLineSizeCustom(int x, int y, int size){
+        JLabel line = new JLabel();
+        line.setBackground(lineColor2);
+        line.setBounds(x,y,1000,size);
+        line.setOpaque(true);
+        add(line);
+    }
 }
