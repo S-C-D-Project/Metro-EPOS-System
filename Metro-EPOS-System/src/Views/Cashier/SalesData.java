@@ -2,6 +2,7 @@ package Views.Cashier;
 import Views.Decorate.Theme;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,7 +21,11 @@ public class SalesData extends Theme {
 
     private JButton logoutButton;
     private JButton enterButton;
-    private JButton resetButton;
+    private JButton printButton;
+    private JButton fixButton;
+
+    private double discount;
+    private ArrayList<String> list;
 
     public SalesData(String name, String branchID)
     {
@@ -37,7 +42,7 @@ public class SalesData extends Theme {
         setNames(name,branchID);
         setHeading();
         setFields();
-        setBottons();
+        setButtons();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -63,6 +68,13 @@ public class SalesData extends Theme {
         branchID.setForeground(Color.BLACK);
         branchID.setBounds(345,55,221,30);
 
+        total = new JLabel("0.0");
+        total.setFont(new Font("Inter",Font.BOLD,25));
+        total.setForeground(new Color(9,95,197));
+        total.setBounds(460,312,148,30);
+        total.setVerticalAlignment(JLabel.CENTER);
+
+        add(total);
         add(user);
         add(branchID);
     }
@@ -97,7 +109,7 @@ public class SalesData extends Theme {
         add(discountBox);
     }
 
-    private void setBottons(){
+    private void setButtons(){
         logoutButton = new JButton();
         logoutButton.setBounds(44, 684, 84, 19);
         logoutButton.setBorderPainted(false);
@@ -107,26 +119,40 @@ public class SalesData extends Theme {
         enterButton = new JButton("Enter");
         enterButton.setForeground(super.getInfoFieldColor());
         enterButton.setFocusable(false);
+        enterButton.setBorderPainted(false);
+        enterButton.setContentAreaFilled(false);
         enterButton.setBounds(786, 204, 100, 30);
         enterButton.setOpaque(true);
         enterButton.setBackground(super.getInfoFieldButtonColor());
 
-        resetButton = new JButton("Print");
-        resetButton.setForeground(super.getInfoFieldColor());
-        resetButton.setFocusable(false);
-        resetButton.setBounds(1195, 315, 100, 30);
-        resetButton.setOpaque(true);
-        resetButton.setBackground(super.getInfoFieldButtonColor());
+        printButton = new JButton("Print");
+        printButton.setForeground(super.getInfoFieldColor());
+        printButton.setFocusable(false);
+        printButton.setBorderPainted(false);
+        printButton.setContentAreaFilled(false);
+        printButton.setBounds(1195, 315, 100, 30);
+        printButton.setOpaque(true);
+        printButton.setBackground(super.getInfoFieldButtonColor());
+
+        fixButton = new JButton("Fix");
+        fixButton.setForeground(super.getInfoFieldColor());
+        fixButton.setFocusable(false);
+        fixButton.setBorderPainted(false);
+        fixButton.setContentAreaFilled(false);
+        fixButton.setBounds(972, 317, 60, 26);
+        fixButton.setOpaque(true);
+        fixButton.setBackground(super.getInfoFieldButtonColor());
 
         add(logoutButton);
         add(enterButton);
-        add(resetButton);
+        add(printButton);
+        add(fixButton);
     }
 
     private void setHeading(){
         JLabel enterProductID = new JLabel("Enter Product ID:");
         JLabel enterQty = new JLabel("Enter Quantity:");
-        JLabel totalRS = new JLabel("Total (RS):");
+        JLabel totalRS = new JLabel("Total (Rs):");
         JLabel enterDiscount = new JLabel("Enter Discount (%):");
         JLabel product = new JLabel("Product");
         JLabel qty = new JLabel("Qty");
@@ -166,144 +192,151 @@ public class SalesData extends Theme {
         add(price);
     }
 
-    public void setValues(ArrayList<String> list)
+    public void setValues(ArrayList<String> l, double dis)
     {
-        int sum = 0;
-        for(int i=0; i<list.size(); i++){
-            String[] line = list.get(i).split(",");
-            sum = sum + Integer.parseInt(line[2]);
+        list = l;
+        discount = dis;
+        double sum = 0;
+        if(list!=null) {
+            for (int i = 0; i < list.size(); i++) {
+                String[] line = list.get(i).split(",");
+                sum = sum + Integer.parseInt(line[2]);
+            }
+            sum = sum - ( sum * discount/100);
         }
-        total = new JLabel(String.valueOf(sum));
-        total.setFont(new Font("Inter",Font.BOLD,25));
-        total.setForeground(new Color(9,95,197));
-        total.setBounds(460,312,148,30);
-        total.setVerticalAlignment(JLabel.CENTER);
-        add(total);
+
+        total.setText(String.valueOf(sum));
+        discountBox.setText(String.valueOf(discount));
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-        panel.setBackground(Color.white);
+        panel.setBackground(super.getInfoFieldColor());
         panel.setBorder(null);
 
         int value = 0;
 
-        for(int i=0; i< list.size(); i++){
-            String[] data = list.get(i).split(",");
+        if(list!=null) {
+            for (int i = 0; i < list.size(); i++) {
+                String[] data = list.get(i).split(",");
 
-            JLabel label = new JLabel();
-            label.setLayout(null);
-            label.setOpaque(true);
-            label.setPreferredSize(new Dimension(996,40));
-            label.setMaximumSize(new Dimension(996, 40));
-            label.setBorder(null);
+                JLabel label = new JLabel();
+                label.setLayout(null);
+                label.setOpaque(true);
+                label.setPreferredSize(new Dimension(996, 40));
+                label.setMaximumSize(new Dimension(996, 40));
+                label.setBorder(null);
 
 
-            JLabel edit = new JLabel();
-            edit.setText("<html><u>Edit</u></html>");
-            edit.setFont(new Font("Inter",Font.BOLD,12));
-            edit.setForeground(new Color(3,149,255));
-            edit.setBounds(855,13,46,14);
-            edit.setVerticalAlignment(JLabel.CENTER);
-            edit.setHorizontalAlignment(JLabel.CENTER);
-            label.add(edit);
+                JLabel edit = new JLabel();
+                edit.setText("<html><u>Edit</u></html>");
+                edit.setFont(new Font("Inter", Font.BOLD, 12));
+                edit.setForeground(new Color(3, 149, 255));
+                edit.setBounds(855, 13, 46, 14);
+                edit.setVerticalAlignment(JLabel.CENTER);
+                edit.setHorizontalAlignment(JLabel.CENTER);
+                label.add(edit);
 
-            JLabel delete = new JLabel();
-            delete.setText("<html><u>Delete</u></html>");
-            delete.setFont(new Font("Inter",Font.BOLD,12));
-            delete.setForeground(new Color(3,149,255));
-            delete.setBounds(900,13,46,14);
-            delete.setVerticalAlignment(JLabel.CENTER);
-            delete.setHorizontalAlignment(JLabel.CENTER);
-            label.add(delete);
+                JLabel delete = new JLabel();
+                delete.setText("<html><u>Delete</u></html>");
+                delete.setFont(new Font("Inter", Font.BOLD, 12));
+                delete.setForeground(new Color(3, 149, 255));
+                delete.setBounds(900, 13, 46, 14);
+                delete.setVerticalAlignment(JLabel.CENTER);
+                delete.setHorizontalAlignment(JLabel.CENTER);
+                label.add(delete);
 
-            JTextField product = new JTextField();
-            product.setText(data[0]);
-            product.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,12));
-            product.setForeground(new Color(93,93,93));
-            product.setBounds(5, 13, 129, 14);
-            product.setHorizontalAlignment(JLabel.CENTER);
-            product.setBorder(BorderFactory.createEmptyBorder());
-            product.setEditable(false);
-            product.setFocusable(false);
+                JTextField product = new JTextField();
+                product.setText(data[0]);
+                product.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
+                product.setForeground(new Color(93, 93, 93));
+                product.setBounds(5, 13, 129, 14);
+                product.setHorizontalAlignment(JLabel.CENTER);
+                product.setBorder(BorderFactory.createEmptyBorder());
+                product.setEditable(false);
+                product.setFocusable(false);
 
-            JTextField qty = new JTextField();
-            qty.setText(data[1]);
-            qty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,12));
-            qty.setForeground(new Color(93,93,93));
-            qty.setBounds(129, 13, 75, 14);
-            qty.setHorizontalAlignment(JLabel.CENTER);
-            qty.setBorder(BorderFactory.createEmptyBorder());
-            qty.setEditable(false);
-            qty.setFocusable(false);
+                JTextField qty = new JTextField();
+                qty.setText(data[1]);
+                qty.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
+                qty.setForeground(new Color(93, 93, 93));
+                qty.setBounds(129, 13, 75, 14);
+                qty.setHorizontalAlignment(JLabel.CENTER);
+                qty.setBorder(BorderFactory.createEmptyBorder());
+                qty.setEditable(false);
+                qty.setFocusable(false);
 
-            JTextField price = new JTextField();
-            price.setText(data[2]);
-            price.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,12));
-            price.setForeground(new Color(93,93,93));
-            price.setBounds(204, 13, 112, 14);
-            price.setHorizontalAlignment(JLabel.CENTER);
-            price.setBorder(BorderFactory.createEmptyBorder());
-            price.setEditable(false);
-            price.setFocusable(false);
+                JTextField price = new JTextField();
+                price.setText(data[2]);
+                price.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
+                price.setForeground(new Color(93, 93, 93));
+                price.setBounds(204, 13, 112, 14);
+                price.setHorizontalAlignment(JLabel.CENTER);
+                price.setBorder(BorderFactory.createEmptyBorder());
+                price.setEditable(false);
+                price.setFocusable(false);
 
-            edit.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    String currentText = edit.getText();
-                    if (currentText.contains("Edit")) {
-                        edit.setText("<html><u>Update</u></html>");
-                        qty.setFocusable(true);
-                        qty.setEditable(true);
-                    } else {
-                        qty.setFocusable(false);
-                        qty.setEditable(false);
-                        edit.setText("<html><u>Edit</u></html>");
+                edit.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        String currentText = edit.getText();
+                        if (currentText.contains("Edit")) {
+                            edit.setText("<html><u>Update</u></html>");
+                            qty.setFocusable(true);
+                            qty.setEditable(true);
+                        } else {
+                            qty.setFocusable(false);
+                            qty.setEditable(false);
+                            edit.setText("<html><u>Edit</u></html>");
+                        }
                     }
-                }
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    edit.setForeground(new Color(210,26,26));
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    edit.setForeground(new Color(3,149,255));
-                }
-            });
 
-            delete.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    int result = JOptionPane.showConfirmDialog(null,"Delete Product: "+ product.getText() +"\nDo you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
-                }
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    delete.setForeground(new Color(210,26,26));
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    delete.setForeground(new Color(3,149,255));
-                }
-            });
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        edit.setForeground(new Color(210, 26, 26));
+                    }
 
-            if(value==0){
-                label.setBackground(new Color(255,255,255));
-                product.setBackground(new Color(255,255,255));
-                price.setBackground(new Color(255,255,255));
-                qty.setBackground(new Color(255,255,255));
-                value=1;
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        edit.setForeground(new Color(3, 149, 255));
+                    }
+                });
+
+                delete.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int result = JOptionPane.showConfirmDialog(null, "Delete Product: " + product.getText() + "\nDo you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        delete.setForeground(new Color(210, 26, 26));
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        delete.setForeground(new Color(3, 149, 255));
+                    }
+                });
+
+                if (value == 0) {
+                    label.setBackground(super.getInfoFieldColor());
+                    product.setBackground(super.getInfoFieldColor());
+                    price.setBackground(super.getInfoFieldColor());
+                    qty.setBackground(super.getInfoFieldColor());
+                    value = 1;
+                } else {
+                    value = 0;
+                    label.setBackground(new Color(217, 217, 217));
+                    product.setBackground(new Color(217, 217, 217));
+                    price.setBackground(new Color(217, 217, 217));
+                    qty.setBackground(new Color(217, 217, 217));
+                }
+
+                label.add(product);
+                label.add(price);
+                label.add(qty);
+                panel.add(label);
             }
-            else {
-                value=0;
-                label.setBackground(new Color(217,217,217));
-                product.setBackground(new Color(217,217,217));
-                price.setBackground(new Color(217,217,217));
-                qty.setBackground(new Color(217,217,217));
-            }
-
-            label.add(product);
-            label.add(price);
-            label.add(qty);
-            panel.add(label);
         }
 
         scroll = new JScrollPane(panel);
@@ -316,12 +349,14 @@ public class SalesData extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList) {
+    public void refreshPanel(ArrayList<String> newList, double discount) {
         if (scroll != null) {
             remove(scroll);
             total.setText("");
+            discountBox.setText("");
+            super.removeInfoField();
         }
-        setValues(newList);
+        setValues(newList,discount);
         super.setInfoField();
         revalidate();
         repaint();
@@ -330,10 +365,13 @@ public class SalesData extends Theme {
     public String getProductID(){return productID.getText();}
     public String getQuantity(){return quantity.getText();}
     public JButton getLogoutButton(){return logoutButton;}
-    public JButton getResetButton(){return resetButton;}
+    public JButton getPrintButton(){return printButton;}
     public JButton getEnterButton(){return enterButton;}
+    public JButton getFixButton(){return fixButton;}
     public String getDiscount(){
         return discountBox.getText();
     }
+    public double getDiscountValue(){return discount;}
+    public ArrayList<String> getList(){return list;}
     public JPanel getPanel(){return this;}
 }

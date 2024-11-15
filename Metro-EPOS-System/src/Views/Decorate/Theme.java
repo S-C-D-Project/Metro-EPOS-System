@@ -21,6 +21,8 @@ public class Theme extends JPanel {
     private Image logo;
     private Image profile;
 
+    private JLabel infoField;
+
     public Theme()
     {
         setLayout(null);
@@ -36,6 +38,10 @@ public class Theme extends JPanel {
         secondHeadingColor = new Color(93,93,93);
         thirdHeadingColor = new Color(128,156,19);
         setBackground(sideMenuBackgroundColor);
+
+        infoField = new JLabel();
+        infoField.setBounds(279,0,1097,730);
+        RoundEdges.roundEdges(infoField, 40, infoFieldColor);
     }
 
     public void setLineSize5(int x, int y){
@@ -95,10 +101,10 @@ public class Theme extends JPanel {
         g.drawImage(profile, 97, 88,80,80, this);
     }
     public void setInfoField(){
-        JLabel infoField = new JLabel();
-        infoField.setBounds(279,0,1097,730);
-        RoundEdges.roundEdges(infoField, 40, infoFieldColor);
         add(infoField);
+    }
+    public void removeInfoField(){
+        remove(infoField);
     }
 
     public Color getFirstHeadingColor(){
