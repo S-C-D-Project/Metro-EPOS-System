@@ -52,4 +52,20 @@ public class Theme extends JPanel {
         line.setOpaque(true);
         add(line);
     }
+    public void setText(String t){
+        JLabel metro = new JLabel("METRO");
+        metro.setForeground(sideMenuTextColor);
+        metro.setBounds(99,27,75,23);
+        metro.setFont(new Font("Inter",Font.BOLD,20));
+
+        JLabel type = new JLabel(t);
+        type.setForeground(sideMenuTextColor);
+        type.setBounds(83,208,107,16);
+        type.setFont(new Font("Inter",Font.PLAIN,10));
+        type.setHorizontalAlignment(JLabel.CENTER);
+        type.setVerticalAlignment(JLabel.TOP);
+
+        add(metro);
+        add(type);
+    }
 }
