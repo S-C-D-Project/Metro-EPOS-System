@@ -345,6 +345,16 @@ public class SalesData extends Theme {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         int result = JOptionPane.showConfirmDialog(null, "Delete Product: " + product.getText() + "\nDo you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                        if (result == JOptionPane.YES_OPTION) {
+                            for(int j=0; j<list.size(); j++){
+                                String[] search = list.get(j).split(",");
+                                if(search[0].equals(product.getText()) && search[1].equals(qty.getText()) && search[2].equals(price.getText())){
+                                    list.remove(j);
+                                    break;
+                                }
+                            }
+                        }
+                        refreshPanel(list,dis,f);
                     }
 
                     @Override
