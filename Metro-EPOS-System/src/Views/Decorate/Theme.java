@@ -68,4 +68,10 @@ public class Theme extends JPanel {
         add(metro);
         add(type);
     }
+    public void setRectangle(int x, int y){
+        JLabel rectangle = new JLabel();
+        rectangle.setBounds(x,y,185,32);
+        RoundEdges.roundEdges(rectangle, 50, sideMenuSelectedButtonColor);
+        add(rectangle);
+    }
 }
