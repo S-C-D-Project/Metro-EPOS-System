@@ -74,7 +74,7 @@ public class Theme extends JPanel {
         RoundEdges.roundEdges(rectangle, 50, sideMenuSelectedButtonColor);
         add(rectangle);
     }
-    
+
     public void setProfileLogo(String path)
     {
         profile = new ImageIcon(path).getImage();
@@ -93,5 +93,40 @@ public class Theme extends JPanel {
         super.paintComponent(g);
         g.drawImage(logo, 44, 685,18,18, this);
         g.drawImage(profile, 97, 88,80,80, this);
+    }
+    public void setInfoField(){
+        JLabel infoField = new JLabel();
+        infoField.setBounds(279,0,1097,730);
+        RoundEdges.roundEdges(infoField, 40, infoFieldColor);
+        add(infoField);
+    }
+
+    public Color getFirstHeadingColor(){
+        return firstHeadingColor;
+    }
+    public Color getSecondHeadingColor(){
+        return secondHeadingColor;
+    }
+    public Color getThirdHeadingColor(){
+        return thirdHeadingColor;
+    }
+    public Color getSideMenuSelectedButtonColor(){
+        return sideMenuSelectedButtonColor;
+    }
+    public Color getSideMenuTextColor(){
+        return sideMenuTextColor;
+    }
+    public Color getSideMenuSelectedTextColor(){
+        return sideMenuSelectedTextColor;
+    }
+    public Color getInfoFieldColor(){
+        return infoFieldColor;
+    }
+    public Color getInfoFieldButtonColor(){
+        return infoFieldButtonColor;
+    }
+    public JPanel getPanel()
+    {
+        return this;
     }
 }
