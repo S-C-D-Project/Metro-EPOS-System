@@ -326,4 +326,14 @@ public class SalesData extends Theme {
         revalidate();
         repaint();
     }
+
+    public String getProductID(){return productID.getText();}
+    public String getQuantity(){return quantity.getText();}
+    public JButton getLogoutButton(){return logoutButton;}
+    public JButton getResetButton(){return resetButton;}
+    public JButton getEnterButton(){return enterButton;}
+    public String getDiscount(){
+        return discountBox.getText();
+    }
+    public JPanel getPanel(){return this;}
 }
