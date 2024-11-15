@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class SalesData extends Theme {
     private BufferedImage image;
@@ -163,5 +164,166 @@ public class SalesData extends Theme {
         add(product);
         add(qty);
         add(price);
+    }
+
+    public void setValues(ArrayList<String> list)
+    {
+        int sum = 0;
+        for(int i=0; i<list.size(); i++){
+            String[] line = list.get(i).split(",");
+            sum = sum + Integer.parseInt(line[2]);
+        }
+        total = new JLabel(String.valueOf(sum));
+        total.setFont(new Font("Inter",Font.BOLD,25));
+        total.setForeground(new Color(9,95,197));
+        total.setBounds(460,312,148,30);
+        total.setVerticalAlignment(JLabel.CENTER);
+        add(total);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+        panel.setBackground(Color.white);
+        panel.setBorder(null);
+
+        int value = 0;
+
+        for(int i=0; i< list.size(); i++){
+            String[] data = list.get(i).split(",");
+
+            JLabel label = new JLabel();
+            label.setLayout(null);
+            label.setOpaque(true);
+            label.setPreferredSize(new Dimension(996,40));
+            label.setMaximumSize(new Dimension(996, 40));
+            label.setBorder(null);
+
+
+            JLabel edit = new JLabel();
+            edit.setText("<html><u>Edit</u></html>");
+            edit.setFont(new Font("Inter",Font.BOLD,12));
+            edit.setForeground(new Color(3,149,255));
+            edit.setBounds(855,13,46,14);
+            edit.setVerticalAlignment(JLabel.CENTER);
+            edit.setHorizontalAlignment(JLabel.CENTER);
+            label.add(edit);
+
+            JLabel delete = new JLabel();
+            delete.setText("<html><u>Delete</u></html>");
+            delete.setFont(new Font("Inter",Font.BOLD,12));
+            delete.setForeground(new Color(3,149,255));
+            delete.setBounds(900,13,46,14);
+            delete.setVerticalAlignment(JLabel.CENTER);
+            delete.setHorizontalAlignment(JLabel.CENTER);
+            label.add(delete);
+
+            JTextField product = new JTextField();
+            product.setText(data[0]);
+            product.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,12));
+            product.setForeground(new Color(93,93,93));
+            product.setBounds(5, 13, 129, 14);
+            product.setHorizontalAlignment(JLabel.CENTER);
+            product.setBorder(BorderFactory.createEmptyBorder());
+            product.setEditable(false);
+            product.setFocusable(false);
+
+            JTextField qty = new JTextField();
+            qty.setText(data[1]);
+            qty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,12));
+            qty.setForeground(new Color(93,93,93));
+            qty.setBounds(129, 13, 75, 14);
+            qty.setHorizontalAlignment(JLabel.CENTER);
+            qty.setBorder(BorderFactory.createEmptyBorder());
+            qty.setEditable(false);
+            qty.setFocusable(false);
+
+            JTextField price = new JTextField();
+            price.setText(data[2]);
+            price.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,12));
+            price.setForeground(new Color(93,93,93));
+            price.setBounds(204, 13, 112, 14);
+            price.setHorizontalAlignment(JLabel.CENTER);
+            price.setBorder(BorderFactory.createEmptyBorder());
+            price.setEditable(false);
+            price.setFocusable(false);
+
+            edit.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    String currentText = edit.getText();
+                    if (currentText.contains("Edit")) {
+                        edit.setText("<html><u>Update</u></html>");
+                        qty.setFocusable(true);
+                        qty.setEditable(true);
+                    } else {
+                        qty.setFocusable(false);
+                        qty.setEditable(false);
+                        edit.setText("<html><u>Edit</u></html>");
+                    }
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    edit.setForeground(new Color(210,26,26));
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    edit.setForeground(new Color(3,149,255));
+                }
+            });
+
+            delete.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int result = JOptionPane.showConfirmDialog(null,"Delete Product: "+ product.getText() +"\nDo you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    delete.setForeground(new Color(210,26,26));
+                }
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    delete.setForeground(new Color(3,149,255));
+                }
+            });
+
+            if(value==0){
+                label.setBackground(new Color(255,255,255));
+                product.setBackground(new Color(255,255,255));
+                price.setBackground(new Color(255,255,255));
+                qty.setBackground(new Color(255,255,255));
+                value=1;
+            }
+            else {
+                value=0;
+                label.setBackground(new Color(217,217,217));
+                product.setBackground(new Color(217,217,217));
+                price.setBackground(new Color(217,217,217));
+                qty.setBackground(new Color(217,217,217));
+            }
+
+            label.add(product);
+            label.add(price);
+            label.add(qty);
+            panel.add(label);
+        }
+
+        scroll = new JScrollPane(panel);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setPreferredSize(new Dimension(1000, 431));
+        scroll.setBounds(313, 401, 1000, 431);
+        scroll.setBorder(null);
+
+        add(scroll);
+    }
+
+    public void refreshPanel(ArrayList<String> newList) {
+        if (scroll != null) {
+            remove(scroll);
+            total.setText("");
+        }
+        setValues(newList);
+        super.setInfoField();
+        revalidate();
+        repaint();
     }
 }
