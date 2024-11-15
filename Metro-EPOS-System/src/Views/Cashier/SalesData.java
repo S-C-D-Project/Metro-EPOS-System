@@ -95,4 +95,30 @@ public class SalesData extends Theme {
         add(quantity);
         add(discountBox);
     }
+
+    private void setBottons(){
+        logoutButton = new JButton();
+        logoutButton.setBounds(44, 684, 84, 19);
+        logoutButton.setBorderPainted(false);
+        logoutButton.setContentAreaFilled(false);
+        logoutButton.setOpaque(false);
+
+        enterButton = new JButton("Enter");
+        enterButton.setForeground(super.getInfoFieldColor());
+        enterButton.setFocusable(false);
+        enterButton.setBounds(786, 204, 100, 30);
+        enterButton.setOpaque(true);
+        enterButton.setBackground(super.getInfoFieldButtonColor());
+
+        resetButton = new JButton("Print");
+        resetButton.setForeground(super.getInfoFieldColor());
+        resetButton.setFocusable(false);
+        resetButton.setBounds(1195, 315, 100, 30);
+        resetButton.setOpaque(true);
+        resetButton.setBackground(super.getInfoFieldButtonColor());
+
+        add(logoutButton);
+        add(enterButton);
+        add(resetButton);
+    }
 }
