@@ -342,8 +342,8 @@ public class SalesData extends Theme {
         scroll = new JScrollPane(panel);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.setPreferredSize(new Dimension(1000, 431));
-        scroll.setBounds(313, 401, 1000, 431);
+        scroll.setPreferredSize(new Dimension(1000, 328));
+        scroll.setBounds(313, 401, 1000, 328);
         scroll.setBorder(null);
 
         add(scroll);

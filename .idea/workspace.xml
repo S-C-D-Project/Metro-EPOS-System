@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
@@ -27,6 +26,7 @@
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Cashier.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Cashier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/DataEntryOperator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/DataEntryOperator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/PDFGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/PDFGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Printer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Purchase.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Purchase.java" afterDir="false" />
@@ -47,6 +47,7 @@
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/main/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,9 +64,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2otVyPJDe1oiGXkDAdrhCLUXZGi" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -79,8 +80,9 @@
     "Application.GUI_Manager.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "Asfandyar",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "E:/Metro-EPOS-System/Metro-EPOS-System/Images"
+    "last_opened_file_path": "C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System"
   }
 }]]></component>
   <component name="RecentsManager">
