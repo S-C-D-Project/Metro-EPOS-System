@@ -24,7 +24,24 @@ public class VendorModel {
 
         return exists;
     }
+    public static int getVendorIdByName(String vendorName) throws SQLException {
+        String query = "SELECT VendorID FROM Vendors WHERE VendorName = ?";
 
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, vendorName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("VendorID");
+            } else {
+                return -1;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error checking vendor: " + e.getMessage());
+            return -1;
+        }
+    }
     public static boolean vendorExistsByName(String vendorName, Connection connection) {
         boolean exists = false;
         String sql = "SELECT COUNT(*) FROM Vendors WHERE name = ?";
@@ -43,4 +60,5 @@ public class VendorModel {
 
         return exists;
     }
+
 }

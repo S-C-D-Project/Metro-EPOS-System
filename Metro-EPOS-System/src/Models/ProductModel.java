@@ -38,7 +38,7 @@ public class ProductModel {
 
         return product;
     }
-
+ 
     public static boolean productExists(String productName, int branchId, Connection connection) {
         boolean exists = false;
         String sql = "SELECT COUNT(*) FROM Products WHERE productName = ? AND branchId = ?";

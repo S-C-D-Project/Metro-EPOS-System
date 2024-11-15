@@ -97,8 +97,36 @@ public class DataBaseHandler {
 
         return vendorId;
     }
+    public int insertPurchaseData(int productId, int vendorId, int amount, String purchaseDate) {
 
+        String insertSQL = "INSERT INTO Purchases (ProductID, VendorID, Amount, PurchaseDate) VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setInt(1, productId);   // Set ProductID
+            preparedStatement.setInt(2, vendorId);    // Set VendorID
+            preparedStatement.setInt(3, amount);      // Set Amount
+            preparedStatement.setString(4, purchaseDate); // Set PurchaseDate
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1);
+                    }
+                }
+            }
+            return -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
     public static void main(String[] args) {
         // Main method can be used to test methods, if needed
+
     }
+
 }
