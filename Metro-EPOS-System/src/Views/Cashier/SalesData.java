@@ -65,4 +65,34 @@ public class SalesData extends Theme {
         add(user);
         add(branchID);
     }
+
+    private void setFields(){
+        productID = new JTextField();
+        productID.setBounds(478,185,216,25);
+        productID.setForeground(new Color(93,93,93));
+        productID.setBackground(new Color(217,217,217));
+        productID.setBorder(BorderFactory.createEmptyBorder());
+        productID.setFont(new Font("Arial",Font.BOLD,18));
+        productID.setHorizontalAlignment(JTextField.CENTER);
+
+        quantity = new JTextField();
+        quantity.setBounds(478,235,216,25);
+        quantity.setForeground(new Color(93,93,93));
+        quantity.setBackground(new Color(217,217,217));
+        quantity.setBorder(BorderFactory.createEmptyBorder());
+        quantity.setFont(new Font("Arial",Font.BOLD,18));
+        quantity.setHorizontalAlignment(JTextField.CENTER);
+
+        discountBox = new JTextField();
+        discountBox.setBounds(808,317,149,26);
+        discountBox.setForeground(new Color(93,93,93));
+        discountBox.setBackground(new Color(217,217,217));
+        discountBox.setBorder(BorderFactory.createEmptyBorder());
+        discountBox.setFont(new Font("Arial",Font.BOLD,18));
+        discountBox.setHorizontalAlignment(JTextField.CENTER);
+
+        add(productID);
+        add(quantity);
+        add(discountBox);
+    }
 }
