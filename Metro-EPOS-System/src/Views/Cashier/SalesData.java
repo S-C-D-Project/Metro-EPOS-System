@@ -1,5 +1,6 @@
 package Views.Cashier;
 import Views.Decorate.Theme;
+import Views.UIHandler;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -210,7 +211,7 @@ public class SalesData extends Theme {
         add(salesData);
     }
 
-    public void setValues(ArrayList<String> l, double dis)
+    public void setValues(ArrayList<String> l, double dis, JFrame f)
     {
         list = l;
         discount = dis;
@@ -218,7 +219,7 @@ public class SalesData extends Theme {
         if(list!=null) {
             for (int i = 0; i < list.size(); i++) {
                 String[] line = list.get(i).split(",");
-                sum = sum + Integer.parseInt(line[2]);
+                sum = sum + Double.parseDouble(line[2]);
             }
             sum = sum - ( sum * discount/100);
         }
@@ -302,6 +303,27 @@ public class SalesData extends Theme {
                             qty.setFocusable(true);
                             qty.setEditable(true);
                         } else {
+                            if(!isNumbers(qty.getText()) || qty.getText().equals("0") || qty.getText().isEmpty()){
+                                JOptionPane.showMessageDialog(f,"Invalid Quantity","Error",JOptionPane.ERROR_MESSAGE);
+                                refreshPanel(list,dis,f);
+                            }
+                            else{
+                                int originalQuantity = (int) (Double.parseDouble(price.getText())/UIHandler.getProductPriceUsingName(product.getText()));
+                                double calc = Double.parseDouble(qty.getText()) * (Double.parseDouble(price.getText())/Double.parseDouble(String.valueOf(originalQuantity)));
+                                String originalPrice = price.getText();
+                                price.setText(String.valueOf(calc));
+
+                                for(int j=0; j<list.size(); j++)
+                                {
+                                    String[] search = list.get(j).split(",");
+                                    if(search[0].equals(product.getText()) && search[1].equals(String.valueOf(originalQuantity)) && search[2].equals(originalPrice)){
+                                        list.set(j,product.getText()+","+qty.getText()+","+price.getText());
+                                        break;
+                                    }
+                                }
+
+                                refreshPanel(list,dis,f);
+                            }
                             qty.setFocusable(false);
                             qty.setEditable(false);
                             edit.setText("<html><u>Edit</u></html>");
@@ -367,14 +389,14 @@ public class SalesData extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, double discount) {
+    public void refreshPanel(ArrayList<String> newList, double discount, JFrame f) {
         if (scroll != null) {
             remove(scroll);
             total.setText("");
             discountBox.setText("");
             super.removeInfoField();
         }
-        setValues(newList,discount);
+        setValues(newList,discount,f);
         super.setInfoField();
         revalidate();
         repaint();
@@ -392,4 +414,14 @@ public class SalesData extends Theme {
     public double getDiscountValue(){return discount;}
     public ArrayList<String> getList(){return list;}
     public JPanel getPanel(){return this;}
+
+    public static boolean isNumbers(String line) {
+        for(int i=0; i<line.length(); i++){
+            char c = line.charAt(i);
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
