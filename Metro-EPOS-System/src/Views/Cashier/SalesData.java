@@ -2,6 +2,7 @@ package Views.Cashier;
 import Views.Decorate.Theme;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -43,5 +44,25 @@ public class SalesData extends Theme {
                 requestFocusInWindow();
             }
         });
+    }
+
+    private void setNames(String name,String ID)
+    {
+        user = new JLabel();
+        user.setText(name);
+        user.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        user.setForeground(Color.white);
+        user.setBounds(12,189,250,18);
+        user.setVerticalAlignment(JLabel.CENTER);
+        user.setHorizontalAlignment(JLabel.CENTER);
+
+        branchID = new JLabel();
+        branchID.setText("Branch ID: " + ID);
+        branchID.setFont(new Font("Inter",Font.BOLD,25));
+        branchID.setForeground(Color.BLACK);
+        branchID.setBounds(345,55,221,30);
+
+        add(user);
+        add(branchID);
     }
 }
