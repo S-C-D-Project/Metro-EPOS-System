@@ -19,7 +19,7 @@ public class frame
 
         BufferedImage icon = null;
         try {
-            icon = ImageIO.read(new File("Images/FrameIcon.png"));
+            icon = ImageIO.read(new File("Metro-EPOS-System/Images/FrameIcon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/encodings.xml" afterDir="false" />
@@ -29,6 +39,7 @@
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/PurchaseModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/PurchaseModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/TaxModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/TaxModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" afterDir="false" />
     </list>
@@ -36,6 +47,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,6 +74,26 @@
     "last_opened_file_path": "E:/Metro-EPOS-System"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="GUI_Manager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Views.GUI_Manager" />
+      <module name="Metro-EPOS-System" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Views.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GUI_Manager" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
