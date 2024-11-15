@@ -121,4 +121,47 @@ public class SalesData extends Theme {
         add(enterButton);
         add(resetButton);
     }
+
+    private void setHeading(){
+        JLabel enterProductID = new JLabel("Enter Product ID:");
+        JLabel enterQty = new JLabel("Enter Quantity:");
+        JLabel totalRS = new JLabel("Total (RS):");
+        JLabel enterDiscount = new JLabel("Enter Discount (%):");
+        JLabel product = new JLabel("Product");
+        JLabel qty = new JLabel("Qty");
+        JLabel price = new JLabel("Price");
+
+        enterProductID.setForeground(super.getSecondHeadingColor());
+        enterQty.setForeground(super.getSecondHeadingColor());
+        totalRS.setForeground(super.getSecondHeadingColor());
+        enterDiscount.setForeground(super.getSecondHeadingColor());
+        product.setForeground(super.getThirdHeadingColor());
+        qty.setForeground(super.getThirdHeadingColor());
+        price.setForeground(super.getThirdHeadingColor());
+
+        enterProductID.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
+        enterQty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
+        enterDiscount.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
+        totalRS.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,25));
+        product.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        qty.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        price.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+
+        enterProductID.setBounds(313,187,158,22);
+        enterQty.setBounds(313,237,148,22);
+        totalRS.setBounds(326,312,124,30);
+        enterDiscount.setBounds(626,316,179,22);
+
+        product.setBounds(356,365,73,24);
+        qty.setBounds(465,365,48,24);
+        price.setBounds(556,365,94,24);
+
+        add(enterProductID);
+        add(enterQty);
+        add(enterDiscount);
+        add(totalRS);
+        add(product);
+        add(qty);
+        add(price);
+    }
 }
