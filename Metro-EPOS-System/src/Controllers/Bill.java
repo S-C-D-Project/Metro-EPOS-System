@@ -2,17 +2,24 @@ package Controllers;
 
 import Models.DataBaseHandler;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class Bill {
     private ArrayList<Product> productList;
     private int cashAmount, returnAmount, totalbill, additionalCharges, salesTaxAmount;
     private double discount, salesTax;
-
+private int billid;
 
     public ArrayList<Product> getProductList() {
         return productList;
@@ -165,19 +172,29 @@ public class Bill {
         return this;
     }
 
-    public Bill saveBill(int cashAmount) throws SQLException {
+    public int getBillid() {
+        return billid;
+    }
+
+    public void setBillid(int billid) {
+        this.billid = billid;
+    }
+
+    public Bill saveBill(int cashAmount) throws Exception {
         this.cashAmount = cashAmount;
         this.returnAmount=cashAmount-totalbill;
         if(this.returnAmount<0){
             return null;
 
         }
-        DataBaseHandler.saveBill(this);
+       this.billid= DataBaseHandler.saveBill(this);
+
+      PDFGenerator.generateBillPDF(this);
         return this;
     }
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
         Bill currentBill = new Bill();
         int choice;
@@ -263,5 +280,10 @@ public class Bill {
 
         scanner.close();
     }
-    }
+    } class PdfViewer extends JFrame {
 
+    private static final long serialVersionUID = 1L;
+    private byte[] pdfData;
+
+
+}
