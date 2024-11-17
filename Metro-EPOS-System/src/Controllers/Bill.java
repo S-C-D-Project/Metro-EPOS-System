@@ -2,24 +2,15 @@ package Controllers;
 
 import Models.DataBaseHandler;
 
-import javax.swing.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 public class Bill {
     private ArrayList<Product> productList;
     private int cashAmount, returnAmount, totalbill, additionalCharges, salesTaxAmount;
     private double discount, salesTax;
-private int billid;
+    private int billid;
 
     public ArrayList<Product> getProductList() {
         return productList;
@@ -116,23 +107,23 @@ private int billid;
 
         salesTaxAmount = (int) salesTax;
         totalAmount += additionalCharges - discount;
-        if(totalAmount<0){
+        if (totalAmount < 0) {
             return this.totalbill;
         }
         this.totalbill = (int) totalAmount;
         return totalbill;
     }
 
-    public Bill addProduct(int productId, int branchId, boolean isVendor, int quantity) throws SQLException {
+    public void addProduct(int productId, int branchId, boolean isVendor, int quantity) throws SQLException {
         if (productList.isEmpty()) {
             salesTax = DataBaseHandler.getInstance().getSalesTax();
         }
 
         for (Product p : productList) {
             if (p.getProductId() == productId) {
-                p.setStockQuantity( quantity);
+                p.setStockQuantity(quantity);
                 calculateBill(isVendor);
-                return this;
+                return;
             }
         }
 
@@ -143,33 +134,25 @@ private int billid;
             newProduct.setStockQuantity(quantity);
             productList.add(newProduct);
             calculateBill(isVendor);
-            return this;
+            return ;
         } else {
-            return null;
+            return ;
         }
     }
 
 
-    public Bill removeProduct(int id, boolean isVendor) {
-        productList.removeIf(product -> product.getProductId() == id);
-        calculateBill(isVendor);
-        return this;
-    }
-
-    public Bill addAdditionalAmount(int additionalAmount, boolean isVendor) {
+    public void addAdditionalAmount(int additionalAmount, boolean isVendor) {
         this.additionalCharges = additionalAmount;
         calculateBill(isVendor);
-        return this;
+
     }
 
-    public Bill addDiscount(double discount, boolean isVendor) {
-        if(discount>totalbill){
-            return  this;
-        }
-        this.discount = discount;
+    public void addDiscount(double discount, boolean isVendor) {
+
+        this.discount = (totalbill * discount) / 100;
 
         calculateBill(isVendor);
-        return this;
+
     }
 
     public int getBillid() {
@@ -180,110 +163,110 @@ private int billid;
         this.billid = billid;
     }
 
-    public Bill saveBill(int cashAmount) throws Exception {
+    public File saveBill(int cashAmount) throws Exception {
         this.cashAmount = cashAmount;
-        this.returnAmount=cashAmount-totalbill;
-        if(this.returnAmount<0){
+        this.returnAmount = cashAmount - totalbill;
+        if (this.returnAmount < 0) {
             return null;
 
         }
-       this.billid= DataBaseHandler.saveBill(this);
+        this.billid = DataBaseHandler.saveBill(this);
 
-      PDFGenerator.generateBillPDF(this);
-        return this;
+       return  PDFGenerator.generateBillPDF(this);
     }
-
-
-    public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
-        Bill currentBill = new Bill();
-        int choice;
-        boolean isVendor = false;
-        do {
-            System.out.println("\nMenu:");
-            System.out.println("1. Add Product");
-            System.out.println("2. View Current Bill");
-            System.out.println("3. Remove Product");
-            System.out.println("4. Add Additional Charges");
-            System.out.println("5. Add Discount");
-            System.out.println("6. Save Bill");
-            System.out.println("7. Exit");
-            System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
-
-            switch (choice) {
-                case 1:
-                    System.out.print("Enter Product ID: ");
-                    int productId = scanner.nextInt();
-                    System.out.print("Enter Branch ID: ");
-                    int branchId = scanner.nextInt();
-
-                    System.out.print("Enter Quantity: ");
-                    int quantity = scanner.nextInt();
-                    try {
-                        if(currentBill.addProduct(productId, branchId, isVendor,quantity)!=null){
-                        System.out.println("Product added successfully!");}
-                        else{
-                            System.out.println("Product not added !");
-                        }
-                    } catch (SQLException e) {
-                        System.out.println("Error adding product: " + e.getMessage());
-                    }
-                    break;
-
-                case 2:
-                    currentBill.calculateBill(isVendor);
-                    System.out.println("\nCurrent Bill:");
-                    System.out.println("Total: $" + currentBill.getTotalbill());
-                    System.out.println("Sales Tax: $" + currentBill.getSalesTaxAmount());
-                    System.out.println("Discount: $" + currentBill.getDiscount());
-                    System.out.println("Additional Charges: $" + currentBill.getAdditionalCharges());
-                    System.out.println("Amount Due: $" + (currentBill.getTotalbill() - currentBill.getDiscount() + currentBill.getAdditionalCharges()));
-                    break;
-
-                case 3:
-                    System.out.print("Enter Product ID to remove: ");
-                    int removeProductId = scanner.nextInt();
-                    currentBill.removeProduct(removeProductId, isVendor);
-                    System.out.println("Product removed successfully!");
-                    break;
-
-                case 4:
-                    System.out.print("Enter Additional Charges: ");
-                    int additionalAmount = scanner.nextInt();
-                    currentBill.addAdditionalAmount(additionalAmount, isVendor);
-                    System.out.println("Additional charges added.");
-                    break;
-
-                case 5:
-                    System.out.print("Enter Discount Amount: ");
-                    double discountAmount = scanner.nextDouble();
-                    currentBill.addDiscount(discountAmount, isVendor);
-                    System.out.println("Discount added.");
-                    break;
-
-                case 6:
-                    System.out.print("Enter Cash Amount: ");
-                    int cashAmount = scanner.nextInt();
-                    currentBill.saveBill(cashAmount);
-                    System.out.println("Bill saved successfully!");
-                    break;
-
-                case 7:
-                    System.out.println("Exiting...");
-                    break;
-
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
-        } while (choice != 7);
-
-        scanner.close();
-    }
-    } class PdfViewer extends JFrame {
-
-    private static final long serialVersionUID = 1L;
-    private byte[] pdfData;
-
-
 }
+//
+//    public static void main(String[] args) throws Exception {
+//        Scanner scanner = new Scanner(System.in);
+//        Bill currentBill = new Bill();
+//        int choice;
+//        boolean isVendor = false;
+//        do {
+//            System.out.println("\nMenu:");
+//            System.out.println("1. Add Product");
+//            System.out.println("2. View Current Bill");
+//            System.out.println("3. Remove Product");
+//            System.out.println("4. Add Additional Charges");
+//            System.out.println("5. Add Discount");
+//            System.out.println("6. Save Bill");
+//            System.out.println("7. Exit");
+//            System.out.print("Enter your choice: ");
+//            choice = scanner.nextInt();
+//
+//            switch (choice) {
+//                case 1:
+//                    System.out.print("Enter Product ID: ");
+//                    int productId = scanner.nextInt();
+//                    System.out.print("Enter Branch ID: ");
+//                    int branchId = scanner.nextInt();
+//
+//                    System.out.print("Enter Quantity: ");
+//                    int quantity = scanner.nextInt();
+//                    try {
+//                        if(currentBill.addProduct(productId, branchId, isVendor,quantity)!=null){
+//                        System.out.println("Product added successfully!");}
+//                        else{
+//                            System.out.println("Product not added !");
+//                        }
+//                    } catch (SQLException e) {
+//                        System.out.println("Error adding product: " + e.getMessage());
+//                    }
+//                    break;
+//
+//                case 2:
+//                    currentBill.calculateBill(isVendor);
+//                    System.out.println("\nCurrent Bill:");
+//                    System.out.println("Total: $" + currentBill.getTotalbill());
+//                    System.out.println("Sales Tax: $" + currentBill.getSalesTaxAmount());
+//                    System.out.println("Discount: $" + currentBill.getDiscount());
+//                    System.out.println("Additional Charges: $" + currentBill.getAdditionalCharges());
+//                    System.out.println("Amount Due: $" + (currentBill.getTotalbill() - currentBill.getDiscount() + currentBill.getAdditionalCharges()));
+//                    break;
+//
+//                case 3:
+//                    System.out.print("Enter Product ID to remove: ");
+//                    int removeProductId = scanner.nextInt();
+//                    currentBill.removeProduct(removeProductId, isVendor);
+//                    System.out.println("Product removed successfully!");
+//                    break;
+//
+//                case 4:
+//                    System.out.print("Enter Additional Charges: ");
+//                    int additionalAmount = scanner.nextInt();
+//                    currentBill.addAdditionalAmount(additionalAmount, isVendor);
+//                    System.out.println("Additional charges added.");
+//                    break;
+//
+//                case 5:
+//                    System.out.print("Enter Discount Amount: ");
+//                    double discountAmount = scanner.nextDouble();
+//                    currentBill.addDiscount(discountAmount, isVendor);
+//                    System.out.println("Discount added.");
+//                    break;
+//
+//                case 6:
+//                    System.out.print("Enter Cash Amount: ");
+//                    int cashAmount = scanner.nextInt();
+//                    currentBill.saveBill(cashAmount);
+//                    System.out.println("Bill saved successfully!");
+//                    break;
+//
+//                case 7:
+//                    System.out.println("Exiting...");
+//                    break;
+//
+//                default:
+//                    System.out.println("Invalid choice. Please try again.");
+//            }
+//        } while (choice != 7);
+//
+//        scanner.close();
+//    }
+//    }
+//    class PdfViewer extends JFrame {
+//
+//    private static final long serialVersionUID = 1L;
+//    private byte[] pdfData;
+
+
+//}

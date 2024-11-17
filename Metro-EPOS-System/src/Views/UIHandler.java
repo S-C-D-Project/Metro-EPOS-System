@@ -1,38 +1,47 @@
 package Views;
 
+import Controllers.*;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class UIHandler
 {
+    private static  Cashier cashier=null;
+    private static BranchManager branchManager=null;
+    private static DataEntryOperator dataEntryOperator=null;
+    public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
+        cashier=new Cashier(name, password,  email,  employeeNumber,  branchCode, salary,  joiningDate,  leavingDate,  isActive,  branch,  firstTime);
+    }
+    public static void createBranchManager(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
+        branchManager=new BranchManager(name, password,  email,  employeeNumber,  branchCode, salary,  joiningDate,  leavingDate,  isActive,  branch,  firstTime);
+    }
+    public static void createDataEntryOperator(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
+        dataEntryOperator=new DataEntryOperator(name, password,  email,  employeeNumber,  branchCode, salary,  joiningDate,  leavingDate,  isActive,  branch,  firstTime);
+    }
     public static boolean isProductExist(int pID)
     {
-        // Against pID I should get boolean value either the pID exist or not in tables
-        return true;
+
+        return cashier.isProductExist(pID,cashier.getBranch().getCode());
     }
 
-    public static String getProductPrice(int pID, int qty)
+    public static String getProductPrice( int qty)
     {
         // I will provide qty -> quantity and pID -> Product ID and I should get the price of product with datatype double
         // Here I assume 100 is the price I get for one product pID (later converted to string after multiply)
-        return String.valueOf(qty * 100);
+
+        return String.valueOf(qty * cashier.getProductPrice());
     }
 
-    public static double getProductPriceUsingName(String pName)
-    {
-        // I will provide qty -> quantity and pName -> Product Name and I should get the price of product with datatype double
-        // Here I assume 100 is the price I get for one product pName
-        return 100.0;
-    }
+
 
     public static String getProductName(int pID)
     {
-        // I provide the pID and I should get the name of the requested Product
-        // Here I assume I get Paint as product name
-        return "Paint";
+
+        return cashier.getProductName();
     }
 
-    public static void showBillImage(ArrayList<String> list){
-        // list is passed here where data is stored like "productName,Quantity,Price" in each Index and
-        // this function basically display that bill
+    public static File showBillImage(ArrayList<String> list, int cashAmount, int additionalAmount, double discount, int branchid, boolean isVendor) throws Exception {
+    return cashier.saveBill(list,cashAmount,additionalAmount,discount,branchid,isVendor);
     }
 }
