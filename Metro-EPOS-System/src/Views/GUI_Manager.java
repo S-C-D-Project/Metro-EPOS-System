@@ -39,7 +39,7 @@ public class GUI_Manager
                 {
                     list=new ArrayList<>();
                 }
-                list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(pID), Integer.parseInt(qty)) + ","+pID);
+                list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(qty)) + ","+pID);
                 sales.refreshPanel(list,discount,f.getFrame());
             }
         });

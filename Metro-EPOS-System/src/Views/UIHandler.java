@@ -25,7 +25,7 @@ public class UIHandler
         return cashier.isProductExist(pID,cashier.getBranch().getCode());
     }
 
-    public static String getProductPrice( int qty)
+    public static String getProductPrice(int qty)
     {
         // I will provide qty -> quantity and pID -> Product ID and I should get the price of product with datatype double
         // Here I assume 100 is the price I get for one product pID (later converted to string after multiply)
@@ -33,7 +33,10 @@ public class UIHandler
         return String.valueOf(qty * cashier.getProductPrice());
     }
 
-
+    public static double getProductPriceUsingName(int id)
+    {
+        return 100;
+    }
 
     public static String getProductName(int pID)
     {

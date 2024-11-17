@@ -11,8 +11,8 @@ public class addOns extends JPanel {
     JTextField additions;
     JTextField receivedAmount;
     double total;
-    JButton ok_Button;
-    JButton cancel_Button;
+    JButton ok_Button = new JButton("OK");
+    JButton cancel_Button = new JButton("Cancel");
     JLabel total_label;
 
     public void show(double t, JFrame f1)
@@ -94,7 +94,6 @@ public class addOns extends JPanel {
     }
 
     private void setButtons(){
-        ok_Button = new JButton("OK");
         ok_Button.setForeground(Color.WHITE);
         ok_Button.setFocusable(false);
         ok_Button.setBorderPainted(false);
@@ -103,7 +102,6 @@ public class addOns extends JPanel {
         ok_Button.setOpaque(true);
         ok_Button.setBackground(new Color(155,103,56));
 
-        cancel_Button = new JButton("Cancel");
         cancel_Button.setForeground(Color.WHITE);
         cancel_Button.setFocusable(false);
         cancel_Button.setBorderPainted(false);

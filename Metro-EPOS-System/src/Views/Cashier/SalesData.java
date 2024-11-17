@@ -315,7 +315,7 @@ public class SalesData extends Theme {
                             }
                             else
                             {
-                                int originalQuantity = (int) (Double.parseDouble(price.getText())/UIHandler.getProductPriceUsingName(product.getText()));
+                                int originalQuantity = (int) (Double.parseDouble(price.getText())/UIHandler.getProductPriceUsingName(Integer.parseInt(data[3])));
                                 double calc = Double.parseDouble(qty.getText()) * (Double.parseDouble(price.getText())/Double.parseDouble(String.valueOf(originalQuantity)));
                                 String originalPrice = price.getText();
                                 price.setText(String.valueOf(calc));
