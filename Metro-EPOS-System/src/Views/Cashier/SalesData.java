@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SalesData extends Theme {
@@ -41,7 +42,7 @@ public class SalesData extends Theme {
         super.setLineSizeCustom(313,399,2);
         super.setText("Cashier");
         super.setLogoutLogo();
-        super.setProfileLogo("Metro-EPOS-System/Images/CashierLogo.png");
+        super.setProfileLogo("Images/CashierLogo.png");
 
         setNames(name,branchID);
         setHeading();
@@ -88,7 +89,7 @@ public class SalesData extends Theme {
     }
 
     private void setLogo() {
-        saleLogo = new ImageIcon("Metro-EPOS-System/Images/SalesIconGreen.png").getImage();
+        saleLogo = new ImageIcon("Images/SalesIconGreen.png").getImage();
         Image scaledImage = saleLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(78, 277, 20, 20);
@@ -315,7 +316,12 @@ public class SalesData extends Theme {
                             }
                             else
                             {
-                                int originalQuantity = (int) (Double.parseDouble(price.getText())/UIHandler.getProductPriceUsingName(Integer.parseInt(data[3])));
+                                int originalQuantity = 0;
+                                try {
+                                    originalQuantity = (int) (Double.parseDouble(price.getText())/ UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]),getBranchID()));
+                                } catch (SQLException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 double calc = Double.parseDouble(qty.getText()) * (Double.parseDouble(price.getText())/Double.parseDouble(String.valueOf(originalQuantity)));
                                 String originalPrice = price.getText();
                                 price.setText(String.valueOf(calc));

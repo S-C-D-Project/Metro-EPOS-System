@@ -17,15 +17,20 @@ private Product comfirmProduct;
     }
 
 
-    public boolean isProductExist(int productId,int branchId){
-        comfirmProduct=DataBaseHandler.getProduct(productId, branchId);
+    public boolean isProductExist(int productId,int branchId) throws SQLException {
+        comfirmProduct=DataBaseHandler.getInstance().getProduct(productId, branchId);
         if(comfirmProduct!=null){
             return true;
         }
         return false;
     }
+    public double getProductPriceByid(int productId,int branchId) throws SQLException {
+       return DataBaseHandler.getInstance().getProduct(productId, branchId).getSalePrice();
+
+    }
+
     public  double getProductPrice() {
-    return comfirmProduct.getPricePerUnit();
+    return comfirmProduct.getSalePrice();
     }
     public  String getProductName() {
         return comfirmProduct.getProductName();
@@ -43,7 +48,10 @@ private Product comfirmProduct;
        bill.addAdditionalAmount(additionalAmount,isVendor);
        bill.addDiscount(discount,isVendor);
        return bill.saveBill(cashAmount);
-       // Printer.deleteTempFiles(tempDir); add it in gui
 
+
+    }
+    public void deleteTempBill(File file){
+        Printer.deleteTempFiles(file);
     }
 }

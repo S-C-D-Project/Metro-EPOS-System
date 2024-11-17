@@ -9,6 +9,15 @@ public class Branch {
     private int numberOfEmployees;
     private boolean isActive;
 
+    public Branch(String name, int code, String address, String phoneNumber, int numberOfEmployees, boolean isActive) {
+        this.name = name;
+        this.code = code;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.numberOfEmployees = numberOfEmployees;
+        this.isActive = isActive;
+    }
+
     public String getName() {
         return name;
     }

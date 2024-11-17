@@ -3,6 +3,7 @@ package Views;
 import Controllers.*;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UIHandler
@@ -19,23 +20,19 @@ public class UIHandler
     public static void createDataEntryOperator(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
         dataEntryOperator=new DataEntryOperator(name, password,  email,  employeeNumber,  branchCode, salary,  joiningDate,  leavingDate,  isActive,  branch,  firstTime);
     }
-    public static boolean isProductExist(int pID)
-    {
+    public static boolean isProductExist(int pID) throws SQLException {
 
         return cashier.isProductExist(pID,cashier.getBranch().getCode());
     }
 
     public static String getProductPrice(int qty)
     {
-        // I will provide qty -> quantity and pID -> Product ID and I should get the price of product with datatype double
-        // Here I assume 100 is the price I get for one product pID (later converted to string after multiply)
 
         return String.valueOf(qty * cashier.getProductPrice());
     }
 
-    public static double getProductPriceUsingName(int id)
-    {
-        return 100;
+    public static double getProductPriceUsingName(int id,int branchid) throws SQLException {
+        return cashier.getProductPriceByid(id,branchid);
     }
 
     public static String getProductName(int pID)
@@ -46,5 +43,9 @@ public class UIHandler
 
     public static File showBillImage(ArrayList<String> list, int cashAmount, int additionalAmount, double discount, int branchid, boolean isVendor) throws Exception {
     return cashier.saveBill(list,cashAmount,additionalAmount,discount,branchid,isVendor);
+    }
+    public  static void deleteTempBill(File file){
+        cashier.deleteTempBill(file);
+
     }
 }
