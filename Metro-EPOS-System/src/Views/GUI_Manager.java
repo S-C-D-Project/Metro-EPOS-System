@@ -1,5 +1,6 @@
 package Views;
 import Views.Cashier.SalesData;
+import Views.Cashier.addOns;
 import Views.Frame.frame;
 
 import javax.swing.*;
@@ -9,9 +10,10 @@ public class GUI_Manager
 {
     JPanel oldPanel;
     private SalesData sales;
-
+    private addOns adds;
     public GUI_Manager()
     {
+        adds=new addOns();
         frame f = new frame();
 
         sales = new SalesData("Asfandyar","1234");
@@ -45,11 +47,7 @@ public class GUI_Manager
             JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
         });
         sales.getPrintButton().addActionListener(e->{
-            System.out.println("Discount: "+sales.getDiscountValue());
-            System.out.println("Total: " + sales.getTotal());
-            System.out.println("BranchID: " + sales.getBranchID());
-            System.out.println("Printable List: " + sales.getPrintableList());
-            sales.refreshPanel(null,0,f.getFrame());
+            adds.show(sales.getTotal(),f.getFrame());
         });
         sales.getFixButton().addActionListener(e->{
             String discountStr = sales.getDiscount();
@@ -60,6 +58,22 @@ public class GUI_Manager
             }
             else{
                 sales.refreshPanel(list, Double.parseDouble(discountStr),f.getFrame());
+            }
+        });
+        //--------------------------------ADDITIONAL PANEL LOGIC------------------//
+        adds.getCancel_Button().addActionListener(e->{
+            adds.remove();
+        });
+        adds.getOk_Button().addActionListener(e->{
+            if(!isValidDiscount(adds.getAddionalCharges()) || !isValidDiscount(adds.getReceivedAmonunt()) || Double.parseDouble(adds.getAddionalCharges())<0 || Double.parseDouble(adds.getReceivedAmonunt())<0 || Double.parseDouble(adds.getReceivedAmonunt())<adds.getTotal()){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Entries","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                System.out.println("Discount: "+sales.getDiscountValue());
+                System.out.println("Total: " + sales.getTotal());
+                System.out.println("BranchID: " + sales.getBranchID());
+                System.out.println("Printable List: " + sales.getPrintableList());
+                sales.refreshPanel(null,0,f.getFrame());
             }
         });
 
@@ -88,8 +102,6 @@ public class GUI_Manager
         return true;
     }
     public static void main(String[] args) {
-        //GUI_Manager g = new GUI_Manager();
-        frame f = new frame();
-        f.setSize(615,149);
+        GUI_Manager g = new GUI_Manager();
     }
 }
