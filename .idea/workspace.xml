@@ -41,6 +41,7 @@
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/TaxModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/TaxModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/addOns.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/addOns.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/RoundEdges.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/RoundEdges.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />

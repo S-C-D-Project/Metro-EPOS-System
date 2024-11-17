@@ -1,5 +1,6 @@
 package Views;
 import Views.Cashier.SalesData;
+import Views.Cashier.addOns;
 import Views.Frame.frame;
 
 import javax.swing.*;
@@ -9,9 +10,10 @@ public class GUI_Manager
 {
     JPanel oldPanel;
     private SalesData sales;
-
+    private addOns adds;
     public GUI_Manager()
     {
+        adds=new addOns();
         frame f = new frame();
 
         sales = new SalesData("Asfandyar","1234");
@@ -31,11 +33,13 @@ public class GUI_Manager
             else if(!UIHandler.isProductExist(Integer.parseInt(pID))){
                 JOptionPane.showMessageDialog(f.getFrame(),"Product Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
-            else{
-                if(list==null){
+            else
+            {
+                if(list==null)
+                {
                     list=new ArrayList<>();
                 }
-                list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(pID), Integer.parseInt(qty)));
+                list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(pID), Integer.parseInt(qty)) + ","+pID);
                 sales.refreshPanel(list,discount,f.getFrame());
             }
         });
@@ -43,17 +47,33 @@ public class GUI_Manager
             JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
         });
         sales.getPrintButton().addActionListener(e->{
-            sales.refreshPanel(null,0,f.getFrame());
+            adds.show(sales.getTotal(),f.getFrame());
         });
         sales.getFixButton().addActionListener(e->{
             String discountStr = sales.getDiscount();
             ArrayList<String> list = sales.getList();
-            if(!isValidDiscount(discountStr) || discountStr.trim().isEmpty())
+            if(!isValidDiscount(discountStr) || discountStr.trim().isEmpty() || Double.parseDouble(discountStr)<0 || Double.parseDouble(discountStr)>100)
             {
                 JOptionPane.showMessageDialog(f.getFrame(),"Invalid Discount","Error",JOptionPane.ERROR_MESSAGE);
             }
             else{
                 sales.refreshPanel(list, Double.parseDouble(discountStr),f.getFrame());
+            }
+        });
+        //--------------------------------ADDITIONAL PANEL LOGIC------------------//
+        adds.getCancel_Button().addActionListener(e->{
+            adds.remove();
+        });
+        adds.getOk_Button().addActionListener(e->{
+            if(!isValidDiscount(adds.getAddionalCharges()) || !isValidDiscount(adds.getReceivedAmonunt()) || Double.parseDouble(adds.getAddionalCharges())<0 || Double.parseDouble(adds.getReceivedAmonunt())<0 || Double.parseDouble(adds.getReceivedAmonunt())<adds.getTotal()){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Entries","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                System.out.println("Discount: "+sales.getDiscountValue());
+                System.out.println("Total: " + sales.getTotal());
+                System.out.println("BranchID: " + sales.getBranchID());
+                System.out.println("Printable List: " + sales.getPrintableList());
+                sales.refreshPanel(null,0,f.getFrame());
             }
         });
 

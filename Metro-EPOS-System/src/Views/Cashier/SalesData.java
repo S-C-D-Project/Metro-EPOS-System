@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SalesData extends Theme {
@@ -29,6 +30,7 @@ public class SalesData extends Theme {
 
     private double discount;
     private ArrayList<String> list;
+    private int branchNumber;
 
     public SalesData(String name, String branchID)
     {
@@ -67,6 +69,7 @@ public class SalesData extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
+        branchNumber = Integer.parseInt(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
         branchID.setFont(new Font("Inter",Font.BOLD,25));
@@ -302,12 +305,16 @@ public class SalesData extends Theme {
                             edit.setText("<html><u>Update</u></html>");
                             qty.setFocusable(true);
                             qty.setEditable(true);
-                        } else {
-                            if(!isNumbers(qty.getText()) || qty.getText().equals("0") || qty.getText().isEmpty()){
+                        }
+                        else
+                        {
+                            if(!isNumbers(qty.getText()) || qty.getText().equals("0") || qty.getText().isEmpty())
+                            {
                                 JOptionPane.showMessageDialog(f,"Invalid Quantity","Error",JOptionPane.ERROR_MESSAGE);
                                 refreshPanel(list,dis,f);
                             }
-                            else{
+                            else
+                            {
                                 int originalQuantity = (int) (Double.parseDouble(price.getText())/UIHandler.getProductPriceUsingName(product.getText()));
                                 double calc = Double.parseDouble(qty.getText()) * (Double.parseDouble(price.getText())/Double.parseDouble(String.valueOf(originalQuantity)));
                                 String originalPrice = price.getText();
@@ -317,11 +324,10 @@ public class SalesData extends Theme {
                                 {
                                     String[] search = list.get(j).split(",");
                                     if(search[0].equals(product.getText()) && search[1].equals(String.valueOf(originalQuantity)) && search[2].equals(originalPrice)){
-                                        list.set(j,product.getText()+","+qty.getText()+","+price.getText());
+                                        list.set(j,product.getText()+","+qty.getText()+","+price.getText()+","+search[3]);
                                         break;
                                     }
                                 }
-
                                 refreshPanel(list,dis,f);
                             }
                             qty.setFocusable(false);
@@ -423,8 +429,20 @@ public class SalesData extends Theme {
     }
     public double getDiscountValue(){return discount;}
     public ArrayList<String> getList(){return list;}
+    public double getTotal(){return Double.parseDouble(total.getText());}
     public JPanel getPanel(){return this;}
-
+    public ArrayList<String> getPrintableList()
+    {
+        ArrayList<String> printList = new ArrayList<>();
+        for(int i=0; i<list.size(); i++){
+            String[] data = list.get(i).split(",");
+            printList.add(data[3]+","+data[0]+","+data[1]);
+        }
+        return printList;
+    }
+    public int getBranchID(){
+        return branchNumber;
+    }
     public static boolean isNumbers(String line) {
         for(int i=0; i<line.length(); i++){
             char c = line.charAt(i);
