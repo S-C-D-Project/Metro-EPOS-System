@@ -31,11 +31,13 @@ public class GUI_Manager
             else if(!UIHandler.isProductExist(Integer.parseInt(pID))){
                 JOptionPane.showMessageDialog(f.getFrame(),"Product Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
-            else{
-                if(list==null){
+            else
+            {
+                if(list==null)
+                {
                     list=new ArrayList<>();
                 }
-                list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(pID), Integer.parseInt(qty)));
+                list.add(UIHandler.getProductName(Integer.parseInt(pID))+","+qty+","+UIHandler.getProductPrice(Integer.parseInt(pID), Integer.parseInt(qty)) + ","+pID);
                 sales.refreshPanel(list,discount,f.getFrame());
             }
         });
@@ -43,12 +45,16 @@ public class GUI_Manager
             JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
         });
         sales.getPrintButton().addActionListener(e->{
+            System.out.println("Discount: "+sales.getDiscountValue());
+            System.out.println("Total: " + sales.getTotal());
+            System.out.println("BranchID: " + sales.getBranchID());
+            System.out.println("Printable List: " + sales.getPrintableList());
             sales.refreshPanel(null,0,f.getFrame());
         });
         sales.getFixButton().addActionListener(e->{
             String discountStr = sales.getDiscount();
             ArrayList<String> list = sales.getList();
-            if(!isValidDiscount(discountStr) || discountStr.trim().isEmpty())
+            if(!isValidDiscount(discountStr) || discountStr.trim().isEmpty() || Double.parseDouble(discountStr)<0 || Double.parseDouble(discountStr)>100)
             {
                 JOptionPane.showMessageDialog(f.getFrame(),"Invalid Discount","Error",JOptionPane.ERROR_MESSAGE);
             }
@@ -82,6 +88,8 @@ public class GUI_Manager
         return true;
     }
     public static void main(String[] args) {
-        GUI_Manager g = new GUI_Manager();
+        //GUI_Manager g = new GUI_Manager();
+        frame f = new frame();
+        f.setSize(615,149);
     }
 }

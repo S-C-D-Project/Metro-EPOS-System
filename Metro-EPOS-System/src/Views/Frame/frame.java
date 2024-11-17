@@ -37,6 +37,13 @@ public class frame
         frame.getContentPane().setBackground(Color.BLACK);
     }
 
+    public void setSize(int width, int height)
+    {
+        frame.setUndecorated(true);
+        frame.setSize(width,height);
+        frame.setLocationRelativeTo(null);
+    }
+
     public void addPanel(JPanel p)
     {
         frame.add(p);
