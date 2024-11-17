@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class PDFGenerator {
 
-    public static void generateBillPDF(Bill bill) throws Exception {
+    public static File generateBillPDF(Bill bill) throws Exception {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdf = new PdfDocument(writer);
@@ -82,8 +82,8 @@ public class PDFGenerator {
         }
 
         // Cleanup temporary files
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
-        Printer.deleteTempFiles(tempDir);
+       return new File(System.getProperty("java.io.tmpdir"));
+
     }
 
     public static File[] convertPDFToImages(ByteArrayOutputStream outputStream) throws IOException {
