@@ -25,12 +25,10 @@ public class ProductModel {
 
                 double originalPrice = resultSet.getDouble("originalPrice");
                 int salePrice = resultSet.getInt("salePrice");
-                double pricePerUnit = resultSet.getDouble("pricePerUnit");
                 int stockQuantity = resultSet.getInt("stockQuantity");
                 double salesTax=resultSet.getDouble("salesTax");
 
-                // Create Product object and pass all necessary parameters
-                product = new Product(productId,branchId, productName, category, productSize, originalPrice, salePrice, pricePerUnit, stockQuantity, salesTax);
+                product = new Product(productId,branchId, productName, category, productSize, originalPrice, salePrice, stockQuantity, salesTax);
             }
         } catch (SQLException e) {
             e.printStackTrace();

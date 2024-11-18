@@ -32,6 +32,7 @@ private Product comfirmProduct;
     public  double getProductPrice() {
     return comfirmProduct.getSalePrice();
     }
+
     public  String getProductName() {
         return comfirmProduct.getProductName();
     }

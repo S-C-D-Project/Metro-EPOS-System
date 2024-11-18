@@ -14,12 +14,11 @@ public class Product {
     private String productSize;
     private double originalPrice;
     private int salePrice;
-    private double pricePerUnit;
     private int stockQuantity;
     private double salesTax;
     private String manufacturer;
 
-    public Product(int productId, int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax) {
+    public Product(int productId, int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, int stockQuantity, double salesTax) {
         this.productId = productId;
         this.branchId = branchId;
         this.productName = productName;
@@ -27,19 +26,17 @@ public class Product {
         this.productSize = productSize;
         this.originalPrice = originalPrice;
         this.salePrice = salePrice;
-        this.pricePerUnit = pricePerUnit;
         this.stockQuantity = stockQuantity;
         this.salesTax = salesTax;
     }
 
-    public Product(int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, double pricePerUnit, int stockQuantity, double salesTax, String manufacturer) {
+    public Product(int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, int stockQuantity, double salesTax, String manufacturer) {
         this.branchId = branchId;
         this.productName = productName;
         this.category = category;
         this.productSize = productSize;
         this.originalPrice = originalPrice;
         this.salePrice = salePrice;
-        this.pricePerUnit = pricePerUnit;
         this.stockQuantity = stockQuantity;
         this.salesTax = salesTax;
         this.manufacturer = manufacturer;
@@ -99,14 +96,6 @@ public class Product {
 
     public void setSalePrice(int salePrice) {
         this.salePrice = salePrice;
-    }
-
-    public double getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public void setPricePerUnit(double pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
     }
 
     public int getStockQuantity() {
