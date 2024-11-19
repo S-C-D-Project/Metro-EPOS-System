@@ -25,6 +25,22 @@ public class Product {
         this.salesTax = salesTax;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", branchId=" + branchId +
+                ", productName='" + productName + '\'' +
+                ", category='" + category + '\'' +
+                ", productSize='" + productSize + '\'' +
+                ", originalPrice=" + originalPrice +
+                ", salePrice=" + salePrice +
+                ", stockQuantity=" + stockQuantity +
+                ", salesTax=" + salesTax +
+                ", manufacturer='" + manufacturer + '\'' +
+                '}';
+    }
+
     public Product(int branchId, String productName, String category, String productSize, double originalPrice, int salePrice, int stockQuantity, double salesTax, String manufacturer) {
         this.branchId = branchId;
         this.productName = productName;

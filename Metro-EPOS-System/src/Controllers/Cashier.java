@@ -17,15 +17,14 @@ private Product comfirmProduct;
     }
 
 
-    public boolean isProductExist(int productId,int branchId) throws SQLException {
+    public boolean isProductExist(int productId,int branchId,int qty) throws SQLException {
         comfirmProduct=DataBaseHandler.getInstance().getProduct(productId, branchId);
-        if(comfirmProduct!=null){
+        if(comfirmProduct!=null&&comfirmProduct.getStockQuantity()>=qty){
             return true;
         }
         return false;
     }
     public double getProductPriceByid(int productId,int branchId) throws SQLException {
-        System.out.println("Id: "+productId+"Price: "+DataBaseHandler.getInstance().getProduct(productId, branchId).getSalePrice());
         return DataBaseHandler.getInstance().getProduct(productId, branchId).getSalePrice();
 
     }
@@ -42,15 +41,16 @@ private Product comfirmProduct;
 
     public File saveBill(ArrayList<String> list, int cashAmount, int additionalAmount, double discount, int branchid, boolean isVendor) throws Exception {
        Bill bill=new Bill();
+
        for(String product:list){
            String data[]=product.split(",");
-           bill.addProduct(Integer.parseInt(data[0]),branchid,isVendor,Integer.parseInt(data[1]));
+           bill.addProduct(Integer.parseInt(data[0]),branchid,isVendor,Integer.parseInt(data[2]));
 
        }
        bill.addAdditionalAmount(additionalAmount,isVendor);
        bill.addDiscount(discount,isVendor);
-       return bill.saveBill(cashAmount);
 
+return  bill.saveBill(cashAmount);
 
     }
     public void deleteTempBill(File file){

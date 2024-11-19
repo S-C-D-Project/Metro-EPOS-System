@@ -32,7 +32,9 @@ public class DataBaseHandler {
             bill.getTotalbill(), bill.getAdditionalCharges(), bill.getSalesTaxAmount(),
             bill.getDiscount(), bill.getProductList());
     }
-
+public static void DecreaseProductQuantity(int pid,int qty){
+ProductModel.DecreaseProductQuantity(pid,qty,connection);
+}
     public int insertProductData(int branchId, String productName, String category,
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
                                  int stockQuantity, String manufacturer) throws SQLException {

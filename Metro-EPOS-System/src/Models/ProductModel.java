@@ -56,5 +56,15 @@ public class ProductModel {
 
         return exists;
     }
+public static void DecreaseProductQuantity(int pid,int qty,Connection connection){
+    String sql = "EXEC DecreaseProductQuantity @ProductID = ?, @QtyToDecrease=?";
 
-}
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setInt(1, pid);
+        statement.setInt(2,qty);
+
+        int rowsAffected = statement.executeUpdate();
+ } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}}

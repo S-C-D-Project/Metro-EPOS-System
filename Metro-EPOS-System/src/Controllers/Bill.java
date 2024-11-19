@@ -104,7 +104,6 @@ public class Bill {
                     (product.getSalePrice() * product.getStockQuantity());
             salesTax += product.getSalesTax();
         }
-
         salesTaxAmount = (int) salesTax;
         totalAmount += additionalCharges - discount;
         if (totalAmount < 0) {
@@ -130,7 +129,6 @@ public class Bill {
         Product newProduct = DataBaseHandler.getProduct(productId, branchId);
 
         if (newProduct != null) {
-            System.out.println(newProduct);
             newProduct.setStockQuantity(quantity);
             productList.add(newProduct);
             calculateBill(isVendor);
@@ -163,6 +161,21 @@ public class Bill {
         this.billid = billid;
     }
 
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "productList=" + productList +
+                ", cashAmount=" + cashAmount +
+                ", returnAmount=" + returnAmount +
+                ", totalbill=" + totalbill +
+                ", additionalCharges=" + additionalCharges +
+                ", salesTaxAmount=" + salesTaxAmount +
+                ", discount=" + discount +
+                ", salesTax=" + salesTax +
+                ", billid=" + billid +
+                '}';
+    }
+
     public File saveBill(int cashAmount) throws Exception {
         this.cashAmount = cashAmount;
         this.returnAmount = cashAmount - totalbill;
@@ -171,7 +184,9 @@ public class Bill {
 
         }
         this.billid = DataBaseHandler.saveBill(this);
-
+for(Product product:productList){
+    DataBaseHandler.DecreaseProductQuantity(product.getProductId(),product.getStockQuantity());
+}
        return  PDFGenerator.generateBillPDF(this);
     }
 }

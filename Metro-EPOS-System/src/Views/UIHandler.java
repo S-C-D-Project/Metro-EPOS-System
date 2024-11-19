@@ -20,9 +20,9 @@ public class UIHandler
     public static void createDataEntryOperator(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
         dataEntryOperator=new DataEntryOperator(name, password,  email,  employeeNumber,  branchCode, salary,  joiningDate,  leavingDate,  isActive,  branch,  firstTime);
     }
-    public static boolean isProductExist(int pID) throws SQLException {
+    public static boolean isProductExist(int pID,int qty) throws SQLException {
 
-        return cashier.isProductExist(pID,cashier.getBranch().getCode());
+        return cashier.isProductExist(pID,cashier.getBranch().getCode(),qty);
     }
 
     public static String getProductPrice(int qty)
@@ -43,7 +43,7 @@ public class UIHandler
     }
 
     public static File showBillImage(ArrayList<String> list, double cashAmount, double additionalAmount, double discount, int branchid, boolean isVendor) throws Exception {
-    return cashier.saveBill(list, (int) cashAmount, (int) additionalAmount,discount,branchid,isVendor);
+        return cashier.saveBill(list, (int) cashAmount, (int) additionalAmount,discount,branchid,isVendor);
     }
     public  static void deleteTempBill(File file){
         cashier.deleteTempBill(file);

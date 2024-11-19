@@ -71,18 +71,14 @@ public class PDFGenerator {
 
         File[] imageFiles = PDFGenerator.convertPDFToImages(outputStream);
 
-        // Open and print the first image
         if (imageFiles.length > 0) {
-            // Open the first image
             Printer.openImage(imageFiles[0]);
 
-            // Print the first image
             BufferedImage image = ImageIO.read(imageFiles[0]);
             Printer.printImage(image);
         }
 
-        // Cleanup temporary files
-       return new File(System.getProperty("java.io.tmpdir"));
+        return new File(System.getProperty("java.io.tmpdir"));
 
     }
 

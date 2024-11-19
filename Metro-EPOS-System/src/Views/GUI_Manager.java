@@ -38,7 +38,7 @@ public class GUI_Manager
             }
             else {
                 try {
-                    if(!UIHandler.isProductExist(Integer.parseInt(pID))){
+                    if(!UIHandler.isProductExist(Integer.parseInt(pID),Integer.parseInt(qty))){
                         JOptionPane.showMessageDialog(f.getFrame(),"Product Not Found","Error",JOptionPane.ERROR_MESSAGE);
                     }
                     else
@@ -118,11 +118,12 @@ public class GUI_Manager
                     File file;
                     JOptionPane.showMessageDialog(f.getFrame(),"Return Amount (Rs): " + returnAmount);
                     try {
-                        file = UIHandler.showBillImage(sales.getPrintableList(),Double.parseDouble(adds.getReceivedAmonunt()),Double.parseDouble(adds.getAddionalCharges()),sales.getDiscountValue(),sales.getBranchID(),true);
+                        file = UIHandler.showBillImage(sales.getPrintableList(),Double.parseDouble(adds.getReceivedAmonunt()),Double.parseDouble(adds.getAddionalCharges()),sales.getDiscountValue(),sales.getBranchID(),false);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                     showBill bill = new showBill(file.getAbsolutePath(),f.getFrame());
+                    UIHandler.deleteTempBill(file);
                     adds.remove();
                     sales.refreshPanel(null,0,f.getFrame());
                 }
