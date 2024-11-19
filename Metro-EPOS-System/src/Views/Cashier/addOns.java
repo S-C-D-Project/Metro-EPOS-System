@@ -13,7 +13,7 @@ public class addOns extends JPanel {
     double total;
     JButton ok_Button = new JButton("OK");
     JButton cancel_Button = new JButton("Cancel");
-    JLabel total_label;
+    JLabel total_value;
 
     public void show(double t, JFrame f1)
     {
@@ -48,8 +48,8 @@ public class addOns extends JPanel {
     private void setHeading(){
         JLabel additionals = new JLabel("Additional Charges:");
         JLabel received = new JLabel("Received Amount:");
-        total_label = new JLabel("Total(Rs): ");
-        JLabel total_value = new JLabel(String.valueOf(total));
+        JLabel total_label = new JLabel("Total(Rs): ");
+        total_value = new JLabel(String.valueOf(total));
 
         additionals.setForeground(new Color(93,93,93));
         received.setForeground(new Color(93,93,93));
@@ -116,7 +116,9 @@ public class addOns extends JPanel {
 
     public void remove()
     {
-        total_label.setText("");
+        total_value.setText("");
+        additions.setText("");
+        receivedAmount.setText("");
         f.dispose();
     }
 
