@@ -1,9 +1,7 @@
 package Views;
 import Controllers.Branch;
-import Controllers.Cashier;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
-import Views.Cashier.showBill;
 import Views.Frame.frame;
 
 import javax.swing.*;
@@ -19,9 +17,8 @@ public class GUI_Manager
 
     public GUI_Manager()
     {
-        adds=new addOns();
         frame f = new frame();
-
+        adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
         sales.refreshPanel(null,0,f.getFrame());
 
@@ -61,8 +58,6 @@ public class GUI_Manager
                                 data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
 
                                     list.set(i,data[0]+","+data[1]+","+data[2]+","+data[3]);
-
-
                                 }
                                 i++;
 
@@ -80,7 +75,7 @@ public class GUI_Manager
             JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
         });
         sales.getPrintButton().addActionListener(e->{
-            adds.show(sales.getTotal(),f.getFrame());
+            adds.show(sales.getTotal());
         });
         sales.getFixButton().addActionListener(e->{
             String discountStr = sales.getDiscount();
@@ -115,17 +110,18 @@ public class GUI_Manager
                 else
                 {
                     double returnAmount = Double.parseDouble(adds.getReceivedAmonunt()) - total;
+                    double roundedValue = Math.round(returnAmount * 100.0)/100.0;
                     File file;
-                    JOptionPane.showMessageDialog(f.getFrame(),"Return Amount (Rs): " + returnAmount);
+                    JOptionPane.showMessageDialog(f.getFrame(),"Return Amount (Rs): " + roundedValue);
                     try {
                         file = UIHandler.showBillImage(sales.getPrintableList(),Double.parseDouble(adds.getReceivedAmonunt()),Double.parseDouble(adds.getAddionalCharges()),sales.getDiscountValue(),sales.getBranchID(),false);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
-                    showBill bill = new showBill(file.getAbsolutePath(),f.getFrame());
-                    UIHandler.deleteTempBill(file);
                     adds.remove();
+                    sales.resetFields();
                     sales.refreshPanel(null,0,f.getFrame());
+                    UIHandler.deleteTempBill(file);
                 }
             }
         });

@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/showBill.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
@@ -43,6 +42,7 @@
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/addOns.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/addOns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/showBill.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/RoundEdges.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/RoundEdges.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />
@@ -77,16 +77,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.GUI_Manager.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.GUI_Manager.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\Metro-EPOS-System\Metro-EPOS-System\Images" />

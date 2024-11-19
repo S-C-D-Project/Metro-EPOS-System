@@ -15,8 +15,8 @@ public class addOns extends JPanel {
     JButton cancel_Button = new JButton("Cancel");
     JLabel total_value;
 
-    public void show(double t, JFrame f1)
-    {
+    public addOns(JFrame f1){
+        total =0;
         f = new JFrame();
         f.setUndecorated(true);
         JPanel contentPane = (JPanel) f.getContentPane();
@@ -26,17 +26,13 @@ public class addOns extends JPanel {
         f.setResizable(false);
         f.setLocationRelativeTo(f1);
 
-
         setLayout(null);
         setBackground(Color.white);
-        total = t;
         setHeading();
         setFields();
         setButtons();
 
-        f.add(this.getPanel());
-        f.setVisible(true);
-
+        f.add(this);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -44,32 +40,41 @@ public class addOns extends JPanel {
             }
         });
     }
+    public void show(double t)
+    {
+        total = t;
+        setValueLabel();
+        f.setVisible(true);
+    }
+
+    private void setValueLabel(){
+        total_value = new JLabel(String.valueOf(total));
+        total_value.setForeground(new Color(9,95,197));
+        total_value.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,20));
+        total_value.setBounds(464,33,148,24);
+        add(total_value);
+    }
 
     private void setHeading(){
         JLabel additionals = new JLabel("Additional Charges:");
         JLabel received = new JLabel("Received Amount:");
         JLabel total_label = new JLabel("Total(Rs): ");
-        total_value = new JLabel(String.valueOf(total));
 
         additionals.setForeground(new Color(93,93,93));
         received.setForeground(new Color(93,93,93));
         total_label.setForeground(new Color(93,93,93));
-        total_value.setForeground(new Color(9,95,197));
 
         additionals.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
         received.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
         total_label.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,20));
-        total_value.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,20));
 
         additionals.setBounds(17,35,175,22);
         received.setBounds(17,83,175,22);
         total_label.setBounds(464,9,99,24);
-        total_value.setBounds(464,33,148,24);
 
         add(additionals);
         add(received);
         add(total_label);
-        add(total_value);
     }
 
     private void setFields(){
@@ -116,10 +121,10 @@ public class addOns extends JPanel {
 
     public void remove()
     {
-        total_value.setText("");
         additions.setText("");
         receivedAmount.setText("");
-        f.dispose();
+        remove(total_value);
+        f.setVisible(false);
     }
 
     public double getTotal(){return total;}

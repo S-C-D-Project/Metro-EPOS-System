@@ -27,7 +27,6 @@ public class UIHandler
 
     public static String getProductPrice(int qty)
     {
-
         return String.valueOf(qty * cashier.getProductPrice());
     }
 

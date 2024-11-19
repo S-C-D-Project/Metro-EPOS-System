@@ -316,21 +316,18 @@ public class SalesData extends Theme {
                             }
                             else
                             {
-                                int originalQuantity = 0;
+                                double priceForQty = 0;
                                 try {
-                                    originalQuantity = (int) (Double.parseDouble(price.getText())/ UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]),getBranchID(),Integer.parseInt(data[1])));
+                                    priceForQty = UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]),getBranchID(),Integer.parseInt(qty.getText()));
                                 } catch (SQLException ex) {
                                     throw new RuntimeException(ex);
                                 }
-                                double calc = Double.parseDouble(qty.getText()) * (Double.parseDouble(price.getText())/Double.parseDouble(String.valueOf(originalQuantity)));
-                                String originalPrice = price.getText();
-                                price.setText(String.valueOf(calc));
 
                                 for(int j=0; j<list.size(); j++)
                                 {
                                     String[] search = list.get(j).split(",");
-                                    if(search[0].equals(product.getText()) && search[1].equals(String.valueOf(originalQuantity)) && search[2].equals(originalPrice)){
-                                        list.set(j,product.getText()+","+qty.getText()+","+price.getText()+","+search[3]);
+                                    if(search[0].equals(product.getText())){
+                                        list.set(j,product.getText()+","+qty.getText()+","+priceForQty+","+search[3]);
                                         break;
                                     }
                                 }
@@ -422,6 +419,12 @@ public class SalesData extends Theme {
         super.setInfoField();
         revalidate();
         repaint();
+    }
+
+    public void resetFields(){
+        discountBox.setText("");
+        productID.setText("");
+        quantity.setText("");
     }
 
     public String getProductID(){return productID.getText();}
