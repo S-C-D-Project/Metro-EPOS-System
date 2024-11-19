@@ -3,9 +3,11 @@ import Controllers.Branch;
 import Controllers.Cashier;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
+import Views.Cashier.showBill;
 import Views.Frame.frame;
 
 import javax.swing.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -96,15 +98,34 @@ public class GUI_Manager
             adds.remove();
         });
         adds.getOk_Button().addActionListener(e->{
-            if(!isValidDiscount(adds.getAddionalCharges()) || !isValidDiscount(adds.getReceivedAmonunt()) || Double.parseDouble(adds.getAddionalCharges())<0 || Double.parseDouble(adds.getReceivedAmonunt())<0 || Double.parseDouble(adds.getReceivedAmonunt())<adds.getTotal()){
-                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Entries","Error",JOptionPane.ERROR_MESSAGE);
+            if(adds.getReceivedAmonunt().trim().isEmpty() || adds.getAddionalCharges().trim().isEmpty() || sales.getPrintableList().isEmpty() || !isValidDiscount(adds.getAddionalCharges()) || !isValidDiscount(adds.getReceivedAmonunt()) || Double.parseDouble(adds.getAddionalCharges())<0 || Double.parseDouble(adds.getReceivedAmonunt())<0){
+                if(sales.getPrintableList().isEmpty()){
+                    JOptionPane.showMessageDialog(f.getFrame(),"No Item Added to List","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(f.getFrame(),"Invalid Entries","Error",JOptionPane.ERROR_MESSAGE);
+                }
             }
             else{
-                System.out.println("Discount: "+sales.getDiscountValue());
-                System.out.println("Total: " + sales.getTotal());
-                System.out.println("BranchID: " + sales.getBranchID());
-                System.out.println("Printable List: " + sales.getPrintableList());
-                sales.refreshPanel(null,0,f.getFrame());
+                double total = Double.parseDouble(adds.getAddionalCharges()) + adds.getTotal();
+                if(Double.parseDouble(adds.getReceivedAmonunt())<total){
+                    JOptionPane.showMessageDialog(f.getFrame(),"Received Amount is Less than Total","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    double returnAmount = Double.parseDouble(adds.getReceivedAmonunt()) - total;
+                    File file;
+                    JOptionPane.showMessageDialog(f.getFrame(),"Return Amount (Rs): " + returnAmount);
+                    try {
+                        file = UIHandler.showBillImage(sales.getPrintableList(),Double.parseDouble(adds.getReceivedAmonunt()),Double.parseDouble(adds.getAddionalCharges()),sales.getDiscountValue(),sales.getBranchID(),true);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    showBill bill = new showBill(file.getAbsolutePath(),f.getFrame());
+                    adds.remove();
+                    sales.refreshPanel(null,0,f.getFrame());
+                }
             }
         });
 

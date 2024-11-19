@@ -42,8 +42,8 @@ public class UIHandler
         return cashier.getProductName();
     }
 
-    public static File showBillImage(ArrayList<String> list, int cashAmount, int additionalAmount, double discount, int branchid, boolean isVendor) throws Exception {
-    return cashier.saveBill(list,cashAmount,additionalAmount,discount,branchid,isVendor);
+    public static File showBillImage(ArrayList<String> list, double cashAmount, double additionalAmount, double discount, int branchid, boolean isVendor) throws Exception {
+    return cashier.saveBill(list, (int) cashAmount, (int) additionalAmount,discount,branchid,isVendor);
     }
     public  static void deleteTempBill(File file){
         cashier.deleteTempBill(file);
