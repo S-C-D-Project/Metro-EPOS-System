@@ -25,7 +25,8 @@ private Product comfirmProduct;
         return false;
     }
     public double getProductPriceByid(int productId,int branchId) throws SQLException {
-       return DataBaseHandler.getInstance().getProduct(productId, branchId).getSalePrice();
+        System.out.println("Id: "+productId+"Price: "+DataBaseHandler.getInstance().getProduct(productId, branchId).getSalePrice());
+        return DataBaseHandler.getInstance().getProduct(productId, branchId).getSalePrice();
 
     }
 

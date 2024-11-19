@@ -318,7 +318,7 @@ public class SalesData extends Theme {
                             {
                                 int originalQuantity = 0;
                                 try {
-                                    originalQuantity = (int) (Double.parseDouble(price.getText())/ UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]),getBranchID()));
+                                    originalQuantity = (int) (Double.parseDouble(price.getText())/ UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]),getBranchID(),Integer.parseInt(data[1])));
                                 } catch (SQLException ex) {
                                     throw new RuntimeException(ex);
                                 }

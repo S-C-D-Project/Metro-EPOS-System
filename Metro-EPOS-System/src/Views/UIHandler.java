@@ -31,8 +31,9 @@ public class UIHandler
         return String.valueOf(qty * cashier.getProductPrice());
     }
 
-    public static double getProductPriceUsingName(int id,int branchid) throws SQLException {
-        return cashier.getProductPriceByid(id,branchid);
+    public static double getProductPriceUsingName(int id,int branchid,int qty) throws SQLException {
+
+        return cashier.getProductPriceByid(id,branchid)*qty;
     }
 
     public static String getProductName(int pID)

@@ -56,8 +56,10 @@ public class GUI_Manager
                                 String data[]=product.split(",");
                                 if(data[3].equals(pID)){
                                     data[1]=String.valueOf(Integer.parseInt(data[1])+Integer.parseInt(qty));
-                                data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[1]), sales.getBranchID()));
+                                data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
+
                                     list.set(i,data[0]+","+data[1]+","+data[2]+","+data[3]);
+
 
                                 }
                                 i++;
