@@ -48,4 +48,9 @@ public class UIHandler
         cashier.deleteTempBill(file);
 
     }
+
+    public static void updateVendorInfo(int id,String str){
+        // I will provide with the vendor id and a string str where data is stored comma separated
+        // like (Name,City,Address,Products,Status) and we update vendor data in DB using vendor ID
+    }
 }

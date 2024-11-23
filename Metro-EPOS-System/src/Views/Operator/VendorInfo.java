@@ -1,4 +1,5 @@
 package Views.Operator;
+import Controllers.Product;
 import Views.Decorate.RoundEdges;
 import Views.Decorate.Theme;
 import Views.UIHandler;
@@ -6,11 +7,9 @@ import Views.UIHandler;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class VendorInfo extends Theme {
         super.setLineSizeCustom(315,288,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
+        super.setProfileLogo("Images/DataOperatorProfile.png");
 
         setNames(name,branchID);
         setHeading();
@@ -82,7 +81,7 @@ public class VendorInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Metro-EPOS-System/Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon("Images/VendorInfoIcon.png").getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);
@@ -213,10 +212,10 @@ public class VendorInfo extends Theme {
         totalVendors.setBounds(316,216,105,18);
         vendorID.setBounds(351,257,73,24);
         name.setBounds(458,257,48,24);
-        city.setBounds(543,257,63,24);
+        city.setBounds(558,257,63,24);
         vendorInfo.setBounds(110,283,86,10);
         Address.setBounds(658,257,77,24);
-        Products.setBounds(763,257,84,24);
+        Products.setBounds(773,257,84,24);
         status.setBounds(861,257,77,24);
         vendorsCount.setBounds(424,215,83,21);
 
@@ -250,7 +249,7 @@ public class VendorInfo extends Theme {
                 label.setOpaque(true);
                 label.setPreferredSize(new Dimension(996, 40));
                 label.setMaximumSize(new Dimension(996, 40));
-                label.setBorder(new MatteBorder(0, 0, 1, 0, Color.BLACK));
+                label.setBorder(new MatteBorder(0, 0, 1, 0, new Color(171,171,171)));
 
                 JLabel edit = new JLabel();
                 edit.setText("<html><u>Edit</u></html>");
@@ -274,7 +273,7 @@ public class VendorInfo extends Theme {
                 vendorID.setText(data[0]);
                 vendorID.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 vendorID.setForeground(new Color(93, 93, 93));
-                vendorID.setBounds(5, 13, 78, 14);
+                vendorID.setBounds(30, 13, 78, 14);
                 vendorID.setHorizontalAlignment(JLabel.CENTER);
                 vendorID.setBorder(BorderFactory.createEmptyBorder());
                 vendorID.setEditable(false);
@@ -284,7 +283,7 @@ public class VendorInfo extends Theme {
                 name.setText(data[1]);
                 name.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 name.setForeground(new Color(93, 93, 93));
-                name.setBounds(129, 13, 75, 14);
+                name.setBounds(128, 12, 75, 18);
                 name.setHorizontalAlignment(JLabel.CENTER);
                 name.setBorder(BorderFactory.createEmptyBorder());
                 name.setEditable(false);
@@ -294,7 +293,7 @@ public class VendorInfo extends Theme {
                 city.setText(data[2]);
                 city.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 city.setForeground(new Color(93, 93, 93));
-                city.setBounds(204, 13, 112, 14);
+                city.setBounds(203, 13, 112, 14);
                 city.setHorizontalAlignment(JLabel.CENTER);
                 city.setBorder(BorderFactory.createEmptyBorder());
                 city.setEditable(false);
@@ -304,7 +303,7 @@ public class VendorInfo extends Theme {
                 address.setText(data[3]);
                 address.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 address.setForeground(new Color(93, 93, 93));
-                address.setBounds(204, 13, 112, 14);
+                address.setBounds(315, 13, 132, 14);
                 address.setHorizontalAlignment(JLabel.CENTER);
                 address.setBorder(BorderFactory.createEmptyBorder());
                 address.setEditable(false);
@@ -314,7 +313,7 @@ public class VendorInfo extends Theme {
                 products.setText(data[4]);
                 products.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 products.setForeground(new Color(93, 93, 93));
-                products.setBounds(204, 13, 112, 14);
+                products.setBounds(454, 13, 70, 14);
                 products.setHorizontalAlignment(JLabel.CENTER);
                 products.setBorder(BorderFactory.createEmptyBorder());
                 products.setEditable(false);
@@ -324,14 +323,13 @@ public class VendorInfo extends Theme {
                 String[] array = {"Active","Inactive"};
 
                 JComboBox<String> status = new JComboBox<>(array);
+                status.setEnabled(false);
                 status.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
-                status.setForeground(new Color(93, 93, 93));
-                status.setBounds(204, 13, 112, 14);
+                status.setBounds(547, 13, 70, 16);
                 status.setBorder(BorderFactory.createEmptyBorder());
-                status.setEditable(false);
                 status.setSelectedItem(data[5]);
                 status.setFocusable(false);
-
+                status.setForeground(new Color(93, 93, 93));
 
                 edit.addMouseListener(new MouseAdapter() {
                     @Override
@@ -346,11 +344,12 @@ public class VendorInfo extends Theme {
                             address.setFocusable(true);
                             address.setEditable(true);
                             status.setFocusable(true);
-                            status.setEditable(true);
+                            status.setEnabled(true);
                         }
                         else
                         {
-                            //perform edit operations
+                            String improved = name.getText()+","+city.getText()+","+address.getText()+","+ products.getText()+","+status.getSelectedItem();
+                            UIHandler.updateVendorInfo(Integer.parseInt(vendorID.getText()),improved);
                             name.setFocusable(false);
                             name.setEditable(false);
                             city.setFocusable(false);
@@ -358,7 +357,7 @@ public class VendorInfo extends Theme {
                             address.setFocusable(false);
                             address.setEditable(false);
                             status.setFocusable(false);
-                            status.setEditable(false);
+                            status.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
                         }
                     }
@@ -399,7 +398,6 @@ public class VendorInfo extends Theme {
                     city.setBackground(super.getInfoFieldColor());
                     address.setBackground(super.getInfoFieldColor());
                     products.setBackground(super.getInfoFieldColor());
-                    status.setBackground(super.getInfoFieldColor());
                 }
                 else
                 {
@@ -409,7 +407,6 @@ public class VendorInfo extends Theme {
                     city.setBackground(new Color(217, 217, 217));
                     address.setBackground(new Color(217, 217, 217));
                     products.setBackground(new Color(217, 217, 217));
-                    status.setBackground(new Color(217, 217, 217));
                 }
 
                 label.add(vendorID);
