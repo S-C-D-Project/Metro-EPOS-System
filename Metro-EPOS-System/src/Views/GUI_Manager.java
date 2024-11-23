@@ -3,6 +3,7 @@ import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
 import Views.Frame.frame;
+import Views.Operator.VendorInfo;
 
 import javax.swing.*;
 import java.io.File;
@@ -14,12 +15,25 @@ public class GUI_Manager
     JPanel oldPanel;
     private SalesData sales;
     private addOns adds;
+    private VendorInfo vendor;
 
     public GUI_Manager()
     {
         frame f = new frame();
         adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
+        vendor = new VendorInfo("Asfandyar","1");
+
+        ArrayList<String> helo = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            if(i==3){
+                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Inactive");
+            }
+            else{
+                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Active");
+            }
+        }
+        vendor.refreshPanel(helo,f.getFrame());
         sales.refreshPanel(null,0,f.getFrame());
 
         //-------------------CASHIER PANEL LOGIC----------------------------
@@ -126,7 +140,7 @@ public class GUI_Manager
             }
         });
 
-        f.addPanel(sales.getPanel());
+        f.addPanel(vendor.getPanel());
         oldPanel = sales.getPanel();
         f.show();
     }

@@ -5,51 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Bill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Branch.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Branch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/BranchManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/BranchManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Cashier.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Cashier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/DataEntryOperator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/DataEntryOperator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Employee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/PDFGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/PDFGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Printer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Purchase.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Purchase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/SalesReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/SalesReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/SuperAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/SuperAdmin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Vendor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Controllers/Vendor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/BillModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/BillModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/DataBaseConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/DataBaseConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/DataBaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/DataBaseHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/ProductModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/ProductModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/PurchaseModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/PurchaseModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/TaxModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/TaxModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Models/VendorModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/addOns.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/addOns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/showBill.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/RoundEdges.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/RoundEdges.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/main/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,16 +35,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.GUI_Manager.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.GUI_Manager.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Asfandyar",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\Metro-EPOS-System\Metro-EPOS-System\Images" />
