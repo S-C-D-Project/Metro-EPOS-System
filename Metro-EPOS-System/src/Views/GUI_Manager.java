@@ -30,11 +30,19 @@ public class GUI_Manager
     private CashierLogIn cashierLogIn;
     private DataOperatorLogIn dataOperatorLogIn;
 
+    public GUI_Manager() {
+        f = new frame();
+        f.show();
+    }
+
     public void LogIn() throws IOException {
         adminLogIn = new AdminLogIn();
         managerLogIn = new ManagerLogIn();
         cashierLogIn = new CashierLogIn();
         dataOperatorLogIn = new DataOperatorLogIn();
+
+        f.addPanel(adminLogIn.getPanel());
+        oldPanel = adminLogIn.getPanel();
     }
 
     public void AdminPanels(String name){
@@ -45,31 +53,10 @@ public class GUI_Manager
 
     }
 
-    public void CashierPanels(String name, int branchID){
-
-    }
-
-    public void DataOpeatorPanels(String name , int ){
-
-    }
-
-    public GUI_Manager() {
-        f = new frame();
+    public void CashierPanels(String name, String branchID)
+    {
         adds=new addOns(f.getFrame());
-        sales = new SalesData("Asfandyar","1");
-        vendor = new VendorInfo("Asfandyar","1");
-        operatorExpandedInfo = new ExpandedInfo("Asfandyar","1");
-
-        ArrayList<String> helo = new ArrayList<>();
-        for(int i=0; i<5; i++){
-            if(i==3){
-                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Inactive");
-            }
-            else{
-                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Active");
-            }
-        }
-        operatorExpandedInfo.refreshPanel(helo,f.getFrame(),1,false);
+        sales = new SalesData(name,branchID);
 
         //-------------------CASHIER PANEL LOGIC----------------------------
         sales.getEnterButton().addActionListener(e->{
@@ -104,7 +91,7 @@ public class GUI_Manager
                                 String data[]=product.split(",");
                                 if(data[3].equals(pID)){
                                     data[1]=String.valueOf(Integer.parseInt(data[1])+Integer.parseInt(qty));
-                                data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
+                                    data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
 
                                     list.set(i,data[0]+","+data[1]+","+data[2]+","+data[3]);
                                 }
@@ -114,7 +101,7 @@ public class GUI_Manager
                         }
                         sales.refreshPanel(list,discount,f.getFrame());
 
-                        }
+                    }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -137,6 +124,7 @@ public class GUI_Manager
                 sales.refreshPanel(list, Double.parseDouble(discountStr),f.getFrame());
             }
         });
+
         //--------------------------------ADDITIONAL PANEL LOGIC------------------//
         adds.getCancel_Button().addActionListener(e->{
             adds.remove();
@@ -174,6 +162,22 @@ public class GUI_Manager
                 }
             }
         });
+    }
+
+    public void DataOpeatorPanels(String name , int branchID)
+    {
+        vendor = new VendorInfo("Asfandyar","1");
+        operatorExpandedInfo = new ExpandedInfo("Asfandyar","1");
+        ArrayList<String> helo = new ArrayList<>();
+        for(int i=0; i<5; i++){
+            if(i==3){
+                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Inactive");
+            }
+            else{
+                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Active");
+            }
+        }
+        operatorExpandedInfo.refreshPanel(helo,f.getFrame(),1,false);
 
         //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
         operatorExpandedInfo.getLogoutButton().addActionListener(e->{
@@ -188,10 +192,6 @@ public class GUI_Manager
             int id = operatorExpandedInfo.getVendorID();
             operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
         });
-
-        f.addPanel(dataOperatorLogIn.getPanel());
-        oldPanel = operatorExpandedInfo.getPanel();
-        f.show();
     }
 
     public static boolean checkProductDuplication(String id, ArrayList<String> list) {
@@ -228,5 +228,6 @@ public class GUI_Manager
                 "EMP123", "BR001", 50000, "01/01/2020",
                 "N/A", true, branch, true);
         GUI_Manager g = new GUI_Manager();
+        g.LogIn();
     }
 }
