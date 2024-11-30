@@ -5,6 +5,7 @@ import Views.Cashier.addOns;
 import Views.Decorate.LogInTheme;
 import Views.Frame.frame;
 import Views.LogIn.AdminLogIn;
+import Views.LogIn.CashierLogIn;
 import Views.LogIn.ManagerLogIn;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
@@ -24,6 +25,7 @@ public class GUI_Manager
     private ExpandedInfo operatorExpandedInfo;
     private AdminLogIn adminLogIn;
     private ManagerLogIn managerLogIn;
+    private CashierLogIn cashierLogIn;
 
     public void LogIn(){
 
@@ -33,6 +35,7 @@ public class GUI_Manager
         frame f = new frame();
         adminLogIn = new AdminLogIn();
         managerLogIn = new ManagerLogIn();
+        cashierLogIn = new CashierLogIn();
         adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
         vendor = new VendorInfo("Asfandyar","1");
@@ -167,7 +170,7 @@ public class GUI_Manager
             operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
         });
 
-        f.addPanel(managerLogIn.getPanel());
+        f.addPanel(cashierLogIn.getPanel());
         oldPanel = operatorExpandedInfo.getPanel();
         f.show();
     }
@@ -178,7 +181,6 @@ public class GUI_Manager
             if(data[3].equals(id)){
                 return false;
             }
-
         }
         return true;
     }
