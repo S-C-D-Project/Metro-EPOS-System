@@ -1,17 +1,16 @@
 package Views.Operator;
-import Controllers.Product;
-import Views.Decorate.RoundEdges;
 import Views.Decorate.Theme;
 import Views.UIHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.sql.SQLException;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class VendorInfo extends Theme {
@@ -24,16 +23,20 @@ public class VendorInfo extends Theme {
     JTextField typeName;
     JTextField typeAddress;
     JTextField enterCityName;
+    JTextField searchText;
 
     private JButton logoutButton;
     private JButton addButton;
+    private JButton searchButton;
 
     private Image vendorLogo;
     private ArrayList<String> list;
     private int branchNumber;
     private JLabel vendorsCount;
 
-    public VendorInfo(String name, String branchID)
+    private ExpandedInfo expandedInfo;
+
+    public VendorInfo()
     {
         super.setLineSize5(315,120);
         super.setLineSize5(315,168);
@@ -41,13 +44,13 @@ public class VendorInfo extends Theme {
         super.setLineSizeCustom(315,288,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Images/DataOperatorProfile.png");
+        super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
 
-        setNames(name,branchID);
         setHeading();
         setLogo();
         setFields();
         setButtons();
+        setSearchBar();
 
         super.setRectangle(48,272);
 
@@ -57,6 +60,10 @@ public class VendorInfo extends Theme {
                 requestFocusInWindow();
             }
         });
+    }
+
+    public void setNameBranch(String name, String brID){
+        setNames(name,brID);
     }
 
     private void setNames(String name,String ID)
@@ -81,7 +88,7 @@ public class VendorInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon("Metro-EPOS-System/Images/VendorInfoIcon.png").getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);
@@ -155,6 +162,56 @@ public class VendorInfo extends Theme {
         add(typeName);
         add(enterCityName);
         add(typeAddress);
+    }
+
+    private void setSearchBar(){
+        try {
+            BufferedImage logo = ImageIO.read(new File("Metro-EPOS-System/Images/searchlogo.png"));
+            int buttonWidth = 15;
+            int buttonHeight = 15;
+            Image scaledImg = logo.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+            searchButton = new JButton(new ImageIcon(scaledImg));
+            searchButton.setBorderPainted(false);
+            searchButton.setFocusPainted(false);
+            searchButton.setContentAreaFilled(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        searchButton.setBounds(953,197,16,16);
+        add(searchButton);
+
+        JLabel field = new JLabel();
+        field.setBackground(super.getInfoFieldColor());
+        field.setBounds(596,188,387,33);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(188, 188, 188), 2),
+                BorderFactory.createEmptyBorder(0, 0, 0, 5)
+        ));
+        field.setHorizontalAlignment(JLabel.RIGHT);
+        field.setOpaque(true);
+        add(field);
+
+        searchText = new JTextField("Search");
+        searchText.setBorder(null);
+        searchText.setBackground(super.getInfoFieldColor());
+        searchText.setForeground(new Color(173,173,173));
+        searchText.setBounds(623,190,328,29);
+        searchText.setFont(new Font("Yu Gothic UI SemiBold", Font.PLAIN, 15));
+        searchText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchText.getText().equals("Search")) {
+                    searchText.setText("");
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchText.getText().isEmpty()) {
+                    searchText.setText("Search");
+                }
+            }
+        });
+        add(searchText);
     }
 
     private void setButtons(){
@@ -233,7 +290,12 @@ public class VendorInfo extends Theme {
     public void setValues(ArrayList<String> l, JFrame f)
     {
         list = l;
-        vendorsCount.setText(String.valueOf(list.size()));
+        if(l!=null){
+            vendorsCount.setText(String.valueOf(list.size()));
+        }
+        else{
+            vendorsCount.setText(String.valueOf(0));
+        }
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
@@ -349,7 +411,7 @@ public class VendorInfo extends Theme {
                         else
                         {
                             String improved = name.getText()+","+city.getText()+","+address.getText()+","+ products.getText()+","+status.getSelectedItem();
-                            UIHandler.updateVendorInfo(Integer.parseInt(vendorID.getText()),improved);
+                            list = UIHandler.updateVendorInfo(Integer.parseInt(vendorID.getText()),improved);
                             name.setFocusable(false);
                             name.setEditable(false);
                             city.setFocusable(false);
@@ -359,6 +421,7 @@ public class VendorInfo extends Theme {
                             status.setFocusable(false);
                             status.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
+                            refreshPanel(list,f);
                         }
                     }
 
@@ -376,7 +439,6 @@ public class VendorInfo extends Theme {
                 expand.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        // open new panel
                         refreshPanel(list,f);
                     }
 
@@ -443,9 +505,11 @@ public class VendorInfo extends Theme {
     public String getVendorName(){return typeName.getText();}
     public String getVendorCity(){return enterCityName.getText();}
     public String getVendorAddress(){return typeAddress.getText();}
+    public String getSearched(){return searchText.getText();}
 
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getAddButton(){return addButton;}
+    public JButton getSearchButton(){return searchButton;}
 
     public ArrayList<String> getList(){return list;}
 

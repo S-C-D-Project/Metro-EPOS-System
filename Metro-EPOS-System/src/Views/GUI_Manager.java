@@ -3,38 +3,141 @@ import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
 import Views.Frame.frame;
+import Views.LogIn.AdminLogIn;
+import Views.LogIn.CashierLogIn;
+import Views.LogIn.DataOperatorLogIn;
+import Views.LogIn.ManagerLogIn;
+import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GUI_Manager
 {
+    frame f;
     JPanel oldPanel;
     private SalesData sales;
     private addOns adds;
     private VendorInfo vendor;
+    private ExpandedInfo operatorExpandedInfo;
+    private AdminLogIn adminLogIn;
+    private ManagerLogIn managerLogIn;
+    private CashierLogIn cashierLogIn;
+    private DataOperatorLogIn dataOperatorLogIn;
 
-    public GUI_Manager()
-    {
-        frame f = new frame();
-        adds=new addOns(f.getFrame());
-        sales = new SalesData("Asfandyar","1");
-        vendor = new VendorInfo("Asfandyar","1");
+    public GUI_Manager() {
+        f = new frame();
+        f.show();
 
-        ArrayList<String> helo = new ArrayList<>();
-        for(int i=0; i<5; i++){
-            if(i==3){
-                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Inactive");
+        vendor = new VendorInfo();
+        operatorExpandedInfo = new ExpandedInfo();
+        adminLogIn = new AdminLogIn();
+        managerLogIn = new ManagerLogIn();
+        cashierLogIn = new CashierLogIn();
+        dataOperatorLogIn = new DataOperatorLogIn();
+        adds = new addOns(f.getFrame());
+        sales = new SalesData();
+    }
+
+    public void LogIn() {
+        if(oldPanel!=null){
+            f.replacePanel(oldPanel,adminLogIn.getPanel());
+        }
+        else{
+            f.addPanel(adminLogIn.getPanel());
+        }
+        oldPanel = adminLogIn.getPanel();
+
+        //----------------------------------ADMIN LOGIN PANEL LOGIC------------------------------//
+        adminLogIn.getLogInButton().addActionListener(e->{
+            String id = adminLogIn.getID();
+            String pass = adminLogIn.getPass();
+
+            String repsone = UIHandler.isValidAdmin(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
             else{
-                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Active");
+                // admin panels
             }
-        }
-        vendor.refreshPanel(helo,f.getFrame());
+        });
+        adminLogIn.getManagerButton().addActionListener(this::ActionPerformer);
+        adminLogIn.getCashierButton().addActionListener(this::ActionPerformer);
+        adminLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+
+        //----------------------------------MANAGER LOGIN PANEL LOGIC------------------------------//
+        managerLogIn.getLogInButton().addActionListener(e->{
+            String id = managerLogIn.getID();
+            String pass = managerLogIn.getPass();
+
+            String repsone = UIHandler.isValidManager(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String[] data = repsone.split(",");
+                ManagerPanels(data[0],data[1]);
+            }
+        });
+        managerLogIn.getAdminButton().addActionListener(this::ActionPerformer);
+        managerLogIn.getCashierButton().addActionListener(this::ActionPerformer);
+        managerLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+
+        //----------------------------------CASHIER LOGIN PANEL LOGIC------------------------------//
+        cashierLogIn.getLogInButton().addActionListener(e->{
+            String id = cashierLogIn.getID();
+            String pass = cashierLogIn.getPass();
+
+            String repsone = UIHandler.isValidCashier(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String[] data = repsone.split(",");
+                CashierPanels(data[0],data[1]);
+            }
+        });
+        cashierLogIn.getAdminButton().addActionListener(this::ActionPerformer);
+        cashierLogIn.getManagerButton().addActionListener(this::ActionPerformer);
+        cashierLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+
+        //----------------------------------Data Operator LOGIN PANEL LOGIC------------------------------//
+        dataOperatorLogIn.getLogInButton().addActionListener(e->{
+            String id = dataOperatorLogIn.getID();
+            String pass = dataOperatorLogIn.getPass();
+
+            String repsone = UIHandler.isValidDataOperator(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String[] data = repsone.split(",");
+                DataOpeatorPanels(data[0],data[1]);
+            }
+        });
+        dataOperatorLogIn.getAdminButton().addActionListener(this::ActionPerformer);
+        dataOperatorLogIn.getManagerButton().addActionListener(this::ActionPerformer);
+        dataOperatorLogIn.getCashierButton().addActionListener(this::ActionPerformer);
+    }
+
+    public void AdminPanels(String name){
+
+    }
+
+    public void ManagerPanels(String name, String branchID){
+
+    }
+
+    public void CashierPanels(String name, String branchID)
+    {
+        sales.setNamesBranch(name,branchID);
         sales.refreshPanel(null,0,f.getFrame());
+        f.replacePanel(oldPanel,sales.getPanel());
+        oldPanel = sales.getPanel();
 
         //-------------------CASHIER PANEL LOGIC----------------------------
         sales.getEnterButton().addActionListener(e->{
@@ -66,10 +169,10 @@ public class GUI_Manager
                             int i=0;
                             for(String product:list){
 
-                                String data[]=product.split(",");
+                                String[] data=product.split(",");
                                 if(data[3].equals(pID)){
                                     data[1]=String.valueOf(Integer.parseInt(data[1])+Integer.parseInt(qty));
-                                data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
+                                    data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
 
                                     list.set(i,data[0]+","+data[1]+","+data[2]+","+data[3]);
                                 }
@@ -79,15 +182,13 @@ public class GUI_Manager
                         }
                         sales.refreshPanel(list,discount,f.getFrame());
 
-                        }
+                    }
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        sales.getLogoutButton().addActionListener(e->{
-            JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
-        });
+        sales.getLogoutButton().addActionListener(this::ActionPerformer);
         sales.getPrintButton().addActionListener(e->{
             adds.show(sales.getTotal());
         });
@@ -102,6 +203,7 @@ public class GUI_Manager
                 sales.refreshPanel(list, Double.parseDouble(discountStr),f.getFrame());
             }
         });
+
         //--------------------------------ADDITIONAL PANEL LOGIC------------------//
         adds.getCancel_Button().addActionListener(e->{
             adds.remove();
@@ -139,10 +241,60 @@ public class GUI_Manager
                 }
             }
         });
+    }
 
-        f.addPanel(vendor.getPanel());
-        oldPanel = sales.getPanel();
-        f.show();
+    public void DataOpeatorPanels(String name , String branchID)
+    {
+        vendor.setNameBranch(name,branchID);
+        operatorExpandedInfo.setNameBranch(name,branchID);
+
+        ArrayList<String> vendorsList = UIHandler.getVendorsList(Integer.parseInt(branchID));
+        vendor.refreshPanel(vendorsList,f.getFrame());
+
+        f.replacePanel(oldPanel,vendor.getPanel());
+        oldPanel = vendor.getPanel();
+
+        //--------------------------------VENDOR INFO PANEL LOGIC------------------//
+        vendor.getLogoutButton().addActionListener(this::ActionPerformer);
+        vendor.getAddButton().addActionListener(e->{
+            String vName = vendor.getVendorName();
+            String vAddress = vendor.getVendorAddress();
+            String city = vendor.getVendorCity();
+            int bID = vendor.getBranchID();
+
+            ArrayList<String> newList = UIHandler.addVendor(bID,vName,vAddress,city);
+            vendor.refreshPanel(newList,f.getFrame());
+        });
+        vendor.getSearchButton().addActionListener(e->{
+            String search = vendor.getSearched();
+            if(search.trim().equals("Search") || search.trim().isEmpty()){
+                vendor.refreshPanel(UIHandler.getVendorsList(Integer.parseInt(branchID)),f.getFrame());
+            }
+            else
+            {
+                ArrayList<String> newList = new ArrayList<>();
+                ArrayList<String> oldList = vendor.getList();
+                for(int i=0; i<oldList.size(); i++){
+                    String[] data = oldList.get(i).split(",");
+                    if(data[0].equals(search) || data[1].equals(search) || data[2].equals(search) || data[3].equals(search) || data[4].equals(search) || data[5].equals(search)){
+                        newList.add(oldList.get(i));
+                    }
+                }
+                vendor.refreshPanel(newList,f.getFrame());
+            }
+        });
+
+        //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
+        operatorExpandedInfo.getLogoutButton().addActionListener(this::ActionPerformer);
+        operatorExpandedInfo.getBackButton().addActionListener(e->{
+            f.replacePanel(oldPanel,vendor.getPanel());
+            oldPanel = vendor.getPanel();
+        });
+        operatorExpandedInfo.getAddButton().addActionListener(e->{
+            ArrayList<String> list = operatorExpandedInfo.getList();
+            int id = operatorExpandedInfo.getVendorID();
+            operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
+        });
     }
 
     public static boolean checkProductDuplication(String id, ArrayList<String> list) {
@@ -151,7 +303,6 @@ public class GUI_Manager
             if(data[3].equals(id)){
                 return false;
             }
-
         }
         return true;
     }
@@ -174,11 +325,36 @@ public class GUI_Manager
         }
         return true;
     }
+
+    private void ActionPerformer(ActionEvent e) {
+        if(e.getSource()==sales.getLogoutButton() || e.getSource()==vendor.getLogoutButton() || e.getSource() == operatorExpandedInfo.getLogoutButton())
+        {
+            LogIn();
+        }
+        else if(e.getSource()==managerLogIn.getAdminButton() || e.getSource()==cashierLogIn.getAdminButton() || e.getSource()==dataOperatorLogIn.getAdminButton()){
+            f.replacePanel(oldPanel,adminLogIn.getPanel());
+            oldPanel = adminLogIn.getPanel();
+        }
+        else if(e.getSource()==adminLogIn.getManagerButton() || e.getSource()==cashierLogIn.getManagerButton() || e.getSource()==dataOperatorLogIn.getManagerButton()){
+            f.replacePanel(oldPanel,managerLogIn.getPanel());
+            oldPanel = managerLogIn.getPanel();
+        }
+        else if(e.getSource()==adminLogIn.getCashierButton() || e.getSource()==managerLogIn.getCashierButton() || e.getSource()==dataOperatorLogIn.getCashierButton()){
+            f.replacePanel(oldPanel,cashierLogIn.getPanel());
+            oldPanel=cashierLogIn.getPanel();
+        }
+        else if(e.getSource()==adminLogIn.getDataOperatorButton() || e.getSource()==managerLogIn.getDataOperatorButton() || e.getSource()==cashierLogIn.getDataOperatorButton()){
+            f.replacePanel(oldPanel,dataOperatorLogIn.getPanel());
+            oldPanel = dataOperatorLogIn.getPanel();
+        }
+    }
+
     public static void main(String[] args) {
         Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
         UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
                 "EMP123", "BR001", 50000, "01/01/2020",
                 "N/A", true, branch, true);
         GUI_Manager g = new GUI_Manager();
+        g.LogIn();
     }
 }
