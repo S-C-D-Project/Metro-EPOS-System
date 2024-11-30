@@ -2,12 +2,15 @@ package Views.Operator;
 import Views.Decorate.Theme;
 import Views.UIHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class VendorInfo extends Theme {
@@ -20,9 +23,11 @@ public class VendorInfo extends Theme {
     JTextField typeName;
     JTextField typeAddress;
     JTextField enterCityName;
+    JTextField searchText;
 
     private JButton logoutButton;
     private JButton addButton;
+    private JButton searchButton;
 
     private Image vendorLogo;
     private ArrayList<String> list;
@@ -45,6 +50,7 @@ public class VendorInfo extends Theme {
         setLogo();
         setFields();
         setButtons();
+        setSearchBar();
 
         super.setRectangle(48,272);
 
@@ -158,6 +164,56 @@ public class VendorInfo extends Theme {
         add(typeAddress);
     }
 
+    private void setSearchBar(){
+        try {
+            BufferedImage logo = ImageIO.read(new File("Metro-EPOS-System/Images/searchlogo.png"));
+            int buttonWidth = 15;
+            int buttonHeight = 15;
+            Image scaledImg = logo.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+            searchButton = new JButton(new ImageIcon(scaledImg));
+            searchButton.setBorderPainted(false);
+            searchButton.setFocusPainted(false);
+            searchButton.setContentAreaFilled(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        searchButton.setBounds(953,197,16,16);
+        add(searchButton);
+
+        JLabel field = new JLabel();
+        field.setBackground(super.getInfoFieldColor());
+        field.setBounds(596,188,387,33);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                new LineBorder(new Color(188, 188, 188), 2),
+                BorderFactory.createEmptyBorder(0, 0, 0, 5)
+        ));
+        field.setHorizontalAlignment(JLabel.RIGHT);
+        field.setOpaque(true);
+        add(field);
+
+        searchText = new JTextField("Search");
+        searchText.setBorder(null);
+        searchText.setBackground(super.getInfoFieldColor());
+        searchText.setForeground(new Color(173,173,173));
+        searchText.setBounds(623,190,328,29);
+        searchText.setFont(new Font("Yu Gothic UI SemiBold", Font.PLAIN, 15));
+        searchText.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchText.getText().equals("Search")) {
+                    searchText.setText("");
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchText.getText().isEmpty()) {
+                    searchText.setText("Search");
+                }
+            }
+        });
+        add(searchText);
+    }
+
     private void setButtons(){
         logoutButton = new JButton();
         logoutButton.setBounds(44, 684, 84, 19);
@@ -234,7 +290,12 @@ public class VendorInfo extends Theme {
     public void setValues(ArrayList<String> l, JFrame f)
     {
         list = l;
-        vendorsCount.setText(String.valueOf(list.size()));
+        if(l!=null){
+            vendorsCount.setText(String.valueOf(list.size()));
+        }
+        else{
+            vendorsCount.setText(String.valueOf(0));
+        }
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
@@ -444,9 +505,11 @@ public class VendorInfo extends Theme {
     public String getVendorName(){return typeName.getText();}
     public String getVendorCity(){return enterCityName.getText();}
     public String getVendorAddress(){return typeAddress.getText();}
+    public String getSearched(){return searchText.getText();}
 
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getAddButton(){return addButton;}
+    public JButton getSearchButton(){return searchButton;}
 
     public ArrayList<String> getList(){return list;}
 

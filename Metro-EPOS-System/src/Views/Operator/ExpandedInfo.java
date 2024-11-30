@@ -38,7 +38,7 @@ public class ExpandedInfo extends Theme {
         super.setLineSizeCustom(315,252,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
+        super.setProfileLogo("Images/DataOperatorProfile.png");
 
         setHeading();
         setLogo();
@@ -80,7 +80,7 @@ public class ExpandedInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Metro-EPOS-System/Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon("Images/VendorInfoIcon.png").getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);

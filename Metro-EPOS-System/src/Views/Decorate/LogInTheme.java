@@ -96,7 +96,7 @@ public class LogInTheme extends JPanel {
 
     private void setFields() {
         try {
-            BufferedImage logo1 = ImageIO.read(new File("Metro-EPOS-System/Images/profile.png"));
+            BufferedImage logo1 = ImageIO.read(new File("Images/profile.png"));
             int width1 = 30;
             int height1 = 29;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -115,7 +115,7 @@ public class LogInTheme extends JPanel {
         }
 
         try {
-            BufferedImage logo2 = ImageIO.read(new File("Metro-EPOS-System/Images/Lock.png"));
+            BufferedImage logo2 = ImageIO.read(new File("Images/Lock.png"));
             int width2 = 30;
             int height2 = 29;
             Image scaledLogo2 = logo2.getScaledInstance(width2, height2, Image.SCALE_SMOOTH);
@@ -162,7 +162,7 @@ public class LogInTheme extends JPanel {
 
     private void setSideImg() {
         try {
-            BufferedImage logo1 = ImageIO.read(new File("Metro-EPOS-System/Images/Bacground.png"));
+            BufferedImage logo1 = ImageIO.read(new File("Images/Bacground.png"));
             int width1 = 729;
             int height1 = 730;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -178,7 +178,7 @@ public class LogInTheme extends JPanel {
     public void setUnselectedAdminButton()
     {
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/notselectedAdmin.png"));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedAdmin.png"));
             int buttonWidth = 121;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -194,7 +194,7 @@ public class LogInTheme extends JPanel {
     }
     public void setUnselectedManagerButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/notselectedManager.png"));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedManager.png"));
             int buttonWidth = 121;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -210,7 +210,7 @@ public class LogInTheme extends JPanel {
     }
     public void setUnselectedCashierButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/notselectedCashier.png"));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedCashier.png"));
             int buttonWidth = 121;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -226,7 +226,7 @@ public class LogInTheme extends JPanel {
     }
     public void setUnselectedDataOperatorButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/notselectedOperator.png"));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedOperator.png"));
             int buttonWidth = 122;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -243,7 +243,7 @@ public class LogInTheme extends JPanel {
 
     public void setSelectedAdminButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/selectedAdmin.png"));
+            BufferedImage img = ImageIO.read(new File("Images/selectedAdmin.png"));
             int buttonWidth = 121;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -260,7 +260,7 @@ public class LogInTheme extends JPanel {
 
     public void setSelectedManagerButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/selectedManager.png"));
+            BufferedImage img = ImageIO.read(new File("Images/selectedManager.png"));
             int buttonWidth = 121;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -277,7 +277,7 @@ public class LogInTheme extends JPanel {
 
     public void setSelectedCashierButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/selectedCashier.png"));
+            BufferedImage img = ImageIO.read(new File("Images/selectedCashier.png"));
             int buttonWidth = 121;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -294,7 +294,7 @@ public class LogInTheme extends JPanel {
 
     public void setSelectedDataOperatorButton(){
         try {
-            BufferedImage img = ImageIO.read(new File("Metro-EPOS-System/Images/selectedOperator.png"));
+            BufferedImage img = ImageIO.read(new File("Images/selectedOperator.png"));
             int buttonWidth = 122;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -340,7 +340,7 @@ public class LogInTheme extends JPanel {
         panel.add(cpass);
 
         try {
-            BufferedImage logo1 = ImageIO.read(new File("Metro-EPOS-System/Images/Lock.png"));
+            BufferedImage logo1 = ImageIO.read(new File("Images/Lock.png"));
             int width1 = 30;
             int height1 = 29;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -359,7 +359,7 @@ public class LogInTheme extends JPanel {
         }
 
         try {
-            BufferedImage logo2 = ImageIO.read(new File("Metro-EPOS-System/Images/Lock.png"));
+            BufferedImage logo2 = ImageIO.read(new File("Images/Lock.png"));
             int width2 = 30;
             int height2 = 29;
             Image scaledLogo2 = logo2.getScaledInstance(width2, height2, Image.SCALE_SMOOTH);

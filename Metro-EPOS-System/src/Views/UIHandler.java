@@ -120,6 +120,15 @@ public class UIHandler
         list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
         return list;
     }
+    public static ArrayList<String> addVendor(int branchId,String vendorName, String vendorAddress, String vendorCity){
+        // I will provide with the branch id and strings to add in vendors list
+        // then the updated VendorList is returned
+        // below code is just for testing
+        ArrayList<String> list = new ArrayList<>();
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        return list;
+    }
 
     public static ArrayList<String> getVendorProducts(int Vid){
         // I provide vendor ID and I get all its products in comma separate

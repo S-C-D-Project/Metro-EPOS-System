@@ -256,6 +256,33 @@ public class GUI_Manager
 
         //--------------------------------VENDOR INFO PANEL LOGIC------------------//
         vendor.getLogoutButton().addActionListener(this::ActionPerformer);
+        vendor.getAddButton().addActionListener(e->{
+            String vName = vendor.getVendorName();
+            String vAddress = vendor.getVendorAddress();
+            String city = vendor.getVendorCity();
+            int bID = vendor.getBranchID();
+
+            ArrayList<String> newList = UIHandler.addVendor(bID,vName,vAddress,city);
+            vendor.refreshPanel(newList,f.getFrame());
+        });
+        vendor.getSearchButton().addActionListener(e->{
+            String search = vendor.getSearched();
+            if(search.trim().equals("Search") || search.trim().isEmpty()){
+                vendor.refreshPanel(UIHandler.getVendorsList(Integer.parseInt(branchID)),f.getFrame());
+            }
+            else
+            {
+                ArrayList<String> newList = new ArrayList<>();
+                ArrayList<String> oldList = vendor.getList();
+                for(int i=0; i<oldList.size(); i++){
+                    String[] data = oldList.get(i).split(",");
+                    if(data[0].equals(search) || data[1].equals(search) || data[2].equals(search) || data[3].equals(search) || data[4].equals(search) || data[5].equals(search)){
+                        newList.add(oldList.get(i));
+                    }
+                }
+                vendor.refreshPanel(newList,f.getFrame());
+            }
+        });
 
         //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
         operatorExpandedInfo.getLogoutButton().addActionListener(this::ActionPerformer);
