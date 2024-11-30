@@ -34,7 +34,7 @@ public class LogInTheme extends JPanel {
     private JButton notSelectedCashierButton;
     private JButton notSelectedDataOperatorButton;
 
-    public LogInTheme() throws IOException {
+    public LogInTheme() {
         firstHeading = new Color(70,70,70);
         secondHeading = new Color(126,126,126);
         buttonColor = new Color(155,103,56);
@@ -160,15 +160,19 @@ public class LogInTheme extends JPanel {
         add(line);
     }
 
-    private void setSideImg() throws IOException {
-        BufferedImage logo1 = ImageIO.read(new File("Metro-EPOS-System/Images/Bacground.png"));
-        int width1 = 729;
-        int height1 = 730;
-        Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
-        JLabel field1 = new JLabel(new ImageIcon(scaledLogo1));
-        field1.setBackground(backgorundColor);
-        field1.setBounds(0,0,729,730);
-        add(field1);
+    private void setSideImg() {
+        try {
+            BufferedImage logo1 = ImageIO.read(new File("Metro-EPOS-System/Images/Bacground.png"));
+            int width1 = 729;
+            int height1 = 730;
+            Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
+            JLabel field1 = new JLabel(new ImageIcon(scaledLogo1));
+            field1.setBackground(backgorundColor);
+            field1.setBounds(0, 0, 729, 730);
+            add(field1);
+        }catch (IOException e){
+            System.out.println("Error");
+        }
     }
 
     public void setUnselectedAdminButton()
@@ -409,5 +413,10 @@ public class LogInTheme extends JPanel {
         return logInButton;
     }
     public JButton getSaveButton(){return saveButton;}
+
+    public JButton getAdminButton(){return notSelectedAdminButton;}
+    public JButton getManagerButton(){return notSelectedManagerButton;}
+    public JButton getCashierButton(){return notSelectedCashierButton;}
+    public JButton getDataOperatorButton(){return notSelectedDataOperatorButton;}
     public JPanel getPanel(){return this;}
 }

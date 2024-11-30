@@ -49,12 +49,74 @@ public class UIHandler
 
     }
 
+    public static String isValidAdmin(String id, String pass){
+        // string is passed such that we can verify if even the string is valid or not
+        // you can use isNumber function of UIHandler as well for validation
+        // If admin is valid It should return the name of the admin, if not then it should return "not"
+
+        if(true){
+            return "Asfandyar";
+        }
+        else{
+            return "not";
+        }
+    }
+    public static String isValidManager(String id, String pass){
+        // string is passed such that we can verify if even the string is valid or not
+        // you can use isNumber function of UIHandler as well for validation
+        // If manager is valid It should return the name,branchID of the manager comma separated,
+        // if not then it should return "not"
+
+        if(true){
+            return "Asfandyar,1234";
+        }
+        else{
+            return "not";
+        }
+    }
+    public static String isValidCashier(String id, String pass){
+        // string is passed such that we can verify if even the string is valid or not
+        // you can use isNumber function of UIHandler as well for validation
+        // If cashier is valid It should return the name,branchID of the cashier comma separated,
+        // if not then it should return "not"
+
+        if(true){
+            return "Asfandyar,1234";
+        }
+        else{
+            return "not";
+        }
+    }
+    public static String isValidDataOperator(String id, String pass){
+        // string is passed such that we can verify if even the string is valid or not
+        // you can use isNumber function of UIHandler as well for validation
+        // If operator is valid It should return the name,branchID of the operator comma separated,
+        // if not then it should return "not"
+
+        if(true){
+            return "Asfandyar,1234";
+        }
+        else{
+            return "not";
+        }
+    }
+
+    public static ArrayList<String> getVendorsList(int branchID){
+        // I will provide the branchID and I should get all the vendors in comma separated string list
+        ArrayList<String> list = new ArrayList<>();
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        return list;
+    }
     public static ArrayList<String> updateVendorInfo(int id,String str){
         // I will provide with the vendor id and a string str where data is stored comma separated
         // like (Name,City,Address,Products,Status) and we update vendor data in DB using vendor ID
         // then the updated VendorList is returned
         // below code is just for testing
         ArrayList<String> list = new ArrayList<>();
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
         list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
         return list;
     }
@@ -74,7 +136,7 @@ public class UIHandler
         // I will provide the Vendor ID and Product in string comma separated (Catagory,Name,Original Price, Sale Price, Price Per Unit)
         // the new product should be added against the vendor and should return the updated list of this vendor
         ArrayList<String> list = new ArrayList<>();
-        list.add("Food,Milk,300,500,20000");
+        list.add("Vegetable,Potato,300,500,20000");
         return list;
     }
     public static ArrayList<String> updateVendorProductInfo(int vID,String str, String productName){
@@ -82,6 +144,9 @@ public class UIHandler
         // in str we get update data with comma seperated (Catagory,Name,Original Price, Sales Price, Price Per Unit)
         // this function updates the product and return the update list of particular vendor products
         ArrayList<String> list = new ArrayList<>();
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
         list.add("Food,Milk,300,500,20000");
         return list;
     }
@@ -91,6 +156,12 @@ public class UIHandler
         // for deletion, after that I should get the updated list of particular vendor products
 
         ArrayList<String> list = new ArrayList<>();
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
         list.add("Food,Milk,300,500,20000");
         return list;
     }

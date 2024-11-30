@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class DataOperatorLogIn extends LogInTheme
 {
-    public DataOperatorLogIn() throws IOException
+    public DataOperatorLogIn()
     {
         super.setUnselectedAdminButton();
         super.setUnselectedManagerButton();

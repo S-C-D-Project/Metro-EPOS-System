@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ManagerLogIn extends LogInTheme
 {
-    public ManagerLogIn() throws IOException
+    public ManagerLogIn()
     {
         super.setUnselectedAdminButton();
         super.setUnselectedCashierButton();

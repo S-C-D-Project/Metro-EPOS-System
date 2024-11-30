@@ -33,7 +33,7 @@ public class SalesData extends Theme {
     private ArrayList<String> list;
     private int branchNumber;
 
-    public SalesData(String name, String branchID)
+    public SalesData()
     {
         super.setLineSize5(313,120);
         super.setLineSize5(313,138);
@@ -43,8 +43,6 @@ public class SalesData extends Theme {
         super.setText("Cashier");
         super.setLogoutLogo();
         super.setProfileLogo("Images/CashierLogo.png");
-
-        setNames(name,branchID);
         setHeading();
         setLogo();
         setFields();
@@ -58,6 +56,10 @@ public class SalesData extends Theme {
                 requestFocusInWindow();
             }
         });
+    }
+
+    public void setNamesBranch(String name, String branchID){
+        setNames(name,branchID);
     }
 
     private void setNames(String name,String ID)

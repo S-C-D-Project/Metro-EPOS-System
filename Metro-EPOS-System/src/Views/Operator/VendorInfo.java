@@ -31,7 +31,7 @@ public class VendorInfo extends Theme {
 
     private ExpandedInfo expandedInfo;
 
-    public VendorInfo(String name, String branchID)
+    public VendorInfo()
     {
         super.setLineSize5(315,120);
         super.setLineSize5(315,168);
@@ -41,7 +41,6 @@ public class VendorInfo extends Theme {
         super.setLogoutLogo();
         super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
 
-        setNames(name,branchID);
         setHeading();
         setLogo();
         setFields();
@@ -55,6 +54,10 @@ public class VendorInfo extends Theme {
                 requestFocusInWindow();
             }
         });
+    }
+
+    public void setNameBranch(String name, String brID){
+        setNames(name,brID);
     }
 
     private void setNames(String name,String ID)

@@ -30,7 +30,7 @@ public class ExpandedInfo extends Theme {
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
 
-    public ExpandedInfo(String name, String branchID)
+    public ExpandedInfo()
     {
         super.setLineSize5(315,120);
         super.setLineSize5(315,138);
@@ -40,7 +40,6 @@ public class ExpandedInfo extends Theme {
         super.setLogoutLogo();
         super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
 
-        setNames(name,branchID);
         setHeading();
         setLogo();
         setButtons();
@@ -53,6 +52,10 @@ public class ExpandedInfo extends Theme {
                 requestFocusInWindow();
             }
         });
+    }
+
+    public void setNameBranch(String name, String brID){
+        setNames(name,brID);
     }
 
     private void setNames(String name,String ID)

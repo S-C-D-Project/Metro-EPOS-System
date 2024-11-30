@@ -5,7 +5,7 @@ import Views.Decorate.LogInTheme;
 import java.io.IOException;
 
 public class CashierLogIn extends LogInTheme {
-    public CashierLogIn() throws IOException {
+    public CashierLogIn() {
         super.setUnselectedAdminButton();
         super.setUnselectedManagerButton();
         super.setSelectedCashierButton();

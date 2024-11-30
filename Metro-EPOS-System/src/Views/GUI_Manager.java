@@ -2,7 +2,6 @@ package Views;
 import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
-import Views.Decorate.LogInTheme;
 import Views.Frame.frame;
 import Views.LogIn.AdminLogIn;
 import Views.LogIn.CashierLogIn;
@@ -12,8 +11,8 @@ import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -33,30 +32,112 @@ public class GUI_Manager
     public GUI_Manager() {
         f = new frame();
         f.show();
-    }
 
-    public void LogIn() throws IOException {
+        vendor = new VendorInfo();
+        operatorExpandedInfo = new ExpandedInfo();
         adminLogIn = new AdminLogIn();
         managerLogIn = new ManagerLogIn();
         cashierLogIn = new CashierLogIn();
         dataOperatorLogIn = new DataOperatorLogIn();
+        adds = new addOns(f.getFrame());
+        sales = new SalesData();
+    }
 
-        f.addPanel(adminLogIn.getPanel());
+    public void LogIn() {
+        if(oldPanel!=null){
+            f.replacePanel(oldPanel,adminLogIn.getPanel());
+        }
+        else{
+            f.addPanel(adminLogIn.getPanel());
+        }
         oldPanel = adminLogIn.getPanel();
+
+        //----------------------------------ADMIN LOGIN PANEL LOGIC------------------------------//
+        adminLogIn.getLogInButton().addActionListener(e->{
+            String id = adminLogIn.getID();
+            String pass = adminLogIn.getPass();
+
+            String repsone = UIHandler.isValidAdmin(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                // admin panels
+            }
+        });
+        adminLogIn.getManagerButton().addActionListener(this::ActionPerformer);
+        adminLogIn.getCashierButton().addActionListener(this::ActionPerformer);
+        adminLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+
+        //----------------------------------MANAGER LOGIN PANEL LOGIC------------------------------//
+        managerLogIn.getLogInButton().addActionListener(e->{
+            String id = managerLogIn.getID();
+            String pass = managerLogIn.getPass();
+
+            String repsone = UIHandler.isValidManager(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String[] data = repsone.split(",");
+                ManagerPanels(data[0],data[1]);
+            }
+        });
+        managerLogIn.getAdminButton().addActionListener(this::ActionPerformer);
+        managerLogIn.getCashierButton().addActionListener(this::ActionPerformer);
+        managerLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+
+        //----------------------------------CASHIER LOGIN PANEL LOGIC------------------------------//
+        cashierLogIn.getLogInButton().addActionListener(e->{
+            String id = cashierLogIn.getID();
+            String pass = cashierLogIn.getPass();
+
+            String repsone = UIHandler.isValidCashier(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String[] data = repsone.split(",");
+                CashierPanels(data[0],data[1]);
+            }
+        });
+        cashierLogIn.getAdminButton().addActionListener(this::ActionPerformer);
+        cashierLogIn.getManagerButton().addActionListener(this::ActionPerformer);
+        cashierLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+
+        //----------------------------------Data Operator LOGIN PANEL LOGIC------------------------------//
+        dataOperatorLogIn.getLogInButton().addActionListener(e->{
+            String id = dataOperatorLogIn.getID();
+            String pass = dataOperatorLogIn.getPass();
+
+            String repsone = UIHandler.isValidDataOperator(id,pass);
+            if(repsone.equals("not")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String[] data = repsone.split(",");
+                DataOpeatorPanels(data[0],data[1]);
+            }
+        });
+        dataOperatorLogIn.getAdminButton().addActionListener(this::ActionPerformer);
+        dataOperatorLogIn.getManagerButton().addActionListener(this::ActionPerformer);
+        dataOperatorLogIn.getCashierButton().addActionListener(this::ActionPerformer);
     }
 
     public void AdminPanels(String name){
 
     }
 
-    public void ManagerPanels(String name, int branchID){
+    public void ManagerPanels(String name, String branchID){
 
     }
 
     public void CashierPanels(String name, String branchID)
     {
-        adds=new addOns(f.getFrame());
-        sales = new SalesData(name,branchID);
+        sales.setNamesBranch(name,branchID);
+        sales.refreshPanel(null,0,f.getFrame());
+        f.replacePanel(oldPanel,sales.getPanel());
+        oldPanel = sales.getPanel();
 
         //-------------------CASHIER PANEL LOGIC----------------------------
         sales.getEnterButton().addActionListener(e->{
@@ -88,7 +169,7 @@ public class GUI_Manager
                             int i=0;
                             for(String product:list){
 
-                                String data[]=product.split(",");
+                                String[] data=product.split(",");
                                 if(data[3].equals(pID)){
                                     data[1]=String.valueOf(Integer.parseInt(data[1])+Integer.parseInt(qty));
                                     data[2]=String.valueOf(UIHandler.getProductPriceUsingName(Integer.parseInt(data[3]), sales.getBranchID(),Integer.parseInt(data[1])));
@@ -107,9 +188,7 @@ public class GUI_Manager
                 }
             }
         });
-        sales.getLogoutButton().addActionListener(e->{
-            JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
-        });
+        sales.getLogoutButton().addActionListener(this::ActionPerformer);
         sales.getPrintButton().addActionListener(e->{
             adds.show(sales.getTotal());
         });
@@ -164,25 +243,22 @@ public class GUI_Manager
         });
     }
 
-    public void DataOpeatorPanels(String name , int branchID)
+    public void DataOpeatorPanels(String name , String branchID)
     {
-        vendor = new VendorInfo("Asfandyar","1");
-        operatorExpandedInfo = new ExpandedInfo("Asfandyar","1");
-        ArrayList<String> helo = new ArrayList<>();
-        for(int i=0; i<5; i++){
-            if(i==3){
-                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Inactive");
-            }
-            else{
-                helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Active");
-            }
-        }
-        operatorExpandedInfo.refreshPanel(helo,f.getFrame(),1,false);
+        vendor.setNameBranch(name,branchID);
+        operatorExpandedInfo.setNameBranch(name,branchID);
+
+        ArrayList<String> vendorsList = UIHandler.getVendorsList(Integer.parseInt(branchID));
+        vendor.refreshPanel(vendorsList,f.getFrame());
+
+        f.replacePanel(oldPanel,vendor.getPanel());
+        oldPanel = vendor.getPanel();
+
+        //--------------------------------VENDOR INFO PANEL LOGIC------------------//
+        vendor.getLogoutButton().addActionListener(this::ActionPerformer);
 
         //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
-        operatorExpandedInfo.getLogoutButton().addActionListener(e->{
-            JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
-        });
+        operatorExpandedInfo.getLogoutButton().addActionListener(this::ActionPerformer);
         operatorExpandedInfo.getBackButton().addActionListener(e->{
             f.replacePanel(oldPanel,vendor.getPanel());
             oldPanel = vendor.getPanel();
@@ -222,7 +298,31 @@ public class GUI_Manager
         }
         return true;
     }
-    public static void main(String[] args) throws IOException {
+
+    private void ActionPerformer(ActionEvent e) {
+        if(e.getSource()==sales.getLogoutButton() || e.getSource()==vendor.getLogoutButton() || e.getSource() == operatorExpandedInfo.getLogoutButton())
+        {
+            LogIn();
+        }
+        else if(e.getSource()==managerLogIn.getAdminButton() || e.getSource()==cashierLogIn.getAdminButton() || e.getSource()==dataOperatorLogIn.getAdminButton()){
+            f.replacePanel(oldPanel,adminLogIn.getPanel());
+            oldPanel = adminLogIn.getPanel();
+        }
+        else if(e.getSource()==adminLogIn.getManagerButton() || e.getSource()==cashierLogIn.getManagerButton() || e.getSource()==dataOperatorLogIn.getManagerButton()){
+            f.replacePanel(oldPanel,managerLogIn.getPanel());
+            oldPanel = managerLogIn.getPanel();
+        }
+        else if(e.getSource()==adminLogIn.getCashierButton() || e.getSource()==managerLogIn.getCashierButton() || e.getSource()==dataOperatorLogIn.getCashierButton()){
+            f.replacePanel(oldPanel,cashierLogIn.getPanel());
+            oldPanel=cashierLogIn.getPanel();
+        }
+        else if(e.getSource()==adminLogIn.getDataOperatorButton() || e.getSource()==managerLogIn.getDataOperatorButton() || e.getSource()==cashierLogIn.getDataOperatorButton()){
+            f.replacePanel(oldPanel,dataOperatorLogIn.getPanel());
+            oldPanel = dataOperatorLogIn.getPanel();
+        }
+    }
+
+    public static void main(String[] args) {
         Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
         UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
                 "EMP123", "BR001", 50000, "01/01/2020",
