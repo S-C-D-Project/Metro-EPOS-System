@@ -19,6 +19,10 @@ public class GUI_Manager
     private VendorInfo vendor;
     private ExpandedInfo operatorExpandedInfo;
 
+    public void LogIn(){
+
+    }
+
     public GUI_Manager()
     {
         frame f = new frame();
