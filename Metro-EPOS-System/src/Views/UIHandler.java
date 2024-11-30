@@ -49,8 +49,59 @@ public class UIHandler
 
     }
 
-    public static void updateVendorInfo(int id,String str){
+    public static ArrayList<String> updateVendorInfo(int id,String str){
         // I will provide with the vendor id and a string str where data is stored comma separated
         // like (Name,City,Address,Products,Status) and we update vendor data in DB using vendor ID
+        // then the updated VendorList is returned
+        // below code is just for testing
+        ArrayList<String> list = new ArrayList<>();
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        return list;
+    }
+
+    public static ArrayList<String> getVendorProducts(int Vid){
+        // I provide vendor ID and I get all its products in comma separate
+        // list like (Category,Name,Original Price,Sale Price,Price Per Units)
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        list.add("Food,Milk,300,500,20000");
+        return list;
+    }
+    public static ArrayList<String> addNewVendorProduct(int vID,String str){
+        // I will provide the Vendor ID and Product in string comma separated (Catagory,Name,Original Price, Sale Price, Price Per Unit)
+        // the new product should be added against the vendor and should return the updated list of this vendor
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Food,Milk,300,500,20000");
+        return list;
+    }
+    public static ArrayList<String> updateVendorProductInfo(int vID,String str, String productName){
+        // here you get Vendor ID with its product name to update info of
+        // in str we get update data with comma seperated (Catagory,Name,Original Price, Sales Price, Price Per Unit)
+        // this function updates the product and return the update list of particular vendor products
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Food,Milk,300,500,20000");
+        return list;
+    }
+    public static ArrayList<String> deleteVendorProduct(int id, String catagory, String name, String originalPrice, String salesPrice, String pricePerUnit){
+        // here the product of a vendor should be deleted
+        // I provide Vendor ID, catagory, name and many other values so you can use any of these or all of these
+        // for deletion, after that I should get the updated list of particular vendor products
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Food,Milk,300,500,20000");
+        return list;
+    }
+
+    public static boolean isNumbers(String line) {
+        for(int i=0; i<line.length(); i++){
+            char c = line.charAt(i);
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -3,6 +3,7 @@ import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
 import Views.Frame.frame;
+import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class GUI_Manager
     private SalesData sales;
     private addOns adds;
     private VendorInfo vendor;
+    private ExpandedInfo operatorExpandedInfo;
 
     public GUI_Manager()
     {
@@ -23,6 +25,7 @@ public class GUI_Manager
         adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
         vendor = new VendorInfo("Asfandyar","1");
+        operatorExpandedInfo = new ExpandedInfo("Asfandyar","1");
 
         ArrayList<String> helo = new ArrayList<>();
         for(int i=0; i<5; i++){
@@ -33,8 +36,7 @@ public class GUI_Manager
                 helo.add("123,Electronicals,Islamabad,190-C Muslim Town,2,Active");
             }
         }
-        vendor.refreshPanel(helo,f.getFrame());
-        sales.refreshPanel(null,0,f.getFrame());
+        operatorExpandedInfo.refreshPanel(helo,f.getFrame(),1,false);
 
         //-------------------CASHIER PANEL LOGIC----------------------------
         sales.getEnterButton().addActionListener(e->{
@@ -140,8 +142,22 @@ public class GUI_Manager
             }
         });
 
-        f.addPanel(vendor.getPanel());
-        oldPanel = sales.getPanel();
+        //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
+        operatorExpandedInfo.getLogoutButton().addActionListener(e->{
+            JOptionPane.showMessageDialog(f.getFrame(),"Logout Pressed","Message",JOptionPane.INFORMATION_MESSAGE);
+        });
+        operatorExpandedInfo.getBackButton().addActionListener(e->{
+            f.replacePanel(oldPanel,vendor.getPanel());
+            oldPanel = vendor.getPanel();
+        });
+        operatorExpandedInfo.getAddButton().addActionListener(e->{
+            ArrayList<String> list = operatorExpandedInfo.getList();
+            int id = operatorExpandedInfo.getVendorID();
+            operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
+        });
+
+        f.addPanel(operatorExpandedInfo.getPanel());
+        oldPanel = operatorExpandedInfo.getPanel();
         f.show();
     }
 

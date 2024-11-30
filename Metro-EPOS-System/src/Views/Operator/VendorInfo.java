@@ -1,17 +1,13 @@
 package Views.Operator;
-import Controllers.Product;
-import Views.Decorate.RoundEdges;
 import Views.Decorate.Theme;
 import Views.UIHandler;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class VendorInfo extends Theme {
@@ -33,6 +29,8 @@ public class VendorInfo extends Theme {
     private int branchNumber;
     private JLabel vendorsCount;
 
+    private ExpandedInfo expandedInfo;
+
     public VendorInfo(String name, String branchID)
     {
         super.setLineSize5(315,120);
@@ -41,7 +39,7 @@ public class VendorInfo extends Theme {
         super.setLineSizeCustom(315,288,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Images/DataOperatorProfile.png");
+        super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
 
         setNames(name,branchID);
         setHeading();
@@ -81,7 +79,7 @@ public class VendorInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon("Metro-EPOS-System/Images/VendorInfoIcon.png").getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);
@@ -349,7 +347,7 @@ public class VendorInfo extends Theme {
                         else
                         {
                             String improved = name.getText()+","+city.getText()+","+address.getText()+","+ products.getText()+","+status.getSelectedItem();
-                            UIHandler.updateVendorInfo(Integer.parseInt(vendorID.getText()),improved);
+                            list = UIHandler.updateVendorInfo(Integer.parseInt(vendorID.getText()),improved);
                             name.setFocusable(false);
                             name.setEditable(false);
                             city.setFocusable(false);
@@ -359,6 +357,7 @@ public class VendorInfo extends Theme {
                             status.setFocusable(false);
                             status.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
+                            refreshPanel(list,f);
                         }
                     }
 
@@ -376,7 +375,6 @@ public class VendorInfo extends Theme {
                 expand.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        // open new panel
                         refreshPanel(list,f);
                     }
 
