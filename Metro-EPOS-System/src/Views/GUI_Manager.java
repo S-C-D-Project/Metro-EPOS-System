@@ -5,6 +5,7 @@ import Views.Cashier.addOns;
 import Views.Decorate.LogInTheme;
 import Views.Frame.frame;
 import Views.LogIn.AdminLogIn;
+import Views.LogIn.ManagerLogIn;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
 
@@ -22,6 +23,7 @@ public class GUI_Manager
     private VendorInfo vendor;
     private ExpandedInfo operatorExpandedInfo;
     private AdminLogIn adminLogIn;
+    private ManagerLogIn managerLogIn;
 
     public void LogIn(){
 
@@ -30,6 +32,7 @@ public class GUI_Manager
     public GUI_Manager() throws IOException {
         frame f = new frame();
         adminLogIn = new AdminLogIn();
+        managerLogIn = new ManagerLogIn();
         adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
         vendor = new VendorInfo("Asfandyar","1");
@@ -164,7 +167,7 @@ public class GUI_Manager
             operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
         });
 
-        f.addPanel(adminLogIn.getPanel());
+        f.addPanel(managerLogIn.getPanel());
         oldPanel = operatorExpandedInfo.getPanel();
         f.show();
     }
