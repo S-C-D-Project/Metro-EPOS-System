@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class UIHandler
 {
-    private static  Cashier cashier=null;
+    private static  Cashier cashier=new Cashier();
     private static BranchManager branchManager=null;
     private static DataEntryOperator dataEntryOperator=null;
     public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
@@ -22,7 +22,7 @@ public class UIHandler
     }
     public static boolean isProductExist(int pID,int qty) throws SQLException {
 
-        return cashier.isProductExist(pID,cashier.getBranch().getCode(),qty);
+        return cashier.isProductExist(pID,cashier.getBranch().getId(),qty);
     }
 
     public static String getProductPrice(int qty)
@@ -74,14 +74,10 @@ public class UIHandler
             return "not";
         }
     }
-    public static String isValidCashier(String id, String pass){
-        // string is passed such that we can verify if even the string is valid or not
-        // you can use isNumber function of UIHandler as well for validation
-        // If cashier is valid It should return the name,branchID of the cashier comma separated,
-        // if not then it should return "not"
-
-        if(true){
-            return "Asfandyar,1234";
+    public static String isValidCashier(String id, String pass) throws SQLException {
+        cashier= (Cashier) cashier.vallidateEmployee(id,pass,"cashier");
+        if(cashier!=null){
+            return cashier.getName()+","+cashier.getEmployeeNumber();
         }
         else{
             return "not";

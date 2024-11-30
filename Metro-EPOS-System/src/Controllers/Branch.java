@@ -1,37 +1,33 @@
 package Controllers;
 
+import Models.DataBaseHandler;
+
 public class Branch {
 
-    private String name;
-    private int code;
+    private int id;
     private String address;
     private String phoneNumber;
     private int numberOfEmployees;
     private boolean isActive;
 
-    public Branch(String name, int code, String address, String phoneNumber, int numberOfEmployees, boolean isActive) {
-        this.name = name;
-        this.code = code;
+    public Branch(int code, String address, String phoneNumber, int numberOfEmployees, boolean isActive) {
+        this.id = code;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.numberOfEmployees = numberOfEmployees;
         this.isActive = isActive;
     }
-
-    public String getName() {
-        return name;
+    public Branch(int id){
+        DataBaseHandler.getBranch(id);
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public int getId() {
+        return id;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAddress() {

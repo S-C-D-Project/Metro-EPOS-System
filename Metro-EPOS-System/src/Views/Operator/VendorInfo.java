@@ -166,7 +166,7 @@ public class VendorInfo extends Theme {
 
     private void setSearchBar(){
         try {
-            BufferedImage logo = ImageIO.read(new File("Metro-EPOS-System/Images/searchlogo.png"));
+            BufferedImage logo = ImageIO.read(new File("Images/searchlogo.png"));
             int buttonWidth = 15;
             int buttonHeight = 15;
             Image scaledImg = logo.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
