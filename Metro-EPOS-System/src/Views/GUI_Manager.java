@@ -2,12 +2,15 @@ package Views;
 import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
+import Views.Decorate.LogInTheme;
 import Views.Frame.frame;
+import Views.LogIn.AdminLogIn;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -18,14 +21,15 @@ public class GUI_Manager
     private addOns adds;
     private VendorInfo vendor;
     private ExpandedInfo operatorExpandedInfo;
+    private AdminLogIn adminLogIn;
 
     public void LogIn(){
 
     }
 
-    public GUI_Manager()
-    {
+    public GUI_Manager() throws IOException {
         frame f = new frame();
+        adminLogIn = new AdminLogIn();
         adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
         vendor = new VendorInfo("Asfandyar","1");
@@ -160,7 +164,7 @@ public class GUI_Manager
             operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
         });
 
-        f.addPanel(operatorExpandedInfo.getPanel());
+        f.addPanel(adminLogIn.getPanel());
         oldPanel = operatorExpandedInfo.getPanel();
         f.show();
     }
@@ -194,7 +198,7 @@ public class GUI_Manager
         }
         return true;
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
         UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
                 "EMP123", "BR001", 50000, "01/01/2020",

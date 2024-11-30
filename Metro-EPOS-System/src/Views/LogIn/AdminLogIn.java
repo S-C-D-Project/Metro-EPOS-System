@@ -1,7 +1,13 @@
 package Views.LogIn;
+import Views.Decorate.LogInTheme;
+import java.io.IOException;
 
-import Views.Decorate.Theme;
+public class AdminLogIn extends LogInTheme {
 
-public class AdminLogIn extends Theme {
-    
+    public AdminLogIn() throws IOException {
+        super.setSelectedAdminButton();
+        super.setUnselectedCashierButton();
+        super.setUnselectedManagerButton();
+        super.setUnselectedDataOperatorButton();
+    }
 }
