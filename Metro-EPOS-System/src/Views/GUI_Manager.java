@@ -6,6 +6,7 @@ import Views.Decorate.LogInTheme;
 import Views.Frame.frame;
 import Views.LogIn.AdminLogIn;
 import Views.LogIn.CashierLogIn;
+import Views.LogIn.DataOperatorLogIn;
 import Views.LogIn.ManagerLogIn;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 public class GUI_Manager
 {
+    frame f;
     JPanel oldPanel;
     private SalesData sales;
     private addOns adds;
@@ -26,16 +28,33 @@ public class GUI_Manager
     private AdminLogIn adminLogIn;
     private ManagerLogIn managerLogIn;
     private CashierLogIn cashierLogIn;
+    private DataOperatorLogIn dataOperatorLogIn;
 
-    public void LogIn(){
-
-    }
-
-    public GUI_Manager() throws IOException {
-        frame f = new frame();
+    public void LogIn() throws IOException {
         adminLogIn = new AdminLogIn();
         managerLogIn = new ManagerLogIn();
         cashierLogIn = new CashierLogIn();
+        dataOperatorLogIn = new DataOperatorLogIn();
+    }
+
+    public void AdminPanels(String name){
+
+    }
+
+    public void ManagerPanels(String name, int branchID){
+
+    }
+
+    public void CashierPanels(String name, int branchID){
+
+    }
+
+    public void DataOpeatorPanels(String name , int ){
+
+    }
+
+    public GUI_Manager() {
+        f = new frame();
         adds=new addOns(f.getFrame());
         sales = new SalesData("Asfandyar","1");
         vendor = new VendorInfo("Asfandyar","1");
@@ -170,7 +189,7 @@ public class GUI_Manager
             operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
         });
 
-        f.addPanel(cashierLogIn.getPanel());
+        f.addPanel(dataOperatorLogIn.getPanel());
         oldPanel = operatorExpandedInfo.getPanel();
         f.show();
     }
