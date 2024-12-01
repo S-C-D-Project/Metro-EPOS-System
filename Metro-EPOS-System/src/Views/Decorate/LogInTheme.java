@@ -34,18 +34,6 @@ public class LogInTheme extends JPanel {
     private JButton notSelectedCashierButton;
     private JButton notSelectedDataOperatorButton;
 
-    private String profileVectorPath = "Images/profile.png";
-    private String lockImgPath = "Images/Lock.png";
-    private String backgroundImgPath = "Images/Bacground.png";
-    private String unselectedAdminPath = "Images/notselectedAdmin.png";
-    private String unselectedManagerPath = "Images/notselectedManager.png";
-    private String unselectedCahierPath = "Images/notselectedCashier.png";
-    private String unselectedOperatorPath = "Images/notselectedOperator.png";
-    private String selectedAdminPath = "Images/selectedAdmin.png";
-    private String selectedManagerPath = "Images/selectedManager.png";
-    private String selectedCashierPath = "Images/selectedCashier.png";
-    private String selectedOperatorPath = "Images/selectedOperator.png";
-
     public LogInTheme() {
         firstHeading = new Color(70,70,70);
         secondHeading = new Color(126,126,126);
@@ -108,7 +96,7 @@ public class LogInTheme extends JPanel {
 
     private void setFields() {
         try {
-            BufferedImage logo1 = ImageIO.read(new File(profileVectorPath));
+            BufferedImage logo1 = ImageIO.read(new File("Images/profile.png"));
             int width1 = 30;
             int height1 = 29;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -127,7 +115,7 @@ public class LogInTheme extends JPanel {
         }
 
         try {
-            BufferedImage logo2 = ImageIO.read(new File(lockImgPath));
+            BufferedImage logo2 = ImageIO.read(new File("Images/Lock.png"));
             int width2 = 30;
             int height2 = 29;
             Image scaledLogo2 = logo2.getScaledInstance(width2, height2, Image.SCALE_SMOOTH);
@@ -174,7 +162,7 @@ public class LogInTheme extends JPanel {
 
     private void setSideImg() {
         try {
-            BufferedImage logo1 = ImageIO.read(new File(backgroundImgPath));
+            BufferedImage logo1 = ImageIO.read(new File("Images/Bacground.png"));
             int width1 = 729;
             int height1 = 730;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -190,7 +178,7 @@ public class LogInTheme extends JPanel {
     public void setUnselectedAdminButton()
     {
         try {
-            BufferedImage img = ImageIO.read(new File(unselectedAdminPath));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedAdmin.png"));
             int buttonWidth = 121;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -198,15 +186,15 @@ public class LogInTheme extends JPanel {
             notSelectedAdminButton.setBorderPainted(false);
             notSelectedAdminButton.setFocusPainted(false);
             notSelectedAdminButton.setContentAreaFilled(false);
-            notSelectedAdminButton.setBounds(761,179,121,78);
-            add(notSelectedAdminButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        notSelectedAdminButton.setBounds(761,179,121,78);
+        add(notSelectedAdminButton);
     }
     public void setUnselectedManagerButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(unselectedManagerPath));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedManager.png"));
             int buttonWidth = 121;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -214,15 +202,15 @@ public class LogInTheme extends JPanel {
             notSelectedManagerButton.setBorderPainted(false);
             notSelectedManagerButton.setFocusPainted(false);
             notSelectedManagerButton.setContentAreaFilled(false);
-            notSelectedManagerButton.setBounds(905,179,121,78);
-            add(notSelectedManagerButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        notSelectedManagerButton.setBounds(905,179,121,78);
+        add(notSelectedManagerButton);
     }
     public void setUnselectedCashierButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(unselectedCahierPath));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedCashier.png"));
             int buttonWidth = 121;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -230,15 +218,15 @@ public class LogInTheme extends JPanel {
             notSelectedCashierButton.setBorderPainted(false);
             notSelectedCashierButton.setFocusPainted(false);
             notSelectedCashierButton.setContentAreaFilled(false);
-            notSelectedCashierButton.setBounds(1049,179,121,78);
-            add(notSelectedCashierButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        notSelectedCashierButton.setBounds(1049,179,121,78);
+        add(notSelectedCashierButton);
     }
     public void setUnselectedDataOperatorButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(unselectedOperatorPath));
+            BufferedImage img = ImageIO.read(new File("Images/notselectedOperator.png"));
             int buttonWidth = 122;
             int buttonHeight = 78;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -246,16 +234,16 @@ public class LogInTheme extends JPanel {
             notSelectedDataOperatorButton.setBorderPainted(false);
             notSelectedDataOperatorButton.setFocusPainted(false);
             notSelectedDataOperatorButton.setContentAreaFilled(false);
-            notSelectedDataOperatorButton.setBounds(1193,179,122,78);
-            add(notSelectedDataOperatorButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        notSelectedDataOperatorButton.setBounds(1193,179,122,78);
+        add(notSelectedDataOperatorButton);
     }
 
     public void setSelectedAdminButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(selectedAdminPath));
+            BufferedImage img = ImageIO.read(new File("Images/selectedAdmin.png"));
             int buttonWidth = 121;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -263,16 +251,16 @@ public class LogInTheme extends JPanel {
             selectedAdminButton.setBorderPainted(false);
             selectedAdminButton.setFocusPainted(false);
             selectedAdminButton.setContentAreaFilled(false);
-            selectedAdminButton.setBounds(761,179,121,92);
-            add(selectedAdminButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        selectedAdminButton.setBounds(761,179,121,92);
+        add(selectedAdminButton);
     }
 
     public void setSelectedManagerButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(selectedManagerPath));
+            BufferedImage img = ImageIO.read(new File("Images/selectedManager.png"));
             int buttonWidth = 121;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -280,16 +268,16 @@ public class LogInTheme extends JPanel {
             selectedManagerButton.setBorderPainted(false);
             selectedManagerButton.setFocusPainted(false);
             selectedManagerButton.setContentAreaFilled(false);
-            selectedManagerButton.setBounds(905,179,121,92);
-            add(selectedManagerButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        selectedManagerButton.setBounds(905,179,121,92);
+        add(selectedManagerButton);
     }
 
     public void setSelectedCashierButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(selectedCashierPath));
+            BufferedImage img = ImageIO.read(new File("Images/selectedCashier.png"));
             int buttonWidth = 121;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -297,16 +285,16 @@ public class LogInTheme extends JPanel {
             selectedCashierButton.setBorderPainted(false);
             selectedCashierButton.setFocusPainted(false);
             selectedCashierButton.setContentAreaFilled(false);
-            selectedCashierButton.setBounds(1049,179,121,92);
-            add(selectedCashierButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        selectedCashierButton.setBounds(1049,179,121,92);
+        add(selectedCashierButton);
     }
 
     public void setSelectedDataOperatorButton(){
         try {
-            BufferedImage img = ImageIO.read(new File(selectedOperatorPath));
+            BufferedImage img = ImageIO.read(new File("Images/selectedOperator.png"));
             int buttonWidth = 122;
             int buttonHeight = 92;
             Image scaledImg = img.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -314,11 +302,11 @@ public class LogInTheme extends JPanel {
             selectedDataOperatorButton.setBorderPainted(false);
             selectedDataOperatorButton.setFocusPainted(false);
             selectedDataOperatorButton.setContentAreaFilled(false);
-            selectedDataOperatorButton.setBounds(1193,179,122,92);
-            add(selectedDataOperatorButton);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        selectedDataOperatorButton.setBounds(1193,179,122,92);
+        add(selectedDataOperatorButton);
     }
 
     public void displayNewUserWindow(JFrame f){
@@ -352,7 +340,7 @@ public class LogInTheme extends JPanel {
         panel.add(cpass);
 
         try {
-            BufferedImage logo1 = ImageIO.read(new File(lockImgPath));
+            BufferedImage logo1 = ImageIO.read(new File("Images/Lock.png"));
             int width1 = 30;
             int height1 = 29;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -371,7 +359,7 @@ public class LogInTheme extends JPanel {
         }
 
         try {
-            BufferedImage logo2 = ImageIO.read(new File(lockImgPath));
+            BufferedImage logo2 = ImageIO.read(new File("Images/Lock.png"));
             int width2 = 30;
             int height2 = 29;
             Image scaledLogo2 = logo2.getScaledInstance(width2, height2, Image.SCALE_SMOOTH);
