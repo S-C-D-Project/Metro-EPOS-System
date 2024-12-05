@@ -30,6 +30,9 @@ public class ExpandedInfo extends Theme {
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
 
+    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Images/VendorInfoIcon.png";
+
     public ExpandedInfo()
     {
         super.setLineSize5(315,120);
@@ -38,7 +41,7 @@ public class ExpandedInfo extends Theme {
         super.setLineSizeCustom(315,252,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Images/DataOperatorProfile.png");
+        super.setProfileLogo(vendorProfileImgPath);
 
         setHeading();
         setLogo();
@@ -68,6 +71,7 @@ public class ExpandedInfo extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
+        branchNumber = new JLabel();
         branchNumber.setText(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
@@ -80,7 +84,7 @@ public class ExpandedInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon(vendorLogoPath).getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class frame
 {
     private JFrame frame;
-
+    private String frameIconPath = "Images/FrameIcon.png";
     public frame()
     {
         frame = new JFrame("Metro POS System");
@@ -19,7 +19,7 @@ public class frame
 
         BufferedImage icon = null;
         try {
-            icon = ImageIO.read(new File("Images/FrameIcon.png"));
+            icon = ImageIO.read(new File(frameIconPath));
         } catch (IOException e) {
             e.printStackTrace();
         }
