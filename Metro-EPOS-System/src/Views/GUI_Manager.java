@@ -57,18 +57,18 @@ public class GUI_Manager
             String id = adminLogIn.getID();
             String pass = adminLogIn.getPass();
 
-            String repsone = null;
+                String repsone = null;
             try {
                 repsone = UIHandler.isValidAdmin(id,pass);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                // admin panels
-            }
+                if(repsone.equals("not")){
+                    JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else{
+                    // admin panels
+                }
         });
         adminLogIn.getManagerButton().addActionListener(this::ActionPerformer);
         adminLogIn.getCashierButton().addActionListener(this::ActionPerformer);
@@ -79,19 +79,18 @@ public class GUI_Manager
             String id = managerLogIn.getID();
             String pass = managerLogIn.getPass();
 
-            String repsone = null;
+                String repsone = null;
             try {
-                repsone = UIHandler.isValidManager(id,pass);
+                repsone = UIHandler.isValidManager(id, pass);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                String[] data = repsone.split(",");
-                ManagerPanels(data[0],data[1]);
-            }
+                if (repsone.equals("not")) {
+                    JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String[] data = repsone.split(",");
+                    ManagerPanels(data[0], data[1]);
+                }
         });
         managerLogIn.getAdminButton().addActionListener(this::ActionPerformer);
         managerLogIn.getCashierButton().addActionListener(this::ActionPerformer);
@@ -125,12 +124,7 @@ public class GUI_Manager
             String id = dataOperatorLogIn.getID();
             String pass = dataOperatorLogIn.getPass();
 
-            String repsone = null;
-            try {
-                repsone = UIHandler.isValidDataOperator(id,pass);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
+            String repsone = UIHandler.isValidDataOperator(id,pass);
             if(repsone.equals("not")){
                 JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }

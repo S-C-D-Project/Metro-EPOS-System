@@ -99,10 +99,10 @@ public class UIHandler
     public static ArrayList<String> getVendorsList(int branchID){
         // I will provide the branchID and I should get all the vendors in comma separated string list
         ArrayList<String> list = new ArrayList<>();
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
+        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
         return list;
     }
     public static ArrayList<String> updateVendorInfo(int id,String str){

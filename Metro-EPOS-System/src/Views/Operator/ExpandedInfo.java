@@ -23,12 +23,15 @@ public class ExpandedInfo extends Theme {
 
     private Image vendorLogo;
     private ArrayList<String> list;
-    private int branchNumber;
+    private JLabel branchNumber;
     private JLabel productsCountHeading;
     private JLabel vendorIDHeading;
 
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
+
+    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Images/VendorInfoIcon.png";
 
     public ExpandedInfo()
     {
@@ -38,7 +41,7 @@ public class ExpandedInfo extends Theme {
         super.setLineSizeCustom(315,252,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Images/DataOperatorProfile.png");
+        super.setProfileLogo(vendorProfileImgPath);
 
         setHeading();
         setLogo();
@@ -68,7 +71,8 @@ public class ExpandedInfo extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
-        branchNumber = Integer.parseInt(ID);
+        branchNumber = new JLabel();
+        branchNumber.setText(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
         branchID.setFont(new Font("Inter",Font.BOLD,25));
@@ -80,7 +84,7 @@ public class ExpandedInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon(vendorLogoPath).getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);
@@ -518,6 +522,12 @@ public class ExpandedInfo extends Theme {
         repaint();
     }
 
+    public void resetFields(){
+        vendorIDValue.setText("");
+        producstsCountValue.setText("");
+        branchNumber.setText("");
+    }
+
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getAddButton(){return addButton;}
     public JButton getBackButton(){return backButton;}
@@ -525,7 +535,7 @@ public class ExpandedInfo extends Theme {
     public ArrayList<String> getList(){return list;}
     public JPanel getPanel(){return this;}
     public int getBranchID(){
-        return branchNumber;
+        return Integer.parseInt(branchNumber.getText());
     }
     public int getVendorID(){return vendorID;}
 }
