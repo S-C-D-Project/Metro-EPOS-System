@@ -36,6 +36,7 @@ public Employee(){}
         this.joiningDate = joiningDate;
         this.leavingDate = leavingDate;
         this.isActive = isActive;
+
         if(branch==null) {
             this.branch = new Branch(branchID);
         }
@@ -48,6 +49,10 @@ public Employee(){}
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
+    public void setBranchid(String branch) {
+        this.branchid = branch;
+    }
+
 
     public boolean isFirstTime() {
         return firstTime;
@@ -60,7 +65,9 @@ public Employee(){}
     public Branch getBranch() {
         return branch;
     }
-
+    public String getBranchid() {
+        return branchid;
+    }
     public String getName() {
         return name;
     }

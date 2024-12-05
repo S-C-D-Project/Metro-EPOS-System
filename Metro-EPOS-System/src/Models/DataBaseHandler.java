@@ -5,6 +5,7 @@ import Controllers.Branch;
 import Controllers.Employee;
 import Controllers.Product;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DataBaseHandler {
     private static DataBaseHandler instance = null;
@@ -148,5 +149,27 @@ ProductModel.DecreaseProductQuantity(pid,qty,connection);
 public static boolean changePassword(String newPassword, int id){
         return EmployeeModel.changePassword(newPassword,id,connection);
 }
+    public static boolean isValidDataOperator(String id, String pass) {
+        return EmployeeModel.isValidDataOperator(id,pass);
+    }
+    public static String getEmployeeName(String id) {
+        return EmployeeModel.getEmployeeName(id);
+    }
+    public static ArrayList<String> getVendorsList(int branchid){
+        return VendorModel.getVendorsList(branchid);
+    }
+    public static String getEmployeeBranch(String id) {
+        return EmployeeModel.getEmployeeBranch(id);
+    }
+    public static boolean updateVendorInfo(int id,String newName, String newCity, String newAddress,String status) {
+        return VendorModel.updateVendorInfo(id,newName,newCity,newAddress,status);
+    }
+    public static boolean insertVendor(String vendorName, String city, String address, String status, int branchId) {
+    return VendorModel.insertVendor(vendorName,city,address,status,branchId);
+    }
+        public static void main(String[] args) {
+        // Main method can be used to test methods, if needed
+
+    }
 
 }
