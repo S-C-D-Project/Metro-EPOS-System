@@ -124,7 +124,12 @@ public class GUI_Manager
             String id = dataOperatorLogIn.getID();
             String pass = dataOperatorLogIn.getPass();
 
-            String repsone = UIHandler.isValidDataOperator(id,pass);
+            String repsone = null;
+            try {
+                repsone = UIHandler.isValidDataOperator(id,pass);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             if(repsone.equals("not")){
                 JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
