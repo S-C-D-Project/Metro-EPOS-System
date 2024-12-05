@@ -11,9 +11,10 @@ public class DataBaseConnection {
     public static Connection getConnection() throws SQLException {
 
         Connection con = DriverManager.getConnection(JDBC_URL);
-        System.out.println("Connection established successfully!");
+      //System.out.println("Connection established successfully!");
         return con;
     }
+
     /* For Debugging Purpose ONLY
     public static void main(String args[]) {
         try {

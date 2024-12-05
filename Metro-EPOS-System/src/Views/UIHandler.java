@@ -1,6 +1,10 @@
 package Views;
 
 import Controllers.*;
+import Models.DataBaseConnection;
+import Models.DataBaseHandler;
+import Models.EmployeeModel;
+import Models.VendorModel;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -91,10 +95,22 @@ public class UIHandler
             return "not";
         }
     }
-    public static String isValidDataOperator(String id, String pass) throws SQLException {
-        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
-        if(dataEntryOperator!=null){
-            return dataEntryOperator.getName()+","+dataEntryOperator.getEmployeeNumber();
+
+    public static String isValidDataOperator(String id, String pass) throws SQLException{
+        // string is passed such that we can verify if even the string is valid or not
+        // you can use isNumber function of UIHandler as well for validation
+        // If operator is valid It should return the name,branchID of the operator comma separated,
+        // if not then it should return "not
+            dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+
+
+        boolean result= DataBaseHandler.isValidDataOperator(id,pass);
+        String name= DataBaseHandler.getEmployeeName(id);
+        String branch= DataBaseHandler.getEmployeeBranch(id);
+        dataEntryOperator=new DataEntryOperator();
+        dataEntryOperator.setBranchid(branch);
+        if(result){
+            return name+","+branch;
         }
         else{
             return "not";
@@ -103,11 +119,8 @@ public class UIHandler
 
     public static ArrayList<String> getVendorsList(int branchID){
         // I will provide the branchID and I should get all the vendors in comma separated string list
-        ArrayList<String> list = new ArrayList<>();
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,Inactive");
+        //For now branch id is set to 1
+        ArrayList<String> list =  DataBaseHandler.getVendorsList(branchID);
         return list;
     }
     public static ArrayList<String> updateVendorInfo(int id,String str){
@@ -115,19 +128,19 @@ public class UIHandler
         // like (Name,City,Address,Products,Status) and we update vendor data in DB using vendor ID
         // then the updated VendorList is returned
         // below code is just for testing
-        ArrayList<String> list = new ArrayList<>();
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
+        String[]values=str.split(",");
+        DataBaseHandler.updateVendorInfo(id,values[0],values[1],values[2],values[4]);
+        ArrayList<String> list=DataBaseHandler.getVendorsList(Integer.parseInt(dataEntryOperator.getBranchid()));
         return list;
     }
     public static ArrayList<String> addVendor(int branchId,String vendorName, String vendorAddress, String vendorCity){
         // I will provide with the branch id and strings to add in vendors list
         // then the updated VendorList is returned
         // below code is just for testing
-        ArrayList<String> list = new ArrayList<>();
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
-        list.add("22,Asfandyar,Lahore,170-D Rehman,2,InActive");
-        return list;
+        String status="Inactive";
+        VendorModel.insertVendor(vendorName,vendorCity,vendorAddress,status,branchId);
+        return getVendorsList(branchId);
+
     }
 
     public static ArrayList<String> getVendorProducts(int Vid){
