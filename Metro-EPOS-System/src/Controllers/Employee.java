@@ -14,6 +14,7 @@ public abstract class Employee {
     private String joiningDate;
     private String leavingDate;
     private boolean isActive;
+    private boolean firstTime;
 
     public String getRole() {
         return role;
@@ -24,7 +25,6 @@ public abstract class Employee {
     }
 
     private Branch branch;
-private boolean firstTime;
 private String role;
 public Employee(){}
     public Employee(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role,Branch branch) {
@@ -134,5 +134,9 @@ public Employee(){}
     }
     public Object vallidateEmployee(String id,String password,String choice) throws SQLException {
         return DataBaseHandler.getInstance().getEmployee(id,password,choice);
+    }
+    public boolean changePassword(String newPassword) throws SQLException {
+firstTime=false;
+    return DataBaseHandler.changePassword(newPassword,employeeNumber);
     }
 }

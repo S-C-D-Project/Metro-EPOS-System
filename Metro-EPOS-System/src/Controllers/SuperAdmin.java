@@ -10,6 +10,7 @@ public class SuperAdmin {
     private String email;
     private static  SuperAdmin superAdmin=null;
 
+
     public String getName() {
         return name;
     }
@@ -85,4 +86,7 @@ public class SuperAdmin {
         return superAdmin;
     }
 
+    public boolean changePassword(String newPassword) {
+        return DataBaseHandler.changePassword(newPassword,employeeNumber);
+    }
 }

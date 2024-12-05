@@ -41,6 +41,7 @@ public class GUI_Manager
         dataOperatorLogIn = new DataOperatorLogIn();
         adds = new addOns(f.getFrame());
         sales = new SalesData();
+
     }
 
     public void LogIn() {

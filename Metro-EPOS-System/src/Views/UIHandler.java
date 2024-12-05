@@ -78,11 +78,16 @@ public class UIHandler
         }
     }
     public static String isValidCashier(String id, String pass) throws SQLException {
-        cashier= (Cashier) cashier.vallidateEmployee(id,pass,"cashier");
-        if(cashier!=null){
-            return cashier.getName()+","+cashier.getEmployeeNumber();
-        }
-        else{
+        if (cashier != null) {
+            cashier = (Cashier) cashier.vallidateEmployee(id,pass,"cashier");
+            if(cashier!=null){
+
+                return cashier.getName()+","+cashier.getEmployeeNumber();
+            }
+            else{
+                return "not";
+            }
+        } else {
             return "not";
         }
     }
@@ -179,4 +184,14 @@ public class UIHandler
         }
         return true;
     }
+     public static boolean changePasswordCashier(String newPassword) throws SQLException {
+       return cashier.changePassword(newPassword);
+     }
+    public static boolean changePasswordDataEntryOperator(String newPassword) throws SQLException {
+        return dataEntryOperator.changePassword(newPassword);
+    }  public static boolean changePasswordBranchManager(String newPassword) throws SQLException {
+    return branchManager.changePassword(newPassword);
+}  public static boolean changePasswordSuperAdmin(String newPassword) throws SQLException {
+    return superAdmin.changePassword(newPassword);
+}
 }

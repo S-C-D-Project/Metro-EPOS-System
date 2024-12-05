@@ -133,6 +133,8 @@ ProductModel.DecreaseProductQuantity(pid,qty,connection);
             return -1;
         }
     }
-
+public static boolean changePassword(String newPassword, int id){
+        return EmployeeModel.changePassword(newPassword,id,connection);
+}
 
 }

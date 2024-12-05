@@ -1,25 +1,18 @@
 package Models;
-
 import Controllers.*;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class EmployeeModel {
-
     public static Object validateEmployee(String employeeNumber, String password, Connection connection, String choice) {
         Employee employee = null;
         String sql = "EXEC GetEmployeeByCredentials @EmployeeNumber = ?, @Password = ?";
-
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, Integer.parseInt(employeeNumber));
             statement.setString(2, password);
-
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 int employeeID = resultSet.getInt("EmployeeID");
                 String name = resultSet.getString("Name");
@@ -38,25 +31,31 @@ public class EmployeeModel {
                     case "branchmanager":
                         employee = new BranchManager(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
-
                     case "dataentryoperator":
                         employee = new DataEntryOperator(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
-
                     case "cashier":
                         employee = new Cashier(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
-
                     case "superadmin":
                         return SuperAdmin.getInstance(name, password, email,String.valueOf(employeeID),isActive,"dataEntryOperator");
-
 
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return employee;
+    }
+    public static boolean changePassword(String newPassword,int employeeID,Connection connection){
+        String sql = "EXEC ChangePassword @NewPassword = ?, @EmployeeID = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, employeeID);
+            statement.setString(2, newPassword);
+            ResultSet resultSet = statement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
     }
 }
