@@ -57,13 +57,13 @@ public class GUI_Manager
             String id = adminLogIn.getID();
             String pass = adminLogIn.getPass();
 
-            String repsone = UIHandler.isValidAdmin(id,pass);
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                // admin panels
-            }
+                String repsone = UIHandler.isValidAdmin(id,pass);
+                if(repsone.equals("not")){
+                    JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else{
+                    // admin panels
+                }
         });
         adminLogIn.getManagerButton().addActionListener(this::ActionPerformer);
         adminLogIn.getCashierButton().addActionListener(this::ActionPerformer);
@@ -74,14 +74,13 @@ public class GUI_Manager
             String id = managerLogIn.getID();
             String pass = managerLogIn.getPass();
 
-            String repsone = UIHandler.isValidManager(id,pass);
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                String[] data = repsone.split(",");
-                ManagerPanels(data[0],data[1]);
-            }
+                String repsone = UIHandler.isValidManager(id, pass);
+                if (repsone.equals("not")) {
+                    JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String[] data = repsone.split(",");
+                    ManagerPanels(data[0], data[1]);
+                }
         });
         managerLogIn.getAdminButton().addActionListener(this::ActionPerformer);
         managerLogIn.getCashierButton().addActionListener(this::ActionPerformer);
@@ -92,18 +91,23 @@ public class GUI_Manager
             String id = cashierLogIn.getID();
             String pass = cashierLogIn.getPass();
 
-            String repsone = null;
-            try {
-                repsone = UIHandler.isValidCashier(id,pass);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+            if(id.trim().isEmpty() || pass.trim().isEmpty() || !UIHandler.isNumbers(id)){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Fields Entered","Error",JOptionPane.ERROR_MESSAGE);
             }
             else{
-                String[] data = repsone.split(",");
-                CashierPanels(data[0],data[1]);
+                String repsone = null;
+                try {
+                    repsone = UIHandler.isValidCashier(id,pass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if(repsone.equals("not")){
+                    JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
+                }
+                else{
+                    String[] data = repsone.split(",");
+                    CashierPanels(data[0],data[1]);
+                }
             }
         });
         cashierLogIn.getAdminButton().addActionListener(this::ActionPerformer);
@@ -121,7 +125,6 @@ public class GUI_Manager
             }
             else{
                 String[] data = repsone.split(",");
-                System.out.println("Name: " + data[0] + "\nBranch ID: " + data[1]);
                 DataOpeatorPanels(data[0],data[1]);
             }
         });
@@ -279,6 +282,7 @@ public class GUI_Manager
         oldPanel = vendor.getPanel();
 
         vendor.getLogoutButton().addActionListener(e->{
+            vendor.resetFields();
             LogIn();
         });
         vendor.getAddButton().addActionListener(e->{

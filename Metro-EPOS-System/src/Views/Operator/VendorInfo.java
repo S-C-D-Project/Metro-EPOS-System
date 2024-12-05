@@ -444,7 +444,7 @@ public class VendorInfo extends Theme {
                     @Override
                     public void mouseClicked(MouseEvent e)
                     {
-                        expandedInfo.setNameBranch(user.getText(), String.valueOf(branchNumber));
+                        expandedInfo.setNameBranch(user.getText(), branchNumber.getText());
                         expandedInfo.refreshPanel(UIHandler.getVendorProducts(Integer.parseInt(vendorID.getText())),f.getFrame(), Integer.parseInt(vendorID.getText()),false);
                         f.replacePanel(getPanel(),expandedInfo.getPanel());
                         refreshPanel(list,f,expandedInfo);
