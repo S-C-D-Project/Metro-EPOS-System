@@ -1,5 +1,6 @@
 package Views.Operator;
 import Views.Decorate.Theme;
+import Views.Frame.frame;
 import Views.UIHandler;
 
 import javax.imageio.ImageIO;
@@ -31,10 +32,12 @@ public class VendorInfo extends Theme {
 
     private Image vendorLogo;
     private ArrayList<String> list;
-    private int branchNumber;
+    private JLabel branchNumber;
     private JLabel vendorsCount;
 
-    private ExpandedInfo expandedInfo;
+    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Images/VendorInfoIcon.png";
+    private String searchIconPath = "Images/searchlogo.png";
 
     public VendorInfo()
     {
@@ -76,7 +79,7 @@ public class VendorInfo extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
-        branchNumber = Integer.parseInt(ID);
+        branchNumber.setText(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
         branchID.setFont(new Font("Inter",Font.BOLD,25));
@@ -287,7 +290,7 @@ public class VendorInfo extends Theme {
         add(vendorsCount);
     }
 
-    public void setValues(ArrayList<String> l, JFrame f)
+    public void setValues(ArrayList<String> l, frame f, ExpandedInfo expandedInfo)
     {
         list = l;
         if(l!=null){
@@ -421,7 +424,7 @@ public class VendorInfo extends Theme {
                             status.setFocusable(false);
                             status.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
-                            refreshPanel(list,f);
+                            refreshPanel(list,f,expandedInfo);
                         }
                     }
 
@@ -438,8 +441,12 @@ public class VendorInfo extends Theme {
 
                 expand.addMouseListener(new MouseAdapter() {
                     @Override
-                    public void mouseClicked(MouseEvent e) {
-                        refreshPanel(list,f);
+                    public void mouseClicked(MouseEvent e)
+                    {
+                        expandedInfo.setNameBranch(user.getText(), String.valueOf(branchNumber));
+                        expandedInfo.refreshPanel(UIHandler.getVendorProducts(Integer.parseInt(vendorID.getText())),f.getFrame(), Integer.parseInt(vendorID.getText()),false);
+                        f.replacePanel(getPanel(),expandedInfo.getPanel());
+                        refreshPanel(list,f,expandedInfo);
                     }
 
                     @Override
@@ -490,16 +497,26 @@ public class VendorInfo extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, JFrame f) {
+    public void refreshPanel(ArrayList<String> newList, frame f,ExpandedInfo expandedInfo) {
         if (scroll != null) {
             remove(scroll);
             vendorsCount.setText("");
             super.removeInfoField();
         }
-        setValues(newList,f);
+        setValues(newList,f,expandedInfo);
         super.setInfoField();
         revalidate();
         repaint();
+    }
+
+    public void resetFields(){
+        vendorsCount.setText("");
+        user.setText("");
+        branchNumber.setText("");
+        typeName.setText("");
+        typeAddress.setText("");
+        enterCityName.setText("");
+        searchText.setText("");
     }
 
     public String getVendorName(){return typeName.getText();}
@@ -516,7 +533,7 @@ public class VendorInfo extends Theme {
     public JPanel getPanel(){return this;}
 
     public int getBranchID(){
-        return branchNumber;
+        return Integer.parseInt(branchNumber.getText());
     }
     public static boolean isNumbers(String line) {
         for(int i=0; i<line.length(); i++){

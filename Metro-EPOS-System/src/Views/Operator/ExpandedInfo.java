@@ -23,7 +23,7 @@ public class ExpandedInfo extends Theme {
 
     private Image vendorLogo;
     private ArrayList<String> list;
-    private int branchNumber;
+    private JLabel branchNumber;
     private JLabel productsCountHeading;
     private JLabel vendorIDHeading;
 
@@ -68,7 +68,7 @@ public class ExpandedInfo extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
-        branchNumber = Integer.parseInt(ID);
+        branchNumber.setText(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
         branchID.setFont(new Font("Inter",Font.BOLD,25));
@@ -518,6 +518,12 @@ public class ExpandedInfo extends Theme {
         repaint();
     }
 
+    public void resetFields(){
+        vendorIDValue.setText("");
+        producstsCountValue.setText("");
+        branchNumber.setText("");
+    }
+
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getAddButton(){return addButton;}
     public JButton getBackButton(){return backButton;}
@@ -525,7 +531,7 @@ public class ExpandedInfo extends Theme {
     public ArrayList<String> getList(){return list;}
     public JPanel getPanel(){return this;}
     public int getBranchID(){
-        return branchNumber;
+        return Integer.parseInt(branchNumber.getText());
     }
     public int getVendorID(){return vendorID;}
 }
