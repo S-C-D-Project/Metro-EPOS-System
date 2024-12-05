@@ -31,10 +31,10 @@ public class SalesData extends Theme {
 
     private double discount;
     private ArrayList<String> list;
-    private int branchNumber;
+    private JLabel branchNumber;
 
-    private String profileLogoPath = "Images/CashierLogo.png";
-    private String saleLogoPath = "Images/SalesIconGreen.png";
+    private String profileLogoPath = "Metro-EPOS-System/Images/CashierLogo.png";
+    private String saleLogoPath = "Metro-EPOS-System/Images/SalesIconGreen.png";
 
     public SalesData()
     {
@@ -75,7 +75,7 @@ public class SalesData extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
-        branchNumber = Integer.parseInt(ID);
+        branchNumber=new JLabel(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
         branchID.setFont(new Font("Inter",Font.BOLD,25));
@@ -430,6 +430,9 @@ public class SalesData extends Theme {
         discountBox.setText("");
         productID.setText("");
         quantity.setText("");
+        total.setText("");
+        user.setText("");
+        branchNumber.setText("");
     }
 
     public String getProductID(){return productID.getText();}
@@ -455,7 +458,7 @@ public class SalesData extends Theme {
         return printList;
     }
     public int getBranchID(){
-        return branchNumber;
+        return Integer.parseInt(branchNumber.getText());
     }
     public static boolean isNumbers(String line) {
         for(int i=0; i<line.length(); i++){

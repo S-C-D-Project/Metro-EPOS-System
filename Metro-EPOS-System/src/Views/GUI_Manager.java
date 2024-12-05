@@ -116,6 +116,7 @@ public class GUI_Manager
             }
             else{
                 String[] data = repsone.split(",");
+                System.out.println("Name: " + data[0] + "\nBranch ID: " + data[1]);
                 DataOpeatorPanels(data[0],data[1]);
             }
         });
@@ -188,7 +189,10 @@ public class GUI_Manager
                 }
             }
         });
-        sales.getLogoutButton().addActionListener(this::ActionPerformer);
+        sales.getLogoutButton().addActionListener(e->{
+            sales.resetFields();
+            LogIn();
+        });
         sales.getPrintButton().addActionListener(e->{
             adds.show(sales.getTotal());
         });
@@ -245,17 +249,33 @@ public class GUI_Manager
 
     public void DataOpeatorPanels(String name , String branchID)
     {
+        //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
+        operatorExpandedInfo.getLogoutButton().addActionListener(e->{
+            operatorExpandedInfo.resetFields();
+            oldPanel=operatorExpandedInfo.getPanel();
+            LogIn();
+        });
+        operatorExpandedInfo.getBackButton().addActionListener(e->{
+            operatorExpandedInfo.resetFields();
+            f.replacePanel(operatorExpandedInfo.getPanel(),vendor.getPanel());
+            oldPanel = vendor.getPanel();
+        });
+        operatorExpandedInfo.getAddButton().addActionListener(e->{
+            ArrayList<String> list = operatorExpandedInfo.getList();
+            int id = operatorExpandedInfo.getVendorID();
+            operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
+        });
+
+        //--------------------------------VENDOR INFO PANEL LOGIC------------------//
         vendor.setNameBranch(name,branchID);
-        operatorExpandedInfo.setNameBranch(name,branchID);
-
         ArrayList<String> vendorsList = UIHandler.getVendorsList(Integer.parseInt(branchID));
-        vendor.refreshPanel(vendorsList,f.getFrame());
-
+        vendor.refreshPanel(vendorsList,f,operatorExpandedInfo);
         f.replacePanel(oldPanel,vendor.getPanel());
         oldPanel = vendor.getPanel();
 
-        //--------------------------------VENDOR INFO PANEL LOGIC------------------//
-        vendor.getLogoutButton().addActionListener(this::ActionPerformer);
+        vendor.getLogoutButton().addActionListener(e->{
+            LogIn();
+        });
         vendor.getAddButton().addActionListener(e->{
             String vName = vendor.getVendorName();
             String vAddress = vendor.getVendorAddress();
@@ -263,12 +283,12 @@ public class GUI_Manager
             int bID = vendor.getBranchID();
 
             ArrayList<String> newList = UIHandler.addVendor(bID,vName,vAddress,city);
-            vendor.refreshPanel(newList,f.getFrame());
+            vendor.refreshPanel(newList,f,operatorExpandedInfo);
         });
         vendor.getSearchButton().addActionListener(e->{
             String search = vendor.getSearched();
             if(search.trim().equals("Search") || search.trim().isEmpty()){
-                vendor.refreshPanel(UIHandler.getVendorsList(Integer.parseInt(branchID)),f.getFrame());
+                vendor.refreshPanel(UIHandler.getVendorsList(Integer.parseInt(branchID)),f,operatorExpandedInfo);
             }
             else
             {
@@ -280,20 +300,8 @@ public class GUI_Manager
                         newList.add(oldList.get(i));
                     }
                 }
-                vendor.refreshPanel(newList,f.getFrame());
+                vendor.refreshPanel(newList,f,operatorExpandedInfo);
             }
-        });
-
-        //--------------------------------DATA OPERATOR EXPANDED INFO PANEL LOGIC------------------//
-        operatorExpandedInfo.getLogoutButton().addActionListener(this::ActionPerformer);
-        operatorExpandedInfo.getBackButton().addActionListener(e->{
-            f.replacePanel(oldPanel,vendor.getPanel());
-            oldPanel = vendor.getPanel();
-        });
-        operatorExpandedInfo.getAddButton().addActionListener(e->{
-            ArrayList<String> list = operatorExpandedInfo.getList();
-            int id = operatorExpandedInfo.getVendorID();
-            operatorExpandedInfo.refreshPanel(list,f.getFrame(),id,true);
         });
     }
 
@@ -327,11 +335,8 @@ public class GUI_Manager
     }
 
     private void ActionPerformer(ActionEvent e) {
-        if(e.getSource()==sales.getLogoutButton() || e.getSource()==vendor.getLogoutButton() || e.getSource() == operatorExpandedInfo.getLogoutButton())
-        {
-            LogIn();
-        }
-        else if(e.getSource()==managerLogIn.getAdminButton() || e.getSource()==cashierLogIn.getAdminButton() || e.getSource()==dataOperatorLogIn.getAdminButton()){
+
+        if(e.getSource()==managerLogIn.getAdminButton() || e.getSource()==cashierLogIn.getAdminButton() || e.getSource()==dataOperatorLogIn.getAdminButton()){
             f.replacePanel(oldPanel,adminLogIn.getPanel());
             oldPanel = adminLogIn.getPanel();
         }
