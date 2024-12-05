@@ -1,30 +1,47 @@
 package Controllers;
 
+import Models.DataBaseHandler;
+
+import java.sql.SQLException;
+
 public abstract class Employee {
     private String name;
     private String password;
     private String email;
-    private String employeeNumber;
+    private int employeeNumber;
     private String branchCode;
     private int salary;
     private String joiningDate;
     private String leavingDate;
     private boolean isActive;
-private Branch branch;
-private boolean firstTime;
 
-    public Employee(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private Branch branch;
+private boolean firstTime;
+private String role;
+public Employee(){}
+    public Employee(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role,Branch branch) {
+        this.employeeNumber= employeeID;
         this.name = name;
-        this.password = password;
         this.email = email;
-        this.employeeNumber = employeeNumber;
-        this.branchCode = branchCode;
         this.salary = salary;
         this.joiningDate = joiningDate;
         this.leavingDate = leavingDate;
         this.isActive = isActive;
-        this.branch = branch;
-        this.firstTime = firstTime;
+        if(branch==null) {
+            this.branch = new Branch(branchID);
+        }
+        else{
+            this.branch=branch;
+        }this.firstTime = firstTime;
+        this.role = role;
     }
 
     public void setBranch(Branch branch) {
@@ -67,13 +84,6 @@ private boolean firstTime;
         this.email = email;
     }
 
-    public String getEmployeeNumber() {
-        return employeeNumber;
-    }
-
-    public void setEmployeeNumber(String employeeNumber) {
-        this.employeeNumber = employeeNumber;
-    }
 
     public String getBranchCode() {
         return branchCode;
@@ -89,6 +99,14 @@ private boolean firstTime;
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public int getEmployeeNumber() {
+        return employeeNumber;
+    }
+
+    public void setEmployeeNumber(int employeeNumber) {
+        this.employeeNumber = employeeNumber;
     }
 
     public String getJoiningDate() {
@@ -113,5 +131,8 @@ private boolean firstTime;
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+    public Object vallidateEmployee(String id,String password,String choice) throws SQLException {
+        return DataBaseHandler.getInstance().getEmployee(id,password,choice);
     }
 }

@@ -92,7 +92,12 @@ public class GUI_Manager
             String id = cashierLogIn.getID();
             String pass = cashierLogIn.getPass();
 
-            String repsone = UIHandler.isValidCashier(id,pass);
+            String repsone = null;
+            try {
+                repsone = UIHandler.isValidCashier(id,pass);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             if(repsone.equals("not")){
                 JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
@@ -355,10 +360,10 @@ public class GUI_Manager
     }
 
     public static void main(String[] args) {
-        Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
-        UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
-                "EMP123", "BR001", 50000, "01/01/2020",
-                "N/A", true, branch, true);
+      //  Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
+       // UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
+         //       "EMP123", "BR001", 50000, "01/01/2020",
+           //     "N/A", true, branch, true);
         GUI_Manager g = new GUI_Manager();
         g.LogIn();
     }

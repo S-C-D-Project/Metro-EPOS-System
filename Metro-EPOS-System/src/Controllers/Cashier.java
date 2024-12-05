@@ -9,15 +9,21 @@ import java.util.ArrayList;
 public class Cashier extends Employee {
 private Product comfirmProduct;
     public Cashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-        super(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-    }
+        super(Integer.parseInt(employeeNumber), name, email,salary,joiningDate,leavingDate,isActive,Integer.parseInt(branchCode),firstTime,"Cashier",null); }
 
     public Bill createNewBill() {
         return new Bill();
     }
 
+    public Cashier(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role, Branch branch, Product comfirmProduct) {
+        super(employeeID, name, email, salary, joiningDate, leavingDate, isActive, branchID, firstTime, role, branch);
+        this.comfirmProduct = comfirmProduct;
+    }
+    public Cashier() {
+        super();
+     }
 
-    public boolean isProductExist(int productId,int branchId,int qty) throws SQLException {
+    public boolean isProductExist(int productId, int branchId, int qty) throws SQLException {
         comfirmProduct=DataBaseHandler.getInstance().getProduct(productId, branchId);
         if(comfirmProduct!=null&&comfirmProduct.getStockQuantity()>=qty){
             return true;

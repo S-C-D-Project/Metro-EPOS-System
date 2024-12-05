@@ -1,6 +1,7 @@
 package Models;
 
 import Controllers.Bill;
+import Controllers.Branch;
 import Controllers.Product;
 import java.sql.*;
 
@@ -17,6 +18,12 @@ public class DataBaseHandler {
             instance = new DataBaseHandler();
         }
         return instance;
+    }
+public static Branch getBranch(int id){
+        return BranchModel.getBranchById(id,connection);
+}
+    public static Object getEmployee(String id,String password,String choice){
+        return EmployeeModel.validateEmployee(id,password,connection,choice);
     }
 
     public static double getSalesTax() {

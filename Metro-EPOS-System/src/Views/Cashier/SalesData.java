@@ -33,9 +33,6 @@ public class SalesData extends Theme {
     private ArrayList<String> list;
     private JLabel branchNumber;
 
-    private String profileLogoPath = "Images/CashierLogo.png";
-    private String saleLogoPath = "Images/SalesIconGreen.png";
-
     public SalesData()
     {
         super.setLineSize5(313,120);
@@ -45,7 +42,7 @@ public class SalesData extends Theme {
         super.setLineSizeCustom(313,399,2);
         super.setText("Cashier");
         super.setLogoutLogo();
-        super.setProfileLogo(profileLogoPath);
+        super.setProfileLogo("Images/CashierLogo.png");
         setHeading();
         setLogo();
         setFields();
@@ -94,7 +91,7 @@ public class SalesData extends Theme {
     }
 
     private void setLogo() {
-        saleLogo = new ImageIcon(saleLogoPath).getImage();
+        saleLogo = new ImageIcon("Images/SalesIconGreen.png").getImage();
         Image scaledImage = saleLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(78, 277, 20, 20);

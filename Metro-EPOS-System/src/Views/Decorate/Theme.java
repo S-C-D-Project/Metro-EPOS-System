@@ -23,8 +23,6 @@ public class Theme extends JPanel {
 
     private JLabel infoField;
 
-    private String logoutLogoPath = "Images/LogoutLogo.png";
-
     public Theme()
     {
         setLayout(null);
@@ -95,7 +93,7 @@ public class Theme extends JPanel {
         logout.setFont(new Font("Inter",Font.PLAIN,15));
         logout.setBounds(70,684,58,19);
         add(logout);
-        logo = new ImageIcon(logoutLogoPath).getImage();
+        logo = new ImageIcon("Images/LogoutLogo.png").getImage();
     }
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
