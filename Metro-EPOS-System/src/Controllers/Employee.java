@@ -49,9 +49,7 @@ public Employee(){}
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
-    public void setBranchid(String branch) {
-        this.branchid = branch;
-    }
+
 
 
     public boolean isFirstTime() {
@@ -64,9 +62,6 @@ public Employee(){}
 
     public Branch getBranch() {
         return branch;
-    }
-    public String getBranchid() {
-        return branchid;
     }
     public String getName() {
         return name;
@@ -138,5 +133,16 @@ public Employee(){}
     public boolean changePassword(String newPassword) throws SQLException {
 firstTime=false;
     return DataBaseHandler.changePassword(newPassword,employeeNumber);
+    }
+
+    public void setBranchid(int branchId) {
+        if(this.branch == null) {
+            this.branch = new Branch(branchId);
+        } else {
+            this.branch.setId(branchId);
+        }
+    }
+    public int getBranchid(){
+        return branch.getId();
     }
 }

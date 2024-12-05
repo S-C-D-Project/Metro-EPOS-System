@@ -110,7 +110,7 @@ public class UIHandler {
         String name= DataBaseHandler.getEmployeeName(id);
         String branch= DataBaseHandler.getEmployeeBranch(id);
         dataEntryOperator=new DataEntryOperator();
-        dataEntryOperator.setBranchid(branch);
+        dataEntryOperator.setBranchid(Integer.parseInt(branch));
         if(result){
             return name+","+branch;
         }
@@ -133,7 +133,7 @@ public class UIHandler {
         // below code is just for testing
         String[]values=str.split(",");
         DataBaseHandler.updateVendorInfo(id,values[0],values[1],values[2],values[4]);
-        ArrayList<String> list=DataBaseHandler.getVendorsList(Integer.parseInt(dataEntryOperator.getBranchid()));
+        ArrayList<String> list=DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
         return list;
     }
 

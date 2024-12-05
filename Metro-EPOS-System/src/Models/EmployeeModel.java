@@ -97,10 +97,6 @@ public class EmployeeModel {
             return false;
         }
     }
-}
-
-
-
     public static boolean isValidDataOperator(String id, String pass) {
         boolean isValid = false;
         String sql = "SELECT * FROM employee WHERE EmployeeID = ? AND Password = ? AND Role LIKE 'DataEntryOperator'";
@@ -113,7 +109,7 @@ public class EmployeeModel {
             stmt.setString(2, pass);
 
 
-             try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = stmt.executeQuery()) {
 
                 if (rs.next()) {
                     isValid = true;
@@ -170,4 +166,9 @@ public class EmployeeModel {
     }
 
 }
+
+
+
+
+
 
