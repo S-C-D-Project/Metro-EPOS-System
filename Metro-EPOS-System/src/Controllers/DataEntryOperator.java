@@ -13,6 +13,9 @@ public class DataEntryOperator extends Employee {
                              boolean isActive, Branch branch, boolean firstTime) {
         super(Integer.parseInt(employeeNumber), name, email,salary,joiningDate,leavingDate,isActive,Integer.parseInt(branchCode),firstTime,"Data Entry operator",null);    }
 
+    public DataEntryOperator() {
+        super();
+    }
 
     public int selectOrAddVendor(String vendorName, String contactInfo) {
         try {

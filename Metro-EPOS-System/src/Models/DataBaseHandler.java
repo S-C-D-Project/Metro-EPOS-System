@@ -133,9 +133,6 @@ ProductModel.DecreaseProductQuantity(pid,qty,connection);
             return -1;
         }
     }
-    public static void main(String[] args) {
-        // Main method can be used to test methods, if needed
 
-    }
 
 }

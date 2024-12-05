@@ -57,7 +57,12 @@ public class GUI_Manager
             String id = adminLogIn.getID();
             String pass = adminLogIn.getPass();
 
-            String repsone = UIHandler.isValidAdmin(id,pass);
+            String repsone = null;
+            try {
+                repsone = UIHandler.isValidAdmin(id,pass);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             if(repsone.equals("not")){
                 JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
@@ -74,7 +79,12 @@ public class GUI_Manager
             String id = managerLogIn.getID();
             String pass = managerLogIn.getPass();
 
-            String repsone = UIHandler.isValidManager(id,pass);
+            String repsone = null;
+            try {
+                repsone = UIHandler.isValidManager(id,pass);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             if(repsone.equals("not")){
                 JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }
@@ -115,7 +125,12 @@ public class GUI_Manager
             String id = dataOperatorLogIn.getID();
             String pass = dataOperatorLogIn.getPass();
 
-            String repsone = UIHandler.isValidDataOperator(id,pass);
+            String repsone = null;
+            try {
+                repsone = UIHandler.isValidDataOperator(id,pass);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             if(repsone.equals("not")){
                 JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
             }

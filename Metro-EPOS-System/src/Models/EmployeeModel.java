@@ -31,12 +31,15 @@ public class EmployeeModel {
                 int branchID = resultSet.getInt("BranchID");
                 boolean firstTime = resultSet.getBoolean("FirstTime");
                 String role = resultSet.getString("Role");
+                if(!role.equalsIgnoreCase(choice)){
+                    return null;
+                }
                 switch (role.toLowerCase()) {
-                    case "branch manager":
+                    case "branchmanager":
                         employee = new BranchManager(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
 
-                    case "data entry operator":
+                    case "dataentryoperator":
                         employee = new DataEntryOperator(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
 
@@ -44,8 +47,8 @@ public class EmployeeModel {
                         employee = new Cashier(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
 
-                    case "super admin":
-                        return SuperAdmin.getInstance(name, password, email,employeeID,isActive);
+                    case "superadmin":
+                        return SuperAdmin.getInstance(name, password, email,String.valueOf(employeeID),isActive,"dataEntryOperator");
 
 
                 }

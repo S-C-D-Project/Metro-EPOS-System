@@ -1,9 +1,14 @@
 package Controllers;
 
+import Models.DataBaseHandler;
+
+import java.sql.SQLException;
+
 public class SuperAdmin {
     private String name;
     private String password;
     private String email;
+    private static  SuperAdmin superAdmin=null;
 
     public String getName() {
         return name;
@@ -64,19 +69,20 @@ public class SuperAdmin {
     private int employeeNumber;
     private boolean isActive;
 
-    private static  SuperAdmin superAdmin=null;
-    private SuperAdmin() {
+    private SuperAdmin(String id,String password,String choice) throws SQLException {
+        SuperAdmin.superAdmin=(SuperAdmin)DataBaseHandler.getInstance().getEmployee(id,password,choice);
     }
-    public static SuperAdmin getInstance(){
+    public static SuperAdmin getInstance(String id,String password,String choice) throws SQLException {
         if(superAdmin==null){
-            superAdmin=new SuperAdmin();
+            superAdmin=new SuperAdmin(id,password,choice);
         }
         return superAdmin;
     }
-    public static SuperAdmin getInstance(String name, String password, String email, int employeeNumber, boolean isActive){
+    public static SuperAdmin getInstance(String name,String password,String email,String employeeID,boolean isActive,String choice)throws SQLException {
         if(superAdmin==null){
-            superAdmin=superAdmin;
+            superAdmin=new SuperAdmin(employeeID,password,choice);
         }
         return superAdmin;
     }
+
 }

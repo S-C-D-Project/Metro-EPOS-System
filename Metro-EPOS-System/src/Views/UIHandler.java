@@ -9,9 +9,10 @@ import java.util.ArrayList;
 public class UIHandler
 {
     private static  Cashier cashier=new Cashier();
-    private static BranchManager branchManager=null;
-    private static DataEntryOperator dataEntryOperator=null;
-    public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
+    private static BranchManager branchManager=new BranchManager();
+    private static DataEntryOperator dataEntryOperator=new DataEntryOperator();
+   private static  SuperAdmin superAdmin=null;
+   public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
         cashier=new Cashier(name, password,  email,  employeeNumber,  branchCode, salary,  joiningDate,  leavingDate,  isActive,  branch,  firstTime);
     }
     public static void createBranchManager(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime){
@@ -49,26 +50,28 @@ public class UIHandler
 
     }
 
-    public static String isValidAdmin(String id, String pass){
+    public static String isValidAdmin(String id, String pass) throws SQLException {
         // string is passed such that we can verify if even the string is valid or not
         // you can use isNumber function of UIHandler as well for validation
         // If admin is valid It should return the name of the admin, if not then it should return "not"
 
-        if(true){
-            return "Asfandyar";
+        superAdmin= SuperAdmin.getInstance(id,pass,"superAdmin");
+        if(superAdmin!=null){
+            return superAdmin.getName()+","+superAdmin.getEmployeeNumber();
         }
         else{
             return "not";
         }
     }
-    public static String isValidManager(String id, String pass){
+    public static String isValidManager(String id, String pass) throws SQLException {
         // string is passed such that we can verify if even the string is valid or not
         // you can use isNumber function of UIHandler as well for validation
         // If manager is valid It should return the name,branchID of the manager comma separated,
         // if not then it should return "not"
 
-        if(true){
-            return "Asfandyar,1234";
+        branchManager= (BranchManager) branchManager.vallidateEmployee(id,pass,"branchManager");
+        if(branchManager!=null){
+            return branchManager.getName()+","+branchManager.getEmployeeNumber();
         }
         else{
             return "not";
@@ -83,14 +86,10 @@ public class UIHandler
             return "not";
         }
     }
-    public static String isValidDataOperator(String id, String pass){
-        // string is passed such that we can verify if even the string is valid or not
-        // you can use isNumber function of UIHandler as well for validation
-        // If operator is valid It should return the name,branchID of the operator comma separated,
-        // if not then it should return "not"
-
-        if(true){
-            return "Asfandyar,1234";
+    public static String isValidDataOperator(String id, String pass) throws SQLException {
+        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+        if(dataEntryOperator!=null){
+            return dataEntryOperator.getName()+","+dataEntryOperator.getEmployeeNumber();
         }
         else{
             return "not";
