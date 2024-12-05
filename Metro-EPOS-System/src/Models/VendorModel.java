@@ -156,5 +156,81 @@ public class VendorModel {
             return false;
         }
     }
+    public static String getVendorName(int vendorId) {
+        String vendorName = null;
+
+
+        String query = "SELECT VendorName FROM Vendor WHERE vendorId = ?";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+
+
+            stmt.setInt(1, vendorId);
+
+
+            ResultSet rs = stmt.executeQuery();
+
+
+            if (rs.next()) {
+
+                vendorName = rs.getString("VendorName");
+            } else {
+
+                System.out.println("No vendor found with ID: " + vendorId);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error fetching vendor name: ");
+        }
+
+        return vendorName;
+    }
+
+    public static ArrayList<String> getVendorProducts(int vendorId) {
+        ArrayList<String> productsList = new ArrayList<>();
+
+        String getProductIdsQuery = "SELECT DISTINCT p.productId FROM Purchase pur " +
+                "JOIN Product p ON pur.productId = p.productId " +
+                "WHERE pur.VendorId = ?";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(getProductIdsQuery)) {
+
+            stmt.setInt(1, vendorId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Integer> productIds = new ArrayList<>();
+            while (rs.next()) {
+                productIds.add(rs.getInt("productId"));
+            }
+            for (Integer productId : productIds) {
+                String getProductDetailsQuery = "SELECT * FROM Product WHERE productId = ?";
+
+                try (PreparedStatement productStmt = con.prepareStatement(getProductDetailsQuery)) {
+                    productStmt.setInt(1, productId);
+                    ResultSet productRs = productStmt.executeQuery();
+
+                    if (productRs.next()) {
+                        String productDetails =
+
+                                productRs.getString("category") + "," + productRs.getString("productName") + "," +
+                                productRs.getFloat("originalPrice") + "," +
+                                productRs.getInt("salePrice") + "," +
+                                productRs.getFloat("pricePerUnit") + "," +
+                                productRs.getString("Manufacturer") ;
+
+                        productsList.add(productDetails);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error fetching vendor products: "+e.getMessage());
+        }
+
+        return productsList;
+    }
 
 }

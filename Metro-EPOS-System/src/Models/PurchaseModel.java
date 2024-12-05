@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /*
@@ -17,31 +18,95 @@ FOREIGN KEY (VendorID) REFERENCES Vendors(VendorID)
 */
 public class PurchaseModel {
 
-    // Method to insert a purchase into the database
-    public static int insertPurchase(int productId, int vendorId, int amount, String purchaseDate) throws SQLException {
-        String insertSQL = "INSERT INTO Purchases (ProductID, VendorID, Amount, PurchaseDate) VALUES (?, ?, ?, ?)";
+    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName) {
+        String checkProductQuery = """
+            SELECT ProductID
+            FROM Product
+            WHERE BranchId = ? AND productName = ? AND category = ? AND Manufacturer = ?;
+            """;
 
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, productId); // Set ProductID
-            preparedStatement.setInt(2, vendorId);  // Set VendorID
-            preparedStatement.setInt(3, amount);    // Set Amount
-            preparedStatement.setString(4, purchaseDate);  // Set Purchase Date
+        String updateProductQuery = """
+            UPDATE Product
+            SET stockQuantity = stockQuantity + 1
+            OUTPUT INSERTED.ProductID
+            WHERE BranchId = ? AND productName = ? AND category = ? AND Manufacturer = ?;
+            """;
 
-            int rowsAffected = preparedStatement.executeUpdate();
+        String insertProductQuery = """
+            INSERT INTO Product (BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity)
+            OUTPUT INSERTED.ProductID
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1);
+            """;
 
-            if (rowsAffected > 0) {
-                // Get the auto-generated PurchaseID
-                try (var generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1);  // Return the generated PurchaseID
+        String insertPurchaseQuery = """
+            INSERT INTO Purchase (VendorId, VendorName, productId)
+            VALUES (?, ?, ?);
+            """;
+
+        try (Connection con = DataBaseConnection.getConnection()) {
+            int productId;
+
+
+            try (PreparedStatement checkStmt = con.prepareStatement(checkProductQuery)) {
+                checkStmt.setInt(1, branchId);
+                checkStmt.setString(2, productName);
+                checkStmt.setString(3, category);
+                checkStmt.setString(4, manufacturer);
+
+                ResultSet rs = checkStmt.executeQuery();
+
+                if (rs.next()) {
+
+                    try (PreparedStatement updateStmt = con.prepareStatement(updateProductQuery)) {
+                        updateStmt.setInt(1, branchId);
+                        updateStmt.setString(2, productName);
+                        updateStmt.setString(3, category);
+                        updateStmt.setString(4, manufacturer);
+
+                        ResultSet updateRs = updateStmt.executeQuery();
+                        if (updateRs.next()) {
+                            productId = updateRs.getInt("ProductID");
+                        } else {
+                            throw new SQLException("Failed to update product stock quantity.");
+                        }
+                    }
+                } else {
+
+                    try (PreparedStatement insertStmt = con.prepareStatement(insertProductQuery)) {
+                        insertStmt.setInt(1, branchId);
+                        insertStmt.setString(2, productName);
+                        insertStmt.setString(3, category);
+                        insertStmt.setString(4, manufacturer);
+                        insertStmt.setFloat(5, originalPrice);
+                        insertStmt.setInt(6, salePrice);
+                        insertStmt.setFloat(7, pricePerUnit);
+
+                        ResultSet insertRs = insertStmt.executeQuery();
+                        if (insertRs.next()) {
+                            productId = insertRs.getInt("ProductID");
+                        } else {
+                            throw new SQLException("Failed to insert product.");
+                        }
                     }
                 }
             }
-            return -1; // Return -1 if the insertion failed
+
+
+            try (PreparedStatement purchaseStmt = con.prepareStatement(insertPurchaseQuery)) {
+                purchaseStmt.setInt(1, vendorId);
+                purchaseStmt.setString(2, vendorName);
+                purchaseStmt.setInt(3, productId);
+
+                int rowsInserted = purchaseStmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    return productId;
+                } else {
+                    throw new SQLException("Failed to insert purchase record.");
+                }
+            }
         } catch (SQLException e) {
-            System.out.println("Error inserting purchase: " + e.getMessage());
-            throw e;  // Rethrow the exception
+            System.out.println("Error managing product and purchase: " + e.getMessage());
+            return -1;
         }
     }
 }

@@ -84,56 +84,7 @@ ProductModel.DecreaseProductQuantity(pid,qty,connection);
         return productId;
     }
 
-    public int insertVendorData(String VendorName, String contactInfo) throws SQLException {
-        if (VendorModel.vendorExists(VendorName, connection)) {
-            System.out.println("Error: Vendor with name '" + VendorName + "' already exists.");
-            return -1;
-        }
 
-        String storedProcCall = "{CALL InsertVendorData(?, ?, ?)}";
-        int vendorId = -1;
-
-        try (CallableStatement callableStatement = connection.prepareCall(storedProcCall)) {
-            callableStatement.setString(1, VendorName);  // VendorName (NVARCHAR)
-            callableStatement.setString(2, contactInfo); // ContactInfo (NVARCHAR)
-            callableStatement.registerOutParameter(3, java.sql.Types.INTEGER); // Output VendorID
-
-            callableStatement.executeUpdate();
-            vendorId = callableStatement.getInt(3);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return vendorId;
-    }
-    public int insertPurchaseData(int productId, int vendorId, int amount, String purchaseDate) {
-
-        String insertSQL = "INSERT INTO Purchases (ProductID, VendorID, Amount, PurchaseDate) VALUES (?, ?, ?, ?)";
-
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
-
-            preparedStatement.setInt(1, productId);   // Set ProductID
-            preparedStatement.setInt(2, vendorId);    // Set VendorID
-            preparedStatement.setInt(3, amount);      // Set Amount
-            preparedStatement.setString(4, purchaseDate); // Set PurchaseDate
-
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-
-                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1);
-                    }
-                }
-            }
-            return -1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
 public static boolean changePassword(String newPassword, int id){
         return EmployeeModel.changePassword(newPassword,id,connection);
 }
@@ -155,6 +106,16 @@ public static boolean changePassword(String newPassword, int id){
     public static boolean insertVendor(String vendorName, String city, String address, String status, int branchId) {
     return VendorModel.insertVendor(vendorName,city,address,status,branchId);
     }
+    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName) {
+    return PurchaseModel.addOrUpdateProductAndPurchase(branchId,productName,category,manufacturer,originalPrice,salePrice,pricePerUnit,vendorId,vendorName);
+    }
+    public static String getVendorName(int vendorId) {
+    return VendorModel.getVendorName(vendorId);
+    }
+    public static ArrayList<String> getVendorProducts(int vendorId) {
+        return VendorModel.getVendorProducts(vendorId);
+    }
+
         public static void main(String[] args) {
         // Main method can be used to test methods, if needed
 

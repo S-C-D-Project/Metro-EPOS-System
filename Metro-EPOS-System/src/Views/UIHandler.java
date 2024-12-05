@@ -101,13 +101,14 @@ public class UIHandler
         // you can use isNumber function of UIHandler as well for validation
         // If operator is valid It should return the name,branchID of the operator comma separated,
         // if not then it should return "not
-            dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+        dataEntryOperator=new DataEntryOperator();
+        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
 
 
         boolean result= DataBaseHandler.isValidDataOperator(id,pass);
         String name= DataBaseHandler.getEmployeeName(id);
+        dataEntryOperator.setName(name);
         String branch= DataBaseHandler.getEmployeeBranch(id);
-        dataEntryOperator=new DataEntryOperator();
         dataEntryOperator.setBranchid(branch);
         if(result){
             return name+","+branch;
@@ -157,8 +158,16 @@ public class UIHandler
     public static ArrayList<String> addNewVendorProduct(int vID,String str){
         // I will provide the Vendor ID and Product in string comma separated (Catagory,Name,Original Price, Sale Price, Price Per Unit)
         // the new product should be added against the vendor and should return the updated list of this vendor
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Vegetable,Potato,300,500,20000");
+        String[]values=str.split(",");
+        String sample_manufaturer="Sample Factory";
+        int branch= Integer.parseInt(dataEntryOperator.getBranchid());
+        DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
+                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID));
+
+       ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
+        for (int i=0;i<list.size();i++){
+            System.out.println(list.get(i));
+        }
         return list;
     }
     public static ArrayList<String> updateVendorProductInfo(int vID,String str, String productName){

@@ -56,37 +56,7 @@ public class DataEntryOperator extends Employee {
     }
 
 
-    public int addVendor(String vendorName, String contactInfo) {
-        try {
-
-            int vendorId = DataBaseHandler.getInstance().insertVendorData(vendorName, contactInfo);
-            if (vendorId > 0) {
-                System.out.println("Vendor added successfully with Vendor ID: " + vendorId);
-            } else {
-                System.out.println("Failed to add the vendor.");
-            }
-            return vendorId;
-        } catch (SQLException e) {
-            System.out.println("Error adding vendor: " + e.getMessage());
-            return -1;
-        }
-    }
 
 
-    public int addPurchase(int productId, int vendorId, int purchaseAmount, String purchaseDate) {
-        try {
 
-            int purchaseId = DataBaseHandler.getInstance().insertPurchaseData(productId, vendorId, purchaseAmount, purchaseDate);
-            if (purchaseId > 0) {
-                System.out.println("Purchase recorded successfully with Purchase ID: " + purchaseId);
-                return purchaseId;
-            } else {
-                System.out.println("Failed to record the purchase.");
-                return -1;
-            }
-        } catch (Exception e) {
-            System.out.println("Error recording purchase: " + e.getMessage());
-            return -1;
-        }
-    }
 }
