@@ -47,7 +47,7 @@ public class VendorInfo extends Theme {
         super.setLineSizeCustom(315,288,2);
         super.setText("Data Entry Operator");
         super.setLogoutLogo();
-        super.setProfileLogo("Metro-EPOS-System/Images/DataOperatorProfile.png");
+        super.setProfileLogo(vendorProfileImgPath);
 
         setHeading();
         setLogo();
@@ -79,6 +79,7 @@ public class VendorInfo extends Theme {
         user.setVerticalAlignment(JLabel.CENTER);
         user.setHorizontalAlignment(JLabel.CENTER);
 
+        branchNumber = new JLabel();
         branchNumber.setText(ID);
         branchID = new JLabel();
         branchID.setText("Branch ID: " + ID);
@@ -91,7 +92,7 @@ public class VendorInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon("Metro-EPOS-System/Images/VendorInfoIcon.png").getImage();
+        vendorLogo = new ImageIcon(vendorLogoPath).getImage();
         Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         logoLabel.setBounds(76, 278, 20, 20);
@@ -169,7 +170,7 @@ public class VendorInfo extends Theme {
 
     private void setSearchBar(){
         try {
-            BufferedImage logo = ImageIO.read(new File("Images/searchlogo.png"));
+            BufferedImage logo = ImageIO.read(new File(searchIconPath));
             int buttonWidth = 15;
             int buttonHeight = 15;
             Image scaledImg = logo.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
