@@ -2,6 +2,7 @@ package Models;
 
 import Controllers.Bill;
 import Controllers.Branch;
+import Controllers.Employee;
 import Controllers.Product;
 import java.sql.*;
 
@@ -42,6 +43,17 @@ public static Branch getBranch(int id){
 public static void DecreaseProductQuantity(int pid,int qty){
 ProductModel.DecreaseProductQuantity(pid,qty,connection);
 }
+
+    public static boolean addEmployee(String name, String email, int salary, int branchid, String role) {
+        return EmployeeModel.addEmployee(name, email, salary, branchid, role, connection);
+    }
+
+
+
+    public static boolean updateEmployee(int employeeId,String name, String email, Branch branch, int salary, String joiningDate, String leavingDate, boolean active, boolean firstTime, String role) {
+        return EmployeeModel.updateEmployee(employeeId,name, email, branch, salary, joiningDate, leavingDate, active, firstTime, role, connection);
+    }
+
     public int insertProductData(int branchId, String productName, String category,
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
                                  int stockQuantity, String manufacturer) throws SQLException {

@@ -9,12 +9,14 @@ public abstract class Employee {
     private String password;
     private String email;
     private int employeeNumber;
-    private String branchCode;
+
     private int salary;
     private String joiningDate;
     private String leavingDate;
     private boolean isActive;
     private boolean firstTime;
+    private Branch branch;
+    private String role;
 
     public String getRole() {
         return role;
@@ -24,8 +26,7 @@ public abstract class Employee {
         this.role = role;
     }
 
-    private Branch branch;
-private String role;
+
 public Employee(){}
     public Employee(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role,Branch branch) {
         this.employeeNumber= employeeID;
@@ -84,14 +85,6 @@ public Employee(){}
         this.email = email;
     }
 
-
-    public String getBranchCode() {
-        return branchCode;
-    }
-
-    public void setBranchCode(String branchCode) {
-        this.branchCode = branchCode;
-    }
 
     public int getSalary() {
         return salary;
