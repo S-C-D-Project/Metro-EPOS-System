@@ -181,6 +181,7 @@ public class UIHandler {
         }
         else{
         ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
+
         return list;
         }
 
@@ -196,7 +197,8 @@ public class UIHandler {
         if(!result){
             return null;
         }
-        ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
+        ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
+
         return list;
     }
 
