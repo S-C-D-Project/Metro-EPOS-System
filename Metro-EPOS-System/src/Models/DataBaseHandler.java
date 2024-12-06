@@ -139,8 +139,10 @@ public static boolean changePassword(String newPassword, int id){
         return VendorModel.deleteProductByVendorId(vendorId, prodcutid);
     }
 
-
-    public static void main(String[] args) {
+    public static ArrayList<Integer> getProfitData(String period) {
+                 return ProfitModel.getProfitData(period);
+    }
+        public static void main(String[] args) {
         // Main method can be used to test methods, if needed
 
     }
