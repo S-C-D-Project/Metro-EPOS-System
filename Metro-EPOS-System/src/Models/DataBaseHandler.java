@@ -115,8 +115,20 @@ public static boolean changePassword(String newPassword, int id){
     public static ArrayList<String> getVendorProducts(int vendorId) {
         return VendorModel.getVendorProducts(vendorId);
     }
+    public static boolean updateProductInfo(int vendorId,int productId,String productName,
+                                            String category, String originalPrice,
+                                            int salePrice, String pricePerUnit) {
+    return VendorModel.updateProductInfo(vendorId,productId,productName,category,originalPrice,salePrice,pricePerUnit);
+    }
+    public static int getProductidbyName(String PrdouctName){
+            return ProductModel.getProductidbyName(PrdouctName);
+    }
+    public static boolean deleteProductByVendorId(int vendorId,int prodcutid){
+        return VendorModel.deleteProductByVendorId(vendorId, prodcutid);
+    }
 
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         // Main method can be used to test methods, if needed
 
     }

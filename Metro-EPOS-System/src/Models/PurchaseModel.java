@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static Models.DataBaseHandler.getSalesTax;
+
 /*
 CREATE TABLE Purchases (
         PurchaseID INT PRIMARY KEY AUTO_INCREMENT,
@@ -31,11 +33,14 @@ public class PurchaseModel {
             OUTPUT INSERTED.ProductID
             WHERE BranchId = ? AND productName = ? AND category = ? AND Manufacturer = ?;
             """;
-
-        String insertProductQuery = """
-            INSERT INTO Product (BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity)
+            double salesTax = getSalesTax();
+            double temporary = salesTax;
+            salesTax = salesTax / 100 * originalPrice;
+            salePrice += (int) salesTax;
+            String insertProductQuery = """
+            INSERT INTO Product (BranchId, productName, category, Manufacturer, originalPrice, salePrice,pricePerUnit, stockQuantity,salesTax,ProductSize)
             OUTPUT INSERTED.ProductID
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1);
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1,?,?);
             """;
 
         String insertPurchaseQuery = """
@@ -77,9 +82,11 @@ public class PurchaseModel {
                         insertStmt.setString(2, productName);
                         insertStmt.setString(3, category);
                         insertStmt.setString(4, manufacturer);
-                        insertStmt.setFloat(5, originalPrice);
+                        insertStmt.setInt(5, (int) originalPrice);
                         insertStmt.setInt(6, salePrice);
-                        insertStmt.setFloat(7, pricePerUnit);
+                        insertStmt.setInt(7, (int) pricePerUnit);
+                        insertStmt.setInt(8, (int) salesTax);
+                        insertStmt.setString(9,"Normal");
 
                         ResultSet insertRs = insertStmt.executeQuery();
                         if (insertRs.next()) {
