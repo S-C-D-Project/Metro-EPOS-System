@@ -59,8 +59,9 @@ public class UIHandler {
         // you can use isNumber function of UIHandler as well for validation
         // If admin is valid It should return the name of the admin, if not then it should return "not"
 
-        superAdmin = SuperAdmin.getInstance(id, pass, "superAdmin");
         if (superAdmin != null) {
+            superAdmin = SuperAdmin.getInstance(id, pass, "superAdmin");
+
             return superAdmin.getName() + "," + superAdmin.getEmployeeNumber();
         } else {
             return "not";
@@ -73,8 +74,9 @@ public class UIHandler {
         // If manager is valid It should return the name,branchID of the manager comma separated,
         // if not then it should return "not"
 
-        branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "branchManager");
         if (branchManager != null) {
+            branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "branchManager");
+
             return branchManager.getName() + "," + branchManager.getEmployeeNumber();
         } else {
             return "not";
