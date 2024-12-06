@@ -112,7 +112,7 @@ public class UIHandler {
         dataEntryOperator.setName(name);
         String branch= DataBaseHandler.getEmployeeBranch(id);
       
-        dataEntryOperator.setBranchid(branch);
+        dataEntryOperator.setBranchid(Integer.parseInt(branch));
         if(result){
             return name+","+branch;
         }
@@ -160,7 +160,7 @@ public class UIHandler {
         // the new product should be added against the vendor and should return the updated list of this vendor
         String[]values=str.split(",");
         String sample_manufaturer="Sample Factory";
-        int branch= Integer.parseInt(dataEntryOperator.getBranchid());
+        int branch= dataEntryOperator.getBranchid();
         DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
                 Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID));
 
@@ -198,7 +198,7 @@ public class UIHandler {
         if(!result){
             return null;
         }
-        ArrayList<String> list = DataBaseHandler.getVendorsList(Integer.parseInt(dataEntryOperator.getBranchid()));
+        ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
         return list;
     }
 

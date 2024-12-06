@@ -24,14 +24,14 @@ public class PurchaseModel {
         String checkProductQuery = """
             SELECT ProductID
             FROM Product
-            WHERE BranchId = ? AND productName = ? AND category = ? AND Manufacturer = ?;
+            Where Branchid=? and productName = ?;
             """;
 
         String updateProductQuery = """
             UPDATE Product
             SET stockQuantity = stockQuantity + 1
             OUTPUT INSERTED.ProductID
-            WHERE BranchId = ? AND productName = ? AND category = ? AND Manufacturer = ?;
+            WHERE BranchId = ? AND productName = ?;
             """;
             double salesTax = getSalesTax();
             double temporary = salesTax;
@@ -55,8 +55,6 @@ public class PurchaseModel {
             try (PreparedStatement checkStmt = con.prepareStatement(checkProductQuery)) {
                 checkStmt.setInt(1, branchId);
                 checkStmt.setString(2, productName);
-                checkStmt.setString(3, category);
-                checkStmt.setString(4, manufacturer);
 
                 ResultSet rs = checkStmt.executeQuery();
 
@@ -65,8 +63,6 @@ public class PurchaseModel {
                     try (PreparedStatement updateStmt = con.prepareStatement(updateProductQuery)) {
                         updateStmt.setInt(1, branchId);
                         updateStmt.setString(2, productName);
-                        updateStmt.setString(3, category);
-                        updateStmt.setString(4, manufacturer);
 
                         ResultSet updateRs = updateStmt.executeQuery();
                         if (updateRs.next()) {
