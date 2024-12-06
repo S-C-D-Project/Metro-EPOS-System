@@ -202,6 +202,46 @@ public class UIHandler {
         return list;
     }
 
+    public static ArrayList<String> getEmployeeInfo(int branchID){
+        // based on branchID it should return employees of that branch
+        ArrayList<String> list = new ArrayList<>();
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        return list;
+    }
+
+    public static ArrayList<String> addEmployeeInfo(int branchID ,String str) {
+        //here I provide with the empID and branchID and updated String (name,salary,phoneNo,role)
+        // it should return the updated employees list of the particular branch;
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        return list;
+    }
+
+    public static ArrayList<String> updateEmployeeInfo(int empID, int branchID ,String str) {
+        //here I provide with the empID and branchID and updated String (name,email,password,salary,phoneNo,role,status)
+        // it should return the updated employees list of the particular branch list;
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        return list;
+    }
+
     public static boolean isNumbers(String line) {
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);

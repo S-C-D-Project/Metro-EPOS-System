@@ -11,7 +11,7 @@ import java.io.IOException;
 public class frame
 {
     private JFrame frame;
-    private String frameIconPath = "Images/FrameIcon.png";
+    private String frameIconPath = "Metro-EPOS-System/Images/FrameIcon.png";
     public frame()
     {
         frame = new JFrame("Metro POS System");

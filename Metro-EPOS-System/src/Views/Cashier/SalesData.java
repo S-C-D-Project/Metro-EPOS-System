@@ -33,8 +33,8 @@ public class SalesData extends Theme {
     private ArrayList<String> list;
     private JLabel branchNumber;
 
-    private String profilePicPath = "Images/CashierLogo.png";
-    private String saleLogoPath = "Images/SalesIconGreen.png";
+    private String profilePicPath = "Metro-EPOS-System/Images/CashierLogo.png";
+    private String saleLogoPath = "Metro-EPOS-System/Images/SalesIconGreen.png";
 
     public SalesData()
     {

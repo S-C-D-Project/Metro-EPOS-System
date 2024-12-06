@@ -30,8 +30,8 @@ public class ExpandedInfo extends Theme {
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
 
-    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
-    private String vendorLogoPath = "Images/VendorInfoIcon.png";
+    private String vendorProfileImgPath = "Metro-EPOS-System/Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Metro-EPOS-System/Images/VendorInfoIcon.png";
 
     public ExpandedInfo()
     {
@@ -467,7 +467,7 @@ public class ExpandedInfo extends Theme {
                     public void mouseClicked(MouseEvent e) {
                         int result = JOptionPane.showConfirmDialog(null, "Delete Product: " + name.getText() + "\nDo you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
                         if (result == JOptionPane.YES_OPTION) {
-                            UIHandler.deleteVendorProduct(vID,catagory.getText(),name.getText(),originalPrice.getText(),salePrice.getText(),pricePerUnit.getText());
+                            list = UIHandler.deleteVendorProduct(vID,catagory.getText(),name.getText(),originalPrice.getText(),salePrice.getText(),pricePerUnit.getText());
                         }
                         refreshPanel(list,f,vID,false);
                     }

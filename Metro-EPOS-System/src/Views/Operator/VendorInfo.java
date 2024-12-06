@@ -35,9 +35,9 @@ public class VendorInfo extends Theme {
     private JLabel branchNumber;
     private JLabel vendorsCount;
 
-    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
-    private String vendorLogoPath = "Images/VendorInfoIcon.png";
-    private String searchIconPath = "Images/searchlogo.png";
+    private String vendorProfileImgPath = "Metro-EPOS-System/Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Metro-EPOS-System/Images/VendorInfoIcon.png";
+    private String searchIconPath = "Metro-EPOS-System/Images/searchlogo.png";
 
     public VendorInfo()
     {
@@ -272,12 +272,12 @@ public class VendorInfo extends Theme {
 
         totalVendors.setBounds(316,216,105,18);
         vendorID.setBounds(351,257,73,24);
-        name.setBounds(458,257,48,24);
-        city.setBounds(558,257,63,24);
+        name.setBounds(460,257,48,24);
+        city.setBounds(580,257,63,24);
         vendorInfo.setBounds(110,283,86,10);
-        Address.setBounds(658,257,77,24);
-        Products.setBounds(773,257,84,24);
-        status.setBounds(861,257,77,24);
+        Address.setBounds(685,257,77,24);
+        Products.setBounds(790,257,84,24);
+        status.setBounds(880,257,77,24);
         vendorsCount.setBounds(424,215,83,21);
 
         add(totalVendors);
@@ -339,7 +339,7 @@ public class VendorInfo extends Theme {
                 vendorID.setText(data[0]);
                 vendorID.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 vendorID.setForeground(new Color(93, 93, 93));
-                vendorID.setBounds(30, 13, 78, 14);
+                vendorID.setBounds(31, 13, 78, 14);
                 vendorID.setHorizontalAlignment(JLabel.CENTER);
                 vendorID.setBorder(BorderFactory.createEmptyBorder());
                 vendorID.setEditable(false);
@@ -349,7 +349,7 @@ public class VendorInfo extends Theme {
                 name.setText(data[1]);
                 name.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 name.setForeground(new Color(93, 93, 93));
-                name.setBounds(128, 12, 75, 18);
+                name.setBounds(109, 12, 119, 18);
                 name.setHorizontalAlignment(JLabel.CENTER);
                 name.setBorder(BorderFactory.createEmptyBorder());
                 name.setEditable(false);
@@ -359,7 +359,7 @@ public class VendorInfo extends Theme {
                 city.setText(data[2]);
                 city.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 city.setForeground(new Color(93, 93, 93));
-                city.setBounds(203, 13, 112, 14);
+                city.setBounds(228, 13, 112, 14);
                 city.setHorizontalAlignment(JLabel.CENTER);
                 city.setBorder(BorderFactory.createEmptyBorder());
                 city.setEditable(false);
@@ -369,7 +369,7 @@ public class VendorInfo extends Theme {
                 address.setText(data[3]);
                 address.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 address.setForeground(new Color(93, 93, 93));
-                address.setBounds(315, 13, 132, 14);
+                address.setBounds(340, 13, 132, 14);
                 address.setHorizontalAlignment(JLabel.CENTER);
                 address.setBorder(BorderFactory.createEmptyBorder());
                 address.setEditable(false);
@@ -379,7 +379,7 @@ public class VendorInfo extends Theme {
                 products.setText(data[4]);
                 products.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
                 products.setForeground(new Color(93, 93, 93));
-                products.setBounds(454, 13, 70, 14);
+                products.setBounds(472, 13, 70, 14);
                 products.setHorizontalAlignment(JLabel.CENTER);
                 products.setBorder(BorderFactory.createEmptyBorder());
                 products.setEditable(false);
@@ -391,7 +391,7 @@ public class VendorInfo extends Theme {
                 JComboBox<String> status = new JComboBox<>(array);
                 status.setEnabled(false);
                 status.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
-                status.setBounds(547, 13, 70, 16);
+                status.setBounds(561, 13, 70, 16);
                 status.setBorder(BorderFactory.createEmptyBorder());
                 status.setSelectedItem(data[5]);
                 status.setFocusable(false);
@@ -502,6 +502,10 @@ public class VendorInfo extends Theme {
         if (scroll != null) {
             remove(scroll);
             vendorsCount.setText("");
+            typeName.setText("  Type Name");
+            enterCityName.setText("  Enter City Name");
+            typeAddress.setText("  Type Address");
+            searchText.setText("Search");
             super.removeInfoField();
         }
         setValues(newList,f,expandedInfo);
@@ -514,10 +518,12 @@ public class VendorInfo extends Theme {
         vendorsCount.setText("");
         user.setText("");
         branchNumber.setText("");
-        typeName.setText("");
-        typeAddress.setText("");
-        enterCityName.setText("");
-        searchText.setText("");
+        typeName.setText("  Type Name");
+        enterCityName.setText("  Enter City Name");
+        typeAddress.setText("  Type Address");
+        searchText.setText("Search");
+        revalidate();
+        repaint();
     }
 
     public String getVendorName(){return typeName.getText();}
