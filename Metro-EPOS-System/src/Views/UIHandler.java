@@ -1,9 +1,7 @@
 package Views;
 
 import Controllers.*;
-import Models.DataBaseConnection;
 import Models.DataBaseHandler;
-import Models.EmployeeModel;
 import Models.VendorModel;
 
 import java.io.File;
@@ -229,6 +227,9 @@ public class UIHandler {
     }
     public static boolean addEmployee(String name, String email,  int salary  ,int branchid, String role) {
         return branchManager.addEmployee(name, email, salary, branchid, role);
+    }
+    public static boolean checkInternetConnection(){
+        return InternetConnection.isInternetConnected();
     }
     public static boolean updateEmployee(Employee employee) {
         return branchManager.updateEmployee(employee);
