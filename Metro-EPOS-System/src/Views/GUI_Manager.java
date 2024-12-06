@@ -7,6 +7,7 @@ import Views.LogIn.AdminLogIn;
 import Views.LogIn.CashierLogIn;
 import Views.LogIn.DataOperatorLogIn;
 import Views.LogIn.ManagerLogIn;
+import Views.Manager.EmployeeInfo;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
 
@@ -28,6 +29,7 @@ public class GUI_Manager
     private ManagerLogIn managerLogIn;
     private CashierLogIn cashierLogIn;
     private DataOperatorLogIn dataOperatorLogIn;
+    private EmployeeInfo employeeInfo;
 
     public GUI_Manager() {
         f = new frame();
@@ -41,7 +43,7 @@ public class GUI_Manager
         dataOperatorLogIn = new DataOperatorLogIn();
         adds = new addOns(f.getFrame());
         sales = new SalesData();
-
+        employeeInfo = new EmployeeInfo();
     }
 
     public void LogIn() {
@@ -57,18 +59,23 @@ public class GUI_Manager
         adminLogIn.getLogInButton().addActionListener(e->{
             String id = adminLogIn.getID();
             String pass = adminLogIn.getPass();
+            if(!UIHandler.isNumbers(id) || id.trim().isEmpty()){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid ID","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else {
 
-            String repsone = null;
-            try {
-                repsone = UIHandler.isValidAdmin(id,pass);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                // admin panels
+                String repsone = null;
+                try {
+                    repsone = UIHandler.isValidAdmin(id, pass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if (repsone.equals("not")) {
+                    JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    adminLogIn.resetFields();
+                    // admin panels
+                }
             }
         });
         adminLogIn.getManagerButton().addActionListener(this::ActionPerformer);
@@ -80,18 +87,23 @@ public class GUI_Manager
             String id = managerLogIn.getID();
             String pass = managerLogIn.getPass();
 
-            String repsone = null;
-            try {
-                repsone = UIHandler.isValidManager(id,pass);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            if(!UIHandler.isNumbers(id) || id.trim().isEmpty()){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid ID","Error",JOptionPane.ERROR_MESSAGE);
             }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                String[] data = repsone.split(",");
-                ManagerPanels(data[0],data[1]);
+            else {
+                String repsone = null;
+                try {
+                    repsone = UIHandler.isValidManager(id, pass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if (repsone.equals("not")) {
+                    JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String[] data = repsone.split(",");
+                    managerLogIn.resetFields();
+                    ManagerPanels(data[0], data[1]);
+                }
             }
         });
         managerLogIn.getAdminButton().addActionListener(this::ActionPerformer);
@@ -103,18 +115,24 @@ public class GUI_Manager
             String id = cashierLogIn.getID();
             String pass = cashierLogIn.getPass();
 
-            String repsone = null;
-            try {
-                repsone = UIHandler.isValidCashier(id,pass);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            if(!UIHandler.isNumbers(id) || id.trim().isEmpty()){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid ID","Error",JOptionPane.ERROR_MESSAGE);
             }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                String[] data = repsone.split(",");
-                CashierPanels(data[0],data[1]);
+            else {
+
+                String repsone = null;
+                try {
+                    repsone = UIHandler.isValidCashier(id, pass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if (repsone.equals("not")) {
+                    JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String[] data = repsone.split(",");
+                    cashierLogIn.resetFields();
+                    CashierPanels(data[0], data[1]);
+                }
             }
         });
         cashierLogIn.getAdminButton().addActionListener(this::ActionPerformer);
@@ -126,19 +144,23 @@ public class GUI_Manager
             String id = dataOperatorLogIn.getID();
             String pass = dataOperatorLogIn.getPass();
 
-            String repsone = null;
-            try {
-                repsone = UIHandler.isValidDataOperator(id,pass);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            if(!UIHandler.isNumbers(id) || id.trim().isEmpty()){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid ID","Error",JOptionPane.ERROR_MESSAGE);
             }
-            if(repsone.equals("not")){
-                JOptionPane.showMessageDialog(f.getFrame(),"Account Not Found","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                String[] data = repsone.split(",");
-                System.out.println("Name: " + data[0] + "\nBranch ID: " + data[1]);
-                DataOpeatorPanels(data[0],data[1]);
+            else {
+                String repsone = null;
+                try {
+                    repsone = UIHandler.isValidDataOperator(id, pass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if (repsone.equals("not")) {
+                    JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String[] data = repsone.split(",");
+                    dataOperatorLogIn.resetFields();
+                    DataOpeatorPanels(data[0], data[1]);
+                }
             }
         });
         dataOperatorLogIn.getAdminButton().addActionListener(this::ActionPerformer);
@@ -151,7 +173,49 @@ public class GUI_Manager
     }
 
     public void ManagerPanels(String name, String branchID){
+        employeeInfo.setNameBranch(name,branchID);
+        employeeInfo.refreshPanel(UIHandler.getEmployeeInfo(Integer.parseInt(branchID)),f);
+        f.replacePanel(oldPanel,employeeInfo.getPanel());
+        oldPanel=employeeInfo.getPanel();
 
+        //-------------------EMPLOYEE INFO PANEL LOGIC-----------------------------//
+        employeeInfo.getLogoutButton().addActionListener(e->{
+            employeeInfo.resetFields();
+            LogIn();
+        });
+        employeeInfo.getAddButton().addActionListener(e->{
+            String empName = employeeInfo.getEmpName();
+            String newEmpSalary = employeeInfo.getEmpSalary();
+            String newEmpPhoneNo = employeeInfo.getEmpNumber();
+            String role = employeeInfo.getEmployeeRole();
+
+            if(empName.trim().isEmpty() || empName.equals("  Type Name") || newEmpSalary.trim().isEmpty() || newEmpSalary.equals("  Enter Salary") || newEmpPhoneNo.trim().isEmpty() || newEmpPhoneNo.equals("  Type Phone No.")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Employee Info","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String str = empName+","+newEmpSalary+","+newEmpPhoneNo+","+role;
+                ArrayList<String> newList = UIHandler.addEmployeeInfo(Integer.parseInt(branchID),str);
+                employeeInfo.refreshPanel(newList,f);
+            }
+        });
+        employeeInfo.getSearchButton().addActionListener(e->{
+            String search = employeeInfo.getSearched();
+            if(search.trim().equals("Search") || search.trim().isEmpty()){
+                employeeInfo.refreshPanel(UIHandler.getEmployeeInfo(Integer.parseInt(branchID)),f);
+            }
+            else
+            {
+                ArrayList<String> newList = new ArrayList<>();
+                ArrayList<String> oldList = employeeInfo.getList();
+                for(int i=0; i<oldList.size(); i++){
+                    String[] data = oldList.get(i).split(",");
+                    if(data[0].equals(search) || data[1].equals(search) || data[2].equals(search) || data[3].equals(search) || data[4].equals(search) || data[5].equals(search) || data[6].equals(search) || data[7].equals(search)){
+                        newList.add(oldList.get(i));
+                    }
+                }
+                employeeInfo.refreshPanel(newList,f);
+            }
+        });
     }
 
     public void CashierPanels(String name, String branchID)
@@ -278,6 +342,8 @@ public class GUI_Manager
         });
         operatorExpandedInfo.getBackButton().addActionListener(e->{
             operatorExpandedInfo.resetFields();
+            ArrayList<String> vendorsList = UIHandler.getVendorsList(Integer.parseInt(branchID));
+            vendor.refreshPanel(vendorsList,f,operatorExpandedInfo);
             f.replacePanel(operatorExpandedInfo.getPanel(),vendor.getPanel());
             oldPanel = vendor.getPanel();
         });
@@ -295,6 +361,7 @@ public class GUI_Manager
         oldPanel = vendor.getPanel();
 
         vendor.getLogoutButton().addActionListener(e->{
+            vendor.resetFields();
             LogIn();
         });
         vendor.getAddButton().addActionListener(e->{
@@ -303,8 +370,13 @@ public class GUI_Manager
             String city = vendor.getVendorCity();
             int bID = vendor.getBranchID();
 
-            ArrayList<String> newList = UIHandler.addVendor(bID,vName,vAddress,city);
-            vendor.refreshPanel(newList,f,operatorExpandedInfo);
+            if(vName.trim().isEmpty() || vName.equals("  Type Name") || city.trim().isEmpty() || city.equals("  Enter City Name") || vAddress.trim().isEmpty() || vAddress.equals("  Type Address")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Information Entered","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                ArrayList<String> newList = UIHandler.addVendor(bID,vName,vAddress,city);
+                vendor.refreshPanel(newList,f,operatorExpandedInfo);
+            }
         });
         vendor.getSearchButton().addActionListener(e->{
             String search = vendor.getSearched();
