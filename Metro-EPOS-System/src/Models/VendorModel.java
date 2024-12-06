@@ -4,6 +4,8 @@ import Controllers.Vendor;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static Models.DataBaseHandler.getSalesTax;
+
 public class VendorModel {
 
 
@@ -155,6 +157,144 @@ public class VendorModel {
             System.out.println("Error inserting vendor: ");
             return false;
         }
+    }
+    public static String getVendorName(int vendorId) {
+        String vendorName = null;
+
+
+        String query = "SELECT VendorName FROM Vendor WHERE vendorId = ?";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(query)) {
+
+
+            stmt.setInt(1, vendorId);
+
+
+            ResultSet rs = stmt.executeQuery();
+
+
+            if (rs.next()) {
+
+                vendorName = rs.getString("VendorName");
+            } else {
+
+                System.out.println("No vendor found with ID: " + vendorId);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error fetching vendor name: ");
+        }
+
+        return vendorName;
+    }
+
+    public static ArrayList<String> getVendorProducts(int vendorId) {
+        ArrayList<String> productsList = new ArrayList<>();
+
+        String getProductIdsQuery = "SELECT DISTINCT p.productId FROM Purchase pur " +
+                "JOIN Product p ON pur.productId = p.productId " +
+                "WHERE pur.VendorId = ?";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement stmt = con.prepareStatement(getProductIdsQuery)) {
+
+            stmt.setInt(1, vendorId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<Integer> productIds = new ArrayList<>();
+            while (rs.next()) {
+                productIds.add(rs.getInt("productId"));
+            }
+            for (Integer productId : productIds) {
+                String getProductDetailsQuery = "SELECT * FROM Product WHERE productId = ?";
+
+                try (PreparedStatement productStmt = con.prepareStatement(getProductDetailsQuery)) {
+                    productStmt.setInt(1, productId);
+                    ResultSet productRs = productStmt.executeQuery();
+
+                    if (productRs.next()) {
+                        String productDetails =
+
+                                productRs.getString("category") + "," + productRs.getString("productName") + "," +
+                                productRs.getInt("originalPrice") + "," +
+                                productRs.getInt("salePrice") + "," +
+                                productRs.getInt("pricePerUnit") + "," +
+                                productRs.getString("Manufacturer") ;
+
+                        productsList.add(productDetails);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error fetching vendor products: "+e.getMessage());
+        }
+
+        return productsList;
+    }
+    public static boolean updateProductInfo(int vendorId,int productId,String productName,
+                                            String category, String originalPrice,
+                                            int salePrice, String pricePerUnit) {
+
+
+        String checkProductQuery = "SELECT COUNT(*) FROM Purchase WHERE VendorId = ? AND productId = ?";
+
+        String updateProductQuery = "UPDATE Product SET productName = ?, category = ?," +
+                "originalPrice = ?, salePrice = ?, pricePerUnit = ?,"+
+                "salestax = ? WHERE productId = ? AND BranchId = (SELECT BranchId FROM Vendor WHERE vendorId = ?)";
+
+
+        try (Connection conn=DataBaseConnection.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkProductQuery);
+             PreparedStatement updateStmt = conn.prepareStatement(updateProductQuery);
+             ){
+
+            checkStmt.setInt(1, vendorId);
+            checkStmt.setInt(2, productId);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+
+                updateStmt.setString(1, productName);
+                updateStmt.setString(2, category);
+                updateStmt.setInt(3, Integer.parseInt(originalPrice));
+                double salesTax = getSalesTax();
+                double temporary = salesTax;
+                salesTax = salesTax / 100 * Integer.parseInt(originalPrice);
+                salePrice += (int) salesTax;
+                updateStmt.setInt(4, salePrice);
+                updateStmt.setInt(5, Integer.parseInt(pricePerUnit));
+                updateStmt.setDouble(6, salesTax);
+                updateStmt.setInt(7, productId);
+                updateStmt.setInt(8, vendorId);
+
+                int rowsUpdated = updateStmt.executeUpdate();
+                return rowsUpdated > 0;
+            } else {
+
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in updating prdoucts info");
+            return false;
+        }
+    }
+    public static boolean deleteProductByVendorId(int vendorId,int prodcutid){
+        String deleteQuery = "DELETE FROM Purchase WHERE Productid = ? And VendorId = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+
+            preparedStatement.setInt(1, prodcutid);
+            preparedStatement.setInt(2, vendorId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 }

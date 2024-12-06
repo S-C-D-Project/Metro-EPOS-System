@@ -67,4 +67,20 @@ public static void DecreaseProductQuantity(int pid,int qty,Connection connection
  } catch (SQLException e) {
         e.printStackTrace();
     }
-}}
+}
+    public static int getProductidbyName(String PrdouctName){
+        String sql="Select productid from Product where productName = ?";
+        try(Connection conn=DataBaseConnection.getConnection();
+        PreparedStatement ps=conn.prepareStatement(sql)) {
+            ps.setString(1,PrdouctName);
+            ResultSet resultSet=ps.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt("productid");
+            }
+        }
+        catch (SQLException e) {
+           return -1;
+        }
+        return -1;
+    }
+}

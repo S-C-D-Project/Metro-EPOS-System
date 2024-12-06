@@ -103,14 +103,16 @@ public class UIHandler {
         // you can use isNumber function of UIHandler as well for validation
         // If operator is valid It should return the name,branchID of the operator comma separated,
         // if not then it should return "not
-            dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+        dataEntryOperator=new DataEntryOperator();
+        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
 
 
         boolean result= DataBaseHandler.isValidDataOperator(id,pass);
         String name= DataBaseHandler.getEmployeeName(id);
+        dataEntryOperator.setName(name);
         String branch= DataBaseHandler.getEmployeeBranch(id);
-        dataEntryOperator=new DataEntryOperator();
-        dataEntryOperator.setBranchid(Integer.parseInt(branch));
+      
+        dataEntryOperator.setBranchid(branch);
         if(result){
             return name+","+branch;
         }
@@ -150,20 +152,19 @@ public class UIHandler {
     public static ArrayList<String> getVendorProducts(int Vid) {
         // I provide vendor ID and I get all its products in comma separate
         // list like (Category,Name,Original Price,Sale Price,Price Per Units)
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        return list;
+        return DataBaseHandler.getVendorProducts(Vid);
     }
 
     public static ArrayList<String> addNewVendorProduct(int vID, String str) {
         // I will provide the Vendor ID and Product in string comma separated (Catagory,Name,Original Price, Sale Price, Price Per Unit)
         // the new product should be added against the vendor and should return the updated list of this vendor
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Vegetable,Potato,300,500,20000");
+        String[]values=str.split(",");
+        String sample_manufaturer="Sample Factory";
+        int branch= Integer.parseInt(dataEntryOperator.getBranchid());
+        DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
+                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID));
+
+       ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
         return list;
     }
 
@@ -171,27 +172,33 @@ public class UIHandler {
         // here you get Vendor ID with its product name to update info of
         // in str we get update data with comma seperated (Catagory,Name,Original Price, Sales Price, Price Per Unit)
         // this function updates the product and return the update list of particular vendor products
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
+            // here you get Vendor ID with its product name to update info of
+            // in str we get update data with comma seperated (Catagory,Name,Original Price, Sales Price, Price Per Unit)
+            // this function updates the product and return the update list of particular vendor products
+        String[]values=str.split(",");
+        int productid=DataBaseHandler.getProductidbyName(productName.trim());
+        boolean result=DataBaseHandler.updateProductInfo(vID,productid,values[1],values[0],values[2], Integer.parseInt(values[3]),values[4]);
+        if(!result) {
+            return null;
+        }
+        else{
+        ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
         return list;
+        }
+
+
     }
 
     public static ArrayList<String> deleteVendorProduct(int id, String catagory, String name, String originalPrice, String salesPrice, String pricePerUnit) {
         // here the product of a vendor should be deleted
         // I provide Vendor ID, catagory, name and many other values so you can use any of these or all of these
         // for deletion, after that I should get the updated list of particular vendor products
-
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
-        list.add("Food,Milk,300,500,20000");
+        int prodid=DataBaseHandler.getProductidbyName(name);
+        boolean result=DataBaseHandler.deleteProductByVendorId(id,prodid);
+        if(!result){
+            return null;
+        }
+        ArrayList<String> list = DataBaseHandler.getVendorsList(Integer.parseInt(dataEntryOperator.getBranchid()));
         return list;
     }
 
