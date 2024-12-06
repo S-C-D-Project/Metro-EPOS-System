@@ -1,9 +1,7 @@
 package Models;
 import Controllers.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 
 public class EmployeeModel {
     public static Object validateEmployee(String employeeNumber, String password, Connection connection, String choice) {
@@ -55,13 +53,50 @@ public class EmployeeModel {
             statement.setString(2, newPassword);
             ResultSet resultSet = statement.executeQuery();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return  false;
         }
         return true;
     }
+    public static boolean updateEmployee(int employeeId,String name, String email, Branch branch, int salary, String joiningDate, String leavingDate, boolean active, boolean firstTime, String role, Connection connection) {
+        try {
+            String sql = "EXEC UPDATEEMPLOYEE ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setInt(1, employeeId);
+            stmt.setString(2, name);
+            stmt.setString(3, email);
+            stmt.setInt(4, branch.getId());
+            stmt.setInt(5, salary);
+            stmt.setDate(6, Date.valueOf(joiningDate));
+            stmt.setDate(7, Date.valueOf(leavingDate));
+            stmt.setBoolean(8, active);
+            stmt.setBoolean(9, firstTime);
+            stmt.setString(10, role);
+
+            return stmt.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static boolean addEmployee(String name, String email, int salary, int branchid, String role,  Connection connection) {
+        try {
+            String sql = "{ ? = call ADDEMPOLYEE(?, ?, ?, ?, ?) }";
+            PreparedStatement stmt = connection.prepareStatement(sql);
 
 
+            stmt.setString(1, name);
+            stmt.setString(2, email);
+            stmt.setInt(3, salary);
+            stmt.setInt(4, branchid);
+            stmt.setString(5, role);
 
+            return stmt.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static boolean isValidDataOperator(String id, String pass) {
         boolean isValid = false;
         String sql = "SELECT * FROM employee WHERE EmployeeID = ? AND Password = ? AND Role LIKE 'DataEntryOperator'";
@@ -74,7 +109,7 @@ public class EmployeeModel {
             stmt.setString(2, pass);
 
 
-             try (ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = stmt.executeQuery()) {
 
                 if (rs.next()) {
                     isValid = true;
@@ -131,4 +166,9 @@ public class EmployeeModel {
     }
 
 }
+
+
+
+
+
 
