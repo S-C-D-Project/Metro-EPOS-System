@@ -5,17 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/EmployeeInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/Bacground.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/Bacground.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/CashierLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/CashierLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/DataOperatorProfile.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/DataOperatorProfile.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/EmpInfoLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/EmpInfoLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/FrameIcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/FrameIcon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/Lock.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/Lock.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/LogoutLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/LogoutLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/ManagerLogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/ManagerLogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/SalesIconGreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/SalesIconGreen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/VendorInfoIcon.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/VendorInfoIcon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/branchWhite.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/branchWhite.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/notselectedAdmin.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/notselectedAdmin.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/notselectedCashier.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/notselectedCashier.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/notselectedManager.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/notselectedManager.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/notselectedOperator.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/notselectedOperator.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/profile.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/profile.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/searchlogo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/searchlogo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/selectedAdmin.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/selectedAdmin.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/selectedCashier.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/selectedCashier.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/selectedManager.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/selectedManager.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/Images/selectedOperator.png" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/resources/Images/selectedOperator.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/LogInTheme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/LogInTheme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/EmployeeInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/EmployeeInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/ExpandedInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/ExpandedInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,12 +80,24 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\Metro-EPOS-System\Metro-EPOS-System\Images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Asfandyar Ali\Desktop\Metro-EPOS-System\Metro-EPOS-System\src\main\resources" />
+      <recent name="C:\Users\Asfandyar Ali\Desktop\Metro-EPOS-System\Metro-EPOS-System\src\main" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Views.Manager" />
@@ -106,6 +140,8 @@
       <option name="presentableId" value="Default" />
       <updated>1731689114525</updated>
       <workItem from="1733497573172" duration="9430000" />
+      <workItem from="1733510342512" duration="6023000" />
+      <workItem from="1733517984277" duration="2193000" />
     </task>
     <servers />
   </component>
