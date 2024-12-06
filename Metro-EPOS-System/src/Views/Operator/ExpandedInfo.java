@@ -1,11 +1,15 @@
 package Views.Operator;
 import Views.Decorate.Theme;
 import Views.UIHandler;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -30,8 +34,8 @@ public class ExpandedInfo extends Theme {
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
 
-    private String vendorProfileImgPath = "Metro-EPOS-System/Images/DataOperatorProfile.png";
-    private String vendorLogoPath = "Metro-EPOS-System/Images/VendorInfoIcon.png";
+    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Images/VendorInfoIcon.png";
 
     public ExpandedInfo()
     {
@@ -84,12 +88,23 @@ public class ExpandedInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon(vendorLogoPath).getImage();
-        Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
-        logoLabel.setBounds(76, 278, 20, 20);
-        add(logoLabel);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(vendorLogoPath)) {
+            if (is != null) {
+                vendorLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + vendorLogoPath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (vendorLogo != null) {
+            Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(76, 278, 20, 20);
+            add(logoLabel);
+        }
     }
+
 
     private void setButtons(){
         logoutButton = new JButton();

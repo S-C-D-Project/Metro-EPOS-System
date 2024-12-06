@@ -452,6 +452,7 @@ public class GUI_Manager
         // UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
         //       "EMP123", "BR001", 50000, "01/01/2020",
         //     "N/A", true, branch, true);
+        System.out.println(System.getProperty("user.dir"));
         GUI_Manager g = new GUI_Manager();
         g.LogIn();
     }
