@@ -49,9 +49,13 @@ ProductModel.DecreaseProductQuantity(pid,qty,connection);
         return EmployeeModel.addEmployee(name, email, salary, branchid, role, connection);
     }
 
-
-
-    public static boolean updateEmployee(int employeeId,String name, String email, Branch branch, int salary, String joiningDate, String leavingDate, boolean active, boolean firstTime, String role) {
+public static ArrayList<String> getProductStockStatus(int branchid){
+        return ProductModel.getProductStockStatus(branchid);
+}
+    public static ArrayList<String> Bills() {
+    return ProfitModel.Bills();
+    }
+        public static boolean updateEmployee(int employeeId,String name, String email, Branch branch, int salary, String joiningDate, String leavingDate, boolean active, boolean firstTime, String role) {
         return EmployeeModel.updateEmployee(employeeId,name, email, branch, salary, joiningDate, leavingDate, active, firstTime, role, connection);
     }
 

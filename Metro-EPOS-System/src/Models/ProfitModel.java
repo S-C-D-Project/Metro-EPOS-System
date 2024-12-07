@@ -191,6 +191,40 @@ public class ProfitModel {
 
         return result;
     }
+    public static ArrayList<String> Bills(){
+        String sql = "SELECT * FROM bill";
+        ArrayList<String> bills = new ArrayList<>();
+
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                // Fetch all columns as strings
+                String billId = rs.getString("billid");
+                String cashAmount = rs.getString("cashamount");
+                String returnAmount = rs.getString("returnamount");
+                String totalBill = rs.getString("totalbill");
+                String additionalCharges = rs.getString("additionalcharges");
+                String discount = rs.getString("discount");
+                String billDate = rs.getString("billdate");
+                String salesTaxAmount = rs.getString("salesTaxAmount");
+
+                // Create a concatenated string for this record
+                String billRecord = String.format("BillID: %s, CashAmount: %s, ReturnAmount: %s, TotalBill: %s, " +
+                                "AdditionalCharges: %s, Discount: %s, BillDate: %s, SalesTaxAmount: %s",
+                        billId, cashAmount, returnAmount, totalBill, additionalCharges, discount, billDate, salesTaxAmount);
+
+                // Add the record to the list
+                bills.add(billRecord);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error fetching bills: " + e.getMessage());
+        }
+
+        return bills;
+    }
 
 
 }
