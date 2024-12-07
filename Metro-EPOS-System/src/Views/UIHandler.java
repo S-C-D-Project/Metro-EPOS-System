@@ -22,6 +22,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 
 public class UIHandler {
@@ -259,6 +262,52 @@ public class UIHandler {
         list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
+
+    public static ArrayList<String> getStocksDataofBranch(int branchID)
+    {
+        // i provide branchID and should get the (productsName,Stocks status). If stocks are 0
+        // it should provide Out of Stock as status
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Bread,20");
+        list.add("Apple,45");
+        list.add("Eggs,5");
+        list.add("Keyboard,Out of Stock");
+        list.add("Oven,10");
+        return list;
+    }
+
+    public static int getBranchSales(int branchID,String type) {
+        //I will provide with the branch id and i should get the branch Sales and in type
+        //i will specify if it is daily,weekly,monthly,yearly
+        return 100;
+    }
+    public static int getBranchRemaingingStock(int branchID,String type) {
+        //I will provide with the branch id and i should get the branch remaining stocks
+        // and in type i will specify if it is daily,weekly,monthly,yearly
+        return 5000;
+    }
+    public static int getBranchProfit(int branchID,String type) {
+        //I will provide with the branch id and i should get the branch profit and in type
+        //i will specify if it is daily,weekly,monthly,yearly
+        return 5000;
+    }
+
+    public static int getBranchSalesRange(int branchID,String start,String end) {
+        //I will provide with the branch id and i should get the branch Sales and
+        // with start and end dates
+        return 200;
+    }
+    public static int getBranchRemaingingStockRange(int branchID,String start,String end) {
+        //I will provide with the branch id and i should get the branch remaining stocks
+        // with start and end dates
+        return 200;
+    }
+    public static int getBranchProfitRange(int branchID,String start,String end) {
+        //I will provide with the branch id and i should get the branch profit with
+        // start and end dates
+        return 200;
+    }
+
     //time can be daily, weekly, monthly or yearly, if time given is wrong it returns null
     //Chart types are line and bar
     public static ChartPanel DisplayChart(String Time, String chartType) {
@@ -492,21 +541,18 @@ public class UIHandler {
 
 
 //Guide on how to use
-/*
-    public static void main(String[] args) {
-        ChartPanel lineChartPanel = DisplayChartRanged("15/11/2024","15/11/2024","bar");
-  //   ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","01/01/2025","bar");
-      //  ChartPanel barChartPanel = DisplayChartRanged("02/02/2024","03/08/2024","line");
-        JFrame frame = new JFrame("Profit Data Charts");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new java.awt.GridLayout(1, 2));
-        frame.getContentPane().add(lineChartPanel);
-       // frame.getContentPane().add(barChartPanel);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
- */
+//    public static void main(String[] args) {
+//        ChartPanel lineChartPanel = DisplayChartRanged("15/11/2024","15/11/2024","bar");
+//  //   ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","01/01/2025","bar");
+//      //  ChartPanel barChartPanel = DisplayChartRanged("02/02/2024","03/08/2024","line");
+//        JFrame frame = new JFrame("Profit Data Charts");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setLayout(new java.awt.GridLayout(1, 2));
+//        frame.getContentPane().add(lineChartPanel);
+//       // frame.getContentPane().add(barChartPanel);
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
 
 
 
@@ -524,6 +570,25 @@ public class UIHandler {
             }
         }
         return true;
+    }
+    public static boolean isValidDate(String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate.parse(dateStr, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+    public static boolean isStartDateBeforeOrEqual(String startDateStr, String endDateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate startDate = LocalDate.parse(startDateStr, formatter);
+            LocalDate endDate = LocalDate.parse(endDateStr, formatter);
+            return !startDate.isAfter(endDate);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     public static boolean changePasswordCashier(String newPassword) throws SQLException {

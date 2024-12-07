@@ -3,6 +3,7 @@ package Views.Manager;
 import Views.Decorate.Theme;
 import Views.Frame.frame;
 import Views.UIHandler;
+import org.jfree.chart.ChartPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class BranchInfo extends Theme {
+    frame f2;
     private JLabel user;
     private JLabel branchID;
 
@@ -42,6 +44,9 @@ public class BranchInfo extends Theme {
     private JLabel label1;
     private JLabel label2;
     private JLabel label3;
+
+    private ChartPanel chartPanel;
+    private String selectedTime;
 
     private String managerProfileImgPath = "Images/ManagerLogo.png";
     private String employeeInfoPath = "Images/EmpInfoWhite.png";
@@ -216,6 +221,7 @@ public class BranchInfo extends Theme {
     private void setFilterLabel()
     {
         JLabel label = new JLabel();
+        selectedTime = "daily";
         label.setOpaque(true);
         label.setBackground(new Color(217,217,217));
         label.setBounds(675,160,278,38);
@@ -244,44 +250,49 @@ public class BranchInfo extends Theme {
             @Override
             public void mouseClicked(MouseEvent e)
             {
+                selectedTime = "daily";
                 today.setForeground(new Color(53,188,78));
                 week.setForeground(Color.BLACK);
                 month.setForeground(Color.BLACK);
                 year.setForeground(Color.BLACK);
-                //perform operation
+
+                refreshPanel(list,f2,UIHandler.getBranchSales(Integer.parseInt(branchNumber.getText()),"daily"),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchNumber.getText()),"daily"),UIHandler.getBranchProfit(Integer.parseInt(branchNumber.getText()),"daily"),UIHandler.DisplayChart("daily","bar"));
             }
         });
         week.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e)
             {
+                selectedTime = "weekly";
                 week.setForeground(new Color(53,188,78));
                 today.setForeground(Color.BLACK);
                 month.setForeground(Color.BLACK);
                 year.setForeground(Color.BLACK);
-                //perform operation
+                refreshPanel(list,f2,UIHandler.getBranchSales(Integer.parseInt(branchNumber.getText()),"weekly"),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchNumber.getText()),"weekly"),UIHandler.getBranchProfit(Integer.parseInt(branchNumber.getText()),"weekly"),UIHandler.DisplayChart("weekly","bar"));
             }
         });
         month.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e)
             {
+                selectedTime = "monthly";
                 month.setForeground(new Color(53,188,78));
                 week.setForeground(Color.BLACK);
                 today.setForeground(Color.BLACK);
                 year.setForeground(Color.BLACK);
-                //perform operation
+                refreshPanel(list,f2,UIHandler.getBranchSales(Integer.parseInt(branchNumber.getText()),"monthly"),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchNumber.getText()),"monthly"),UIHandler.getBranchProfit(Integer.parseInt(branchNumber.getText()),"monthly"),UIHandler.DisplayChart("monthly","bar"));
             }
         });
         year.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e)
             {
+                selectedTime = "yearly";
                 year.setForeground(new Color(53,188,78));
                 week.setForeground(Color.BLACK);
                 month.setForeground(Color.BLACK);
                 today.setForeground(Color.BLACK);
-                //perform operation
+                refreshPanel(list,f2,UIHandler.getBranchSales(Integer.parseInt(branchNumber.getText()),"yearly"),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchNumber.getText()),"yearly"),UIHandler.getBranchProfit(Integer.parseInt(branchNumber.getText()),"yearly"),UIHandler.DisplayChart("yearly","line"));
             }
         });
 
@@ -293,7 +304,7 @@ public class BranchInfo extends Theme {
     }
 
     private void setFields(){
-        start = new JTextField("dd/MM/yy");
+        start = new JTextField("dd/MM/yyyy");
         start.setHorizontalAlignment(JTextField.CENTER);
         start.setBounds(1038,178,117,26);
         start.setForeground(new Color(173,173,173));
@@ -303,20 +314,20 @@ public class BranchInfo extends Theme {
         start.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (start.getText().equals("dd/MM/yy")) {
+                if (start.getText().equals("dd/MM/yyyy")) {
                     start.setText("");
                 }
             }
             @Override
             public void focusLost(FocusEvent e) {
                 if (start.getText().isEmpty()) {
-                    start.setText("dd/MM/yy");
+                    start.setText("dd/MM/yyyy");
                 }
             }
         });
         add(start);
 
-        end = new JTextField("dd/MM/yy");
+        end = new JTextField("dd/MM/yyyy");
         end.setHorizontalAlignment(JTextField.CENTER);
         end.setBounds(1199,178,117,26);
         end.setForeground(new Color(173,173,173));
@@ -326,14 +337,14 @@ public class BranchInfo extends Theme {
         end.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (end.getText().equals("dd/MM/yy")) {
+                if (end.getText().equals("dd/MM/yyyy")) {
                     end.setText("");
                 }
             }
             @Override
             public void focusLost(FocusEvent e) {
                 if (end.getText().isEmpty()) {
-                    end.setText("dd/MM/yy");
+                    end.setText("dd/MM/yyyy");
                 }
             }
         });
@@ -367,7 +378,7 @@ public class BranchInfo extends Theme {
 
         JLabel text1 = new JLabel("Rs. " + value);
         text1.setForeground(Color.BLACK);
-        text1.setFont(new Font("Arial", Font.BOLD, 30));
+        text1.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 30));
         text1.setBounds(24,56,278,49);
         label1.add(text1);
 
@@ -402,7 +413,7 @@ public class BranchInfo extends Theme {
 
         JLabel text2 = new JLabel(value+" Units");
         text2.setForeground(Color.BLACK);
-        text2.setFont(new Font("Arial", Font.BOLD, 30));
+        text2.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 30));
         text2.setBounds(24,56,278,49);
         label2.add(text2);
 
@@ -437,11 +448,17 @@ public class BranchInfo extends Theme {
 
         JLabel text3 = new JLabel("Rs. " + value);
         text3.setForeground(Color.BLACK);
-        text3.setFont(new Font("Arial", Font.BOLD, 30));
+        text3.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 30));
         text3.setBounds(24,56,278,49);
         label3.add(text3);
 
         add(label3);
+    }
+
+    public void setChartPanel(ChartPanel p){
+        chartPanel = p;
+        chartPanel.setBounds(741,407,578,290);
+        add(chartPanel);
     }
 
     public void setValues(ArrayList<String> l, frame f)
@@ -475,7 +492,12 @@ public class BranchInfo extends Theme {
                 pName.setFocusable(false);
 
                 JTextField status = new JTextField();
-                status.setText(data[1] + " Units");
+                if(data[1].equals("Out of Stock")){
+                    status.setText(data[1]);
+                }
+                else{
+                    status.setText(data[1] + " Units");
+                }
                 status.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 13));
                 if(data[1].equals("Out of Stock")){
                     status.setForeground(new Color(246, 28, 28));
@@ -517,18 +539,21 @@ public class BranchInfo extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, frame f, int sales, int remains, int profit) {
+    public void refreshPanel(ArrayList<String> newList, frame f, int sales, int remains, int profit, ChartPanel panel) {
+        f2=f;
         if (scroll != null) {
             remove(scroll);
             remove(label1);
             remove(label2);
             remove(label3);
+            remove(chartPanel);
             super.removeInfoField();
         }
         setValues(newList,f);
         setSalesLabel(sales);
         setRemainLabel(remains);
         setProfitLabel(profit);
+        setChartPanel(panel);
         super.setInfoField();
         revalidate();
         repaint();
@@ -547,6 +572,7 @@ public class BranchInfo extends Theme {
 
     public String getStartRange(){return start.getText();}
     public String getEndRange(){return end.getText();}
+    public String getSelectedTime(){return selectedTime;}
 
     public ArrayList<String> getList(){return list;}
 

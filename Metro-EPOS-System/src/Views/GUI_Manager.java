@@ -10,6 +10,8 @@ import Views.Manager.BranchInfo;
 import Views.Manager.EmployeeInfo;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
+import org.apache.commons.logging.Log;
+import org.jfree.chart.ChartPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -182,6 +184,33 @@ public class GUI_Manager
 
         //-----------------------BRANCH INFO PANEL LOGIC------------------------//
         branchInfo.setNameBranch(name,branchID);
+        branchInfo.getLogoutButton().addActionListener(e->{
+            branchInfo.resetFields();
+            LogIn();
+        });
+        branchInfo.getEmployeeInfoButton().addActionListener(e->{
+            employeeInfo.refreshPanel(UIHandler.getEmployeeInfo(Integer.parseInt(branchID)),f);
+            f.replacePanel(oldPanel,employeeInfo.getPanel());
+            oldPanel=employeeInfo.getPanel();
+        });
+        branchInfo.getEnterButton().addActionListener(e->{
+            String start = branchInfo.getStartRange();
+            String end = branchInfo.getEndRange();
+
+            if(start.equals("dd/MM/yyyy") || end.equals("dd/MM/yyyy") || start.trim().isEmpty() || end.trim().isEmpty() || !UIHandler.isValidDate(start) || !UIHandler.isValidDate(end) || !UIHandler.isStartDateBeforeOrEqual(start, end)){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String type;
+                if(branchInfo.getSelectedTime().equals("yearly")){
+                    type = "line";
+                }
+                else{
+                    type = "bar";
+                }
+                branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)),f,UIHandler.getBranchSales(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.getBranchProfit(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.DisplayChartRanged(start,end,"line"));
+            }
+        });
 
         //-------------------EMPLOYEE INFO PANEL LOGIC-----------------------------//
         employeeInfo.getLogoutButton().addActionListener(e->{
@@ -222,8 +251,7 @@ public class GUI_Manager
             }
         });
         employeeInfo.getBranchInfoButton().addActionListener(e->{
-            employeeInfo.resetFields();
-            branchInfo.refreshPanel(UIHandler.getEmployeeInfo(Integer.parseInt(branchID)),f,200,500,10000);
+            branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)),f,UIHandler.getBranchSales(Integer.parseInt(branchID),"today"),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID),"today"),UIHandler.getBranchProfit(Integer.parseInt(branchID),"today"),UIHandler.DisplayChart("daily","bar"));
             f.replacePanel(oldPanel,branchInfo.getPanel());
             oldPanel=branchInfo.getPanel();
         });
@@ -465,9 +493,6 @@ public class GUI_Manager
         //       "EMP123", "BR001", 50000, "01/01/2020",
         //     "N/A", true, branch, true);
         GUI_Manager g = new GUI_Manager();
-//        g.LogIn();
-        g.oldPanel = g.managerLogIn.getPanel();
-        g.f.addPanel(g.managerLogIn);
-        g.ManagerPanels("Asfandyar","1234");
+        g.LogIn();
     }
 }
