@@ -20,6 +20,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.time.LocalDate;
@@ -419,123 +420,122 @@ public class UIHandler {
     }
     //Start date: dd/mm/yyyy , enddate: dd/mm/yyyy, chartype= line/bar
     public static ChartPanel DisplayChartRanged(String startDate, String endDate, String chartType) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date start = null;
-        Date end = null;
         try {
-            start = sdf.parse(startDate);
-            end = sdf.parse(endDate);
-        } catch (ParseException e) {
-            System.out.println("Invalid date format. Please use dd/MM/yyyy.");
-            return null;
-        }
+            // Use the correct date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-        long diffInMillies = end.getTime() - start.getTime();
-        long diffInDays = diffInMillies / (1000 * 60 * 60 * 24);
-        int diffInMonths = (int) (diffInDays / 30);
+            // Parse start and end dates
+            LocalDate start = LocalDate.parse(startDate, formatter);
+            LocalDate end = LocalDate.parse(endDate, formatter);
 
-        ArrayList<Integer> profitData = new ArrayList<>();
-        ArrayList<String> hourlyProfitData = new ArrayList<>();
+            // Check date range is within 1 year (365 days)
+            boolean isYearly=false;
+            long daysBetween = ChronoUnit.DAYS.between(start, end);
+            if(daysBetween==365)
+                isYearly=true;
+            if (daysBetween > 365 || daysBetween < 0) {
 
-        boolean isDaily = diffInDays == 0;
+                System.out.println("Invalid date range: exceeds one year or is negative.");
+                return null;
+            }
 
-        if (isDaily) {
+            // Initialize profit data variables
+            long diffInDays = daysBetween;
+            int diffInMonths = (int) (diffInDays / 30);
+            boolean isDaily = diffInDays == 0;
 
-            hourlyProfitData = DataBaseHandler.getProfitAndTimeForSpecificDay(startDate);
-        } else {
+            ArrayList<Integer> profitData = new ArrayList<>();
+            ArrayList<String> hourlyProfitData = new ArrayList<>();
 
-            if (diffInMonths > 1) {
-                profitData = DataBaseHandler.getMonthlyProfitData(startDate, endDate);
+            // Fetch data based on date range
+            if (isDaily) {
+                hourlyProfitData = DataBaseHandler.getProfitAndTimeForSpecificDay(startDate);
             } else {
-                profitData = DataBaseHandler.getProfitDataForTimeSlot(startDate, endDate);
-            }
-        }
-
-        XYSeries series = new XYSeries("Profit");
-        if (isDaily) {
-
-            for (int i = 0; i < hourlyProfitData.size(); i++) {
-                String[] parts = hourlyProfitData.get(i).split(", ");
-                String profitStr = parts[0].split(": ")[1];
-                int profit = Integer.parseInt(profitStr);
-                String hoursStr = parts[1].split(": ")[1];
-                int hours = Integer.parseInt(hoursStr);
-
-                series.add(hours, profit);
-            }
-        } else {
-            for (int i = 0; i < profitData.size(); i++) {
-                series.add(i + 1, profitData.get(i));
-            }
-        }
-
-        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
-        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
-
-        if (isDaily) {
-            for (int i = 0; i < hourlyProfitData.size(); i++) {
-                String[] parts = hourlyProfitData.get(i).split(", ");
-                String profitStr = parts[0].split(": ")[1];
-                int profit = Integer.parseInt(profitStr);
-                String hoursStr = parts[1].split(": ")[1];
-                barDataset.addValue(profit,"Profit", "Hour " + hoursStr);
-            }
-        } else {
-
-            for (int i = 0; i < profitData.size(); i++) {
                 if (diffInMonths > 1) {
-                    String monthName = java.time.Month.of(i + 1).name();
-                    barDataset.addValue(profitData.get(i), "Profit", monthName);
+                    profitData = DataBaseHandler.getMonthlyProfitData(startDate, endDate);
                 } else {
-                    barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+                    profitData = DataBaseHandler.getProfitDataForTimeSlot(startDate, endDate);
                 }
             }
-        }
+            // Create the chart
+            XYSeries series = new XYSeries("Profit");
+            if (isDaily) {
+                for (String data : hourlyProfitData) {
+                    String[] parts = data.split(", ");
+                    int profit = Integer.parseInt(parts[0].split(": ")[1]);
+                    int hours = Integer.parseInt(parts[1].split(": ")[1]);
+                    series.add(hours, profit);
+                }
+            } else {
+                for (int i = 0; i < profitData.size(); i++) {
+                    series.add(i + 1, profitData.get(i));
+                }
+            }
 
-        JFreeChart chart;
-        if (chartType.equalsIgnoreCase("line")) {
-            chart = ChartFactory.createXYLineChart(
-                    "Profit Line Chart",
-                    isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
-                    "Profit",
-                    lineDataset,
-                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
-                    true,
-                    true,
-                    false
-            );
+            XYSeriesCollection lineDataset = new XYSeriesCollection(series);
+            DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
 
-            XYPlot plot = chart.getXYPlot();
-            plot.setDomainGridlinesVisible(true);
-            plot.setRangeGridlinesVisible(true);
-            plot.setBackgroundPaint(Color.WHITE);
-            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));
+            if (isDaily) {
+                for (String data : hourlyProfitData) {
+                    String[] parts = data.split(", ");
+                    int profit = Integer.parseInt(parts[0].split(": ")[1]);
+                    String hoursStr = parts[1].split(": ")[1];
+                    barDataset.addValue(profit, "Profit", "Hour " + hoursStr);
+                }
+            } else {
+                for (int i = 0; i < profitData.size(); i++) {
+                    if (diffInMonths > 1 && i + 1 == 13) {
+                        System.out.println("Error: Unexpected data for 13 months.");
+                        return null;
+                    }
+                    String label = diffInMonths > 1 ? java.time.Month.of(i + 1).name() : "Day " + (i + 1);
+                    barDataset.addValue(profitData.get(i), "Profit", label);
+                }
+            }
 
-            NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
-            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+            // Generate chart based on type
+            JFreeChart chart;
+            if (chartType.equalsIgnoreCase("line")) {
+                chart = ChartFactory.createXYLineChart(
+                        "Profit Line Chart",
+                        isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
+                        "Profit",
+                        lineDataset,
+                        org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                        true,
+                        true,
+                        false
+                );
+                XYPlot plot = chart.getXYPlot();
+                plot.setBackgroundPaint(Color.WHITE);
+                plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));
+            } else if (chartType.equalsIgnoreCase("bar")) {
+                chart = ChartFactory.createBarChart(
+                        "Profit Bar Chart",
+                        isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
+                        "Profit",
+                        barDataset,
+                        org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                        true,
+                        true,
+                        false
+                );
+                CategoryPlot plot = chart.getCategoryPlot();
+                plot.setBackgroundPaint(Color.WHITE);
+            } else {
+                System.out.println("Invalid chart type.");
+                return null;
+            }
 
-        } else if (chartType.equalsIgnoreCase("bar")) {
-            chart = ChartFactory.createBarChart(
-                    "Profit Bar Chart",
-                    isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
-                    "Profit",
-                    barDataset,
-                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
-                    true,
-                    true,
-                    false
-            );
-            CategoryPlot plot = chart.getCategoryPlot();
-            plot.setBackgroundPaint(Color.WHITE);
-            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120 / 360f, 1.0f, 0.2f));
-        } else {
-            System.out.println("Invalid chart type.");
+            // Return chart panel
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(800, 600));
+            return chartPanel;
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-
-        ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-        return chartPanel;
     }
 
 

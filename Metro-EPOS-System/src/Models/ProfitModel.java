@@ -101,8 +101,13 @@ public class ProfitModel {
             stmt.setDate(2, sqlEndDate);
 
             ResultSet rs = stmt.executeQuery();
+            int i=0;
             while (rs.next()) {
+                if(i==12)
+                    break;
                 profitData.add(rs.getInt("profit"));
+                i++;
+
             }
         } catch (ParseException e) {
             System.out.println("Invalid date format. Please use dd/MM/yyyy.");
