@@ -27,6 +27,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import static Controllers.PDFGenerator.generateChartPDF;
+
 
 public class UIHandler {
     private static Cashier cashier = new Cashier();
@@ -536,6 +538,26 @@ public class UIHandler {
             e.printStackTrace();
             return null;
         }
+    }
+    public static void GenerateReport(){
+        ChartPanel chartPanelYearly = DisplayChart("yearly", "line");
+        ChartPanel chartPanelMonthly = DisplayChart("monthly", "bar");
+        ChartPanel chartPanelWeekly = DisplayChart("weekly", "bar");
+        ChartPanel chartPanelDaily = DisplayChart("daily", "bar");
+
+        ChartPanel[] chartPanels = {chartPanelYearly, chartPanelMonthly, chartPanelWeekly, chartPanelDaily};
+        ArrayList<String> productStockList = DataBaseHandler.getProductStockStatus(1);
+        ArrayList<Integer> monthlyProfits = DataBaseHandler.getMonthlyProfitData("08/12/2023", "08/12/2024");
+        ArrayList<String> billCalculations = DataBaseHandler.Bills();
+        ArrayList<Integer> total = DataBaseHandler.getProfitData("yearly");
+        int annualProfit = 0;
+        for (int i = 0; i < total.size(); i++) {
+            annualProfit += total.get(i);
+        }
+        int budgetRemaining = 64000;
+
+        generateChartPDF(chartPanels, productStockList, monthlyProfits, billCalculations, "Report.pdf", annualProfit, budgetRemaining);
+
     }
 
 
