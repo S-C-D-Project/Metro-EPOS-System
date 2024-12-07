@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/EmployeeInfo.java" afterDir="false" />
+
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Cashier/SalesData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/LogInTheme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/LogInTheme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Frame/frame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/ExpandedInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/ExpandedInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +43,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
+
+    "git-widget-placeholder": "Asfandyar",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System",
@@ -123,7 +116,8 @@
       <workItem from="1733582271872" duration="5100000" />
       <workItem from="1733590878452" duration="275000" />
       <workItem from="1733592319767" duration="3901000" />
-      <workItem from="1733596269027" duration="4080000" />
+
+      <workItem from="1733596269027" duration="4496000" />
     </task>
     <servers />
   </component>
