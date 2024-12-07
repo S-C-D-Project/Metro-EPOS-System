@@ -2,7 +2,6 @@ package Views.Manager;
 
 import Views.Decorate.Theme;
 import Views.Frame.frame;
-import Views.Operator.ExpandedInfo;
 import Views.UIHandler;
 
 import javax.imageio.ImageIO;
@@ -15,7 +14,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -115,6 +113,22 @@ public class EmployeeInfo extends Theme {
             Image scaledImage = empLogo.getScaledInstance(16, 20, Image.SCALE_SMOOTH);
             JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
             logoLabel.setBounds(79, 325, 16, 20);
+            add(logoLabel);
+        }
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(branchInfoPath)) {
+            if (is != null) {
+                branchLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + branchLogo);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (branchLogo != null) {
+            Image scaledImage = branchLogo.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(78, 280, 15, 15);
             add(logoLabel);
         }
     }
@@ -324,9 +338,9 @@ public class EmployeeInfo extends Theme {
         branchInfo.setBounds(110,283,86,10);
         password.setBounds(631,257,77,24);
         salary.setBounds(749,257,54,24);
-        phoneNo.setBounds(843,257,77,24);
-        role.setBounds(949,257,77,24);
-        status.setBounds(1037,257,77,24);
+        phoneNo.setBounds(840,257,77,24);
+        role.setBounds(955,257,77,24);
+        status.setBounds(1040,257,77,24);
         employeesCount.setBounds(447,216,83,21);
 
         add(totalEmployees);
@@ -443,7 +457,7 @@ public class EmployeeInfo extends Theme {
                 JComboBox<String> role = new JComboBox<>(array1);
                 role.setEnabled(false);
                 role.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
-                role.setBounds(615, 13, 106, 16);
+                role.setBounds(615, 13, 90, 16);
                 role.setBorder(BorderFactory.createEmptyBorder());
                 role.setSelectedItem(data[6]);
                 role.setFocusable(false);

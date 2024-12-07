@@ -1,5 +1,4 @@
 package Views;
-import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
 import Views.Frame.frame;
@@ -7,6 +6,7 @@ import Views.LogIn.AdminLogIn;
 import Views.LogIn.CashierLogIn;
 import Views.LogIn.DataOperatorLogIn;
 import Views.LogIn.ManagerLogIn;
+import Views.Manager.BranchInfo;
 import Views.Manager.EmployeeInfo;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
@@ -30,6 +30,7 @@ public class GUI_Manager
     private CashierLogIn cashierLogIn;
     private DataOperatorLogIn dataOperatorLogIn;
     private EmployeeInfo employeeInfo;
+    private BranchInfo branchInfo;
 
     public GUI_Manager() {
         f = new frame();
@@ -44,6 +45,7 @@ public class GUI_Manager
         adds = new addOns(f.getFrame());
         sales = new SalesData();
         employeeInfo = new EmployeeInfo();
+        branchInfo = new BranchInfo();
     }
 
     public void LogIn() {
@@ -178,6 +180,9 @@ public class GUI_Manager
         f.replacePanel(oldPanel,employeeInfo.getPanel());
         oldPanel=employeeInfo.getPanel();
 
+        //-----------------------BRANCH INFO PANEL LOGIC------------------------//
+        branchInfo.setNameBranch(name,branchID);
+
         //-------------------EMPLOYEE INFO PANEL LOGIC-----------------------------//
         employeeInfo.getLogoutButton().addActionListener(e->{
             employeeInfo.resetFields();
@@ -216,6 +221,13 @@ public class GUI_Manager
                 employeeInfo.refreshPanel(newList,f);
             }
         });
+        employeeInfo.getBranchInfoButton().addActionListener(e->{
+            employeeInfo.resetFields();
+            branchInfo.refreshPanel(UIHandler.getEmployeeInfo(Integer.parseInt(branchID)),f,200,500,10000);
+            f.replacePanel(oldPanel,branchInfo.getPanel());
+            oldPanel=branchInfo.getPanel();
+        });
+
     }
 
     public void CashierPanels(String name, String branchID)
@@ -452,8 +464,10 @@ public class GUI_Manager
         // UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
         //       "EMP123", "BR001", 50000, "01/01/2020",
         //     "N/A", true, branch, true);
-        System.out.println(System.getProperty("user.dir"));
         GUI_Manager g = new GUI_Manager();
-        g.LogIn();
+//        g.LogIn();
+        g.oldPanel = g.managerLogIn.getPanel();
+        g.f.addPanel(g.managerLogIn);
+        g.ManagerPanels("Asfandyar","1234");
     }
 }

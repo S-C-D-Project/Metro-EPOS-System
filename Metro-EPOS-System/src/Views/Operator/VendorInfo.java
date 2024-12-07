@@ -10,7 +10,6 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -509,7 +508,7 @@ public class VendorInfo extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, frame f,ExpandedInfo expandedInfo) {
+    public void refreshPanel(ArrayList<String> newList, frame f, ExpandedInfo expandedInfo) {
         if (scroll != null) {
             remove(scroll);
             vendorsCount.setText("");

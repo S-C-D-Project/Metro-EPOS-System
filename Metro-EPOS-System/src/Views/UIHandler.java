@@ -207,12 +207,12 @@ public class UIHandler {
     public static ArrayList<String> getEmployeeInfo(int branchID){
         // based on branchID it should return employees of that branch
         ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
 
@@ -221,12 +221,12 @@ public class UIHandler {
         // it should return the updated employees list of the particular branch;
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
 
@@ -235,12 +235,12 @@ public class UIHandler {
         // it should return the updated employees list of the particular branch list;
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
 
