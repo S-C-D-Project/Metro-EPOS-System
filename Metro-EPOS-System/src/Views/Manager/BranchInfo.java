@@ -2,11 +2,15 @@ package Views.Manager;
 
 import Views.Decorate.Theme;
 import Views.Frame.frame;
+import Views.UIHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -57,8 +61,10 @@ public class BranchInfo extends Theme {
         super.setProfileLogo(managerProfileImgPath);
 
         setHeading();
+        setFields();
         setLogo();
         setButtons();
+        setFilterLabel();
 
         super.setRectangle(48,272);
 
@@ -164,26 +170,41 @@ public class BranchInfo extends Theme {
         JLabel branchInfo = new JLabel("Branch Info");
         JLabel currentStock = new JLabel("Current Products Status:");
         JLabel range = new JLabel("Range");
+        JLabel startLabel = new JLabel("Start");
+        JLabel endLabel = new JLabel("End");
+        JLabel toLabel = new JLabel("to");
 
         employeesInfo.setForeground(super.getSideMenuTextColor());
         branchInfo.setForeground(super.getSideMenuSelectedTextColor());
         currentStock.setForeground(super.getFirstHeadingColor());
         range.setForeground(super.getSecondHeadingColor());
+        startLabel.setForeground(super.getSecondHeadingColor());
+        endLabel.setForeground(super.getSecondHeadingColor());
+        toLabel.setForeground(super.getSecondHeadingColor());
 
         branchInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
         employeesInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
         currentStock.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,20));
         range.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
+        startLabel.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,10));
+        endLabel.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,10));
+        toLabel.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
 
         employeesInfo.setBounds(110,329,86,10);
         branchInfo.setBounds(110,283,86,10);
         currentStock.setBounds(321,391,248,36);
         range.setBounds(1041,145,48,19);
+        startLabel.setBounds(1046,166,24,12);
+        endLabel.setBounds(1206,166,19,12);
+        toLabel.setBounds(1172,182,15,18);
 
         add(employeesInfo);
         add(branchInfo);
         add(currentStock);
         add(range);
+        add(startLabel);
+        add(endLabel);
+        add(toLabel);
 
         JLabel line = new JLabel();
         line.setBackground(super.getLineColor2());
@@ -192,6 +213,132 @@ public class BranchInfo extends Theme {
         add(line);
     }
 
+    private void setFilterLabel()
+    {
+        JLabel label = new JLabel();
+        label.setOpaque(true);
+        label.setBackground(new Color(217,217,217));
+        label.setBounds(675,160,278,38);
+
+        JLabel today = new JLabel("Today");
+        JLabel week = new JLabel("Week");
+        JLabel year = new JLabel("Year");
+        JLabel month = new JLabel("Month");
+
+        today.setBounds(28,8,45,21);
+        week.setBounds(93,9,41,18);
+        month.setBounds(155,9,47,18);
+        year.setBounds(223,9,33,18);
+
+        today.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
+        week.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
+        month.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
+        year.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
+
+        today.setForeground(new Color(53,188,78));
+        week.setForeground(Color.BLACK);
+        month.setForeground(Color.BLACK);
+        year.setForeground(Color.BLACK);
+
+        today.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                today.setForeground(new Color(53,188,78));
+                week.setForeground(Color.BLACK);
+                month.setForeground(Color.BLACK);
+                year.setForeground(Color.BLACK);
+                //perform operation
+            }
+        });
+        week.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                week.setForeground(new Color(53,188,78));
+                today.setForeground(Color.BLACK);
+                month.setForeground(Color.BLACK);
+                year.setForeground(Color.BLACK);
+                //perform operation
+            }
+        });
+        month.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                month.setForeground(new Color(53,188,78));
+                week.setForeground(Color.BLACK);
+                today.setForeground(Color.BLACK);
+                year.setForeground(Color.BLACK);
+                //perform operation
+            }
+        });
+        year.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e)
+            {
+                year.setForeground(new Color(53,188,78));
+                week.setForeground(Color.BLACK);
+                month.setForeground(Color.BLACK);
+                today.setForeground(Color.BLACK);
+                //perform operation
+            }
+        });
+
+        label.add(today);
+        label.add(week);
+        label.add(month);
+        label.add(year);
+        add(label);
+    }
+
+    private void setFields(){
+        start = new JTextField("dd/MM/yy");
+        start.setHorizontalAlignment(JTextField.CENTER);
+        start.setBounds(1038,178,117,26);
+        start.setForeground(new Color(173,173,173));
+        start.setBackground(new Color(217,217,217));
+        start.setBorder(null);
+        start.setFont(new Font("Arial",Font.BOLD,15));
+        start.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (start.getText().equals("dd/MM/yy")) {
+                    start.setText("");
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (start.getText().isEmpty()) {
+                    start.setText("dd/MM/yy");
+                }
+            }
+        });
+        add(start);
+
+        end = new JTextField("dd/MM/yy");
+        end.setHorizontalAlignment(JTextField.CENTER);
+        end.setBounds(1199,178,117,26);
+        end.setForeground(new Color(173,173,173));
+        end.setBackground(new Color(217,217,217));
+        end.setBorder(null);
+        end.setFont(new Font("Arial",Font.BOLD,15));
+        end.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (end.getText().equals("dd/MM/yy")) {
+                    end.setText("");
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (end.getText().isEmpty()) {
+                    end.setText("dd/MM/yy");
+                }
+            }
+        });
+        add(end);
+    }
     public void setSalesLabel(int value){
         label1 = new JLabel();
         label1.setBounds(321,234,302,128);
@@ -397,6 +544,9 @@ public class BranchInfo extends Theme {
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getEnterButton(){return enterButton;}
     public JButton getEmployeeInfoButton(){return employeeInfoButton;}
+
+    public String getStartRange(){return start.getText();}
+    public String getEndRange(){return end.getText();}
 
     public ArrayList<String> getList(){return list;}
 

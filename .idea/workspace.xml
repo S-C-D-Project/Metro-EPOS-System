@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/BranchInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/Theme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/EmployeeInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/EmployeeInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/VendorInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/BranchInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Manager/BranchInfo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +111,7 @@
       <workItem from="1733497573172" duration="9430000" />
       <workItem from="1733510342512" duration="6023000" />
       <workItem from="1733517984277" duration="2193000" />
-      <workItem from="1733529915110" duration="8566000" />
+      <workItem from="1733529915110" duration="11117000" />
     </task>
     <servers />
   </component>
