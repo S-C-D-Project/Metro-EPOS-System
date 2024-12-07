@@ -5,7 +5,6 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataTable;
 import com.microsoft.sqlserver.jdbc.SQLServerCallableStatement;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.ArrayList;
 
 public class BillModel {

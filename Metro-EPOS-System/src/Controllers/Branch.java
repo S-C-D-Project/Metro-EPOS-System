@@ -18,7 +18,12 @@ public class Branch {
         this.isActive = isActive;
     }
     public Branch(int id){
-        DataBaseHandler.getBranch(id);
+      Branch branch=  DataBaseHandler.getBranch(id);
+        this.id =branch.getId();
+        this.address = branch.getAddress();
+        this.phoneNumber = branch.getPhoneNumber();
+        this.numberOfEmployees = branch.getNumberOfEmployees();
+        this.isActive = branch.getisActive();
     }
 
 
@@ -54,7 +59,7 @@ public class Branch {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public boolean isActive() {
+    public boolean getisActive() {
         return isActive;
     }
 

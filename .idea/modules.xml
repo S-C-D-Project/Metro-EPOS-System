@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" filepath="$PROJECT_DIR$/.idea/Metro-EPOS-System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Metro-EPOS-System/Metro-EPOS-System.iml" filepath="$PROJECT_DIR$/Metro-EPOS-System/Metro-EPOS-System.iml" />
     </modules>
   </component>
 </project>

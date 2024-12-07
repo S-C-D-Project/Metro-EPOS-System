@@ -1,10 +1,7 @@
 package Views.Decorate;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class Theme extends JPanel {
     private Color sideMenuBackgroundColor;
@@ -86,46 +83,25 @@ public class Theme extends JPanel {
         add(rectangle);
     }
 
-    public void setProfileLogo(String path) {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(path)) {
-            if (is != null) {
-                profile = ImageIO.read(is);
-            } else {
-                System.err.println("Resource not found: " + path);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setProfileLogo(String path)
+    {
+        profile = new ImageIcon(path).getImage();
     }
 
-    public void setLogoutLogo() {
+    public void setLogoutLogo()
+    {
         JLabel logout = new JLabel("Logout");
         logout.setForeground(sideMenuTextColor);
-        logout.setFont(new Font("Inter", Font.PLAIN, 15));
-        logout.setBounds(70, 684, 58, 19);
+        logout.setFont(new Font("Inter",Font.PLAIN,15));
+        logout.setBounds(70,684,58,19);
         add(logout);
-
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(logoutIconPath)) {
-            if (is != null) {
-                logo = ImageIO.read(is);
-            } else {
-                System.err.println("Resource not found: " + logoutIconPath);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        logo = new ImageIcon(logoutIconPath).getImage();
     }
-
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (logo != null) {
-            g.drawImage(logo, 44, 685, 18, 18, this);
-        }
-        if (profile != null) {
-            g.drawImage(profile, 97, 88, 80, 80, this);
-        }
+        g.drawImage(logo, 44, 685,18,18, this);
+        g.drawImage(profile, 97, 88,80,80, this);
     }
-
     public void setInfoField(){
         add(infoField);
     }
@@ -161,6 +137,4 @@ public class Theme extends JPanel {
     {
         return this;
     }
-
-    public Color getLineColor2(){return lineColor2;}
 }

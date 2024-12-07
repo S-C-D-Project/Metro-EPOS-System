@@ -2,14 +2,13 @@ package Views.Cashier;
 import Views.Decorate.Theme;
 import Views.UIHandler;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -95,24 +94,12 @@ public class SalesData extends Theme {
     }
 
     private void setLogo() {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream(saleLogoPath)) {
-            if (is != null) {
-                saleLogo = ImageIO.read(is);
-            } else {
-                System.err.println("Resource not found: " + saleLogoPath);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (saleLogo != null) {
-            Image scaledImage = saleLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
-            logoLabel.setBounds(78, 277, 20, 20);
-            add(logoLabel);
-        }
+        saleLogo = new ImageIcon(saleLogoPath).getImage();
+        Image scaledImage = saleLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+        logoLabel.setBounds(78, 277, 20, 20);
+        add(logoLabel);
     }
-
 
     private void setFields(){
         productID = new JTextField();

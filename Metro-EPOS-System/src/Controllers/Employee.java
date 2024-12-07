@@ -135,6 +135,23 @@ firstTime=false;
     return DataBaseHandler.changePassword(newPassword,employeeNumber);
     }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", employeeNumber=" + employeeNumber +
+                ", salary=" + salary +
+                ", joiningDate='" + joiningDate + '\'' +
+                ", leavingDate='" + leavingDate + '\'' +
+                ", isActive=" + isActive +
+                ", firstTime=" + firstTime +
+                ", branch=" + branch +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
     public void setBranchid(int branchId) {
         if(this.branch == null) {
             this.branch = new Branch(branchId);
