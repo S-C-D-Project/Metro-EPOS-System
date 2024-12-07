@@ -206,6 +206,27 @@ public class ExpandedInfo extends Theme {
         pricePerUnits.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
         pricePerUnits.setBounds(804,219,105,24);
         add(pricePerUnits);
+
+        JLabel stocks = new JLabel("Stocks");
+        stocks.setForeground(super.getThirdHeadingColor());
+        stocks.setHorizontalAlignment(JLabel.CENTER);
+        stocks.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        stocks.setBounds(923,219,105,24);
+        add(stocks);
+
+        JLabel manufacture = new JLabel("Manufacture");
+        manufacture.setForeground(super.getThirdHeadingColor());
+        manufacture.setHorizontalAlignment(JLabel.CENTER);
+        manufacture.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        manufacture.setBounds(1036,219,105,24);
+        add(manufacture);
+
+        JLabel sizeProd = new JLabel("Size");
+        sizeProd.setForeground(super.getThirdHeadingColor());
+        sizeProd.setHorizontalAlignment(JLabel.CENTER);
+        sizeProd.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,15));
+        sizeProd.setBounds(1148,219,105,24);
+        add(sizeProd);
     }
 
     public void setValues(ArrayList<String> l, JFrame f, int vID, boolean add)
@@ -231,7 +252,7 @@ public class ExpandedInfo extends Theme {
             save.setText("Save");
             save.setFont(new Font("Inter", Font.BOLD, 12));
             save.setForeground(new Color(26, 218, 67));
-            save.setBounds(855, 13, 46, 15);
+            save.setBounds(950, 5, 46, 15);
             save.setVerticalAlignment(JLabel.CENTER);
             save.setHorizontalAlignment(JLabel.CENTER);
             label.add(save);
@@ -240,13 +261,12 @@ public class ExpandedInfo extends Theme {
             Cancel.setText("Cancel");
             Cancel.setFont(new Font("Inter", Font.BOLD, 12));
             Cancel.setForeground(new Color(255, 3, 3));
-            Cancel.setBounds(900, 13, 55, 15);
+            Cancel.setBounds(952, 23, 41, 15);
             Cancel.setVerticalAlignment(JLabel.CENTER);
             Cancel.setHorizontalAlignment(JLabel.CENTER);
             label.add(Cancel);
 
             String[] categories = {
-                    "_",
                     "Fruits & Veg",
                     "Meat & Seafood",
                     "Dairy & Eggs",
@@ -264,7 +284,7 @@ public class ExpandedInfo extends Theme {
             category.setBackground(Color.WHITE);
             category.setFocusable(false);
             category.setSelectedIndex(0);
-            category.setMaximumRowCount(11);
+            category.setMaximumRowCount(10);
 
 
             JTextField name = new JTextField();
@@ -307,14 +327,49 @@ public class ExpandedInfo extends Theme {
             pricePerUnit.setEditable(false);
             pricePerUnit.setFocusable(false);
 
+            JTextField stocksProd = new JTextField();
+            stocksProd.setText("_");
+            stocksProd.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 15));
+            stocksProd.setForeground(super.getSecondHeadingColor());
+            stocksProd.setBounds(608, 11, 105, 19);
+            stocksProd.setHorizontalAlignment(JLabel.CENTER);
+            stocksProd.setBorder(BorderFactory.createEmptyBorder());
+            stocksProd.setEditable(false);
+            stocksProd.setFocusable(false);
+
+            JTextField manufacture = new JTextField();
+            manufacture.setText("_");
+            manufacture.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 15));
+            manufacture.setForeground(super.getSecondHeadingColor());
+            manufacture.setBounds(720, 11, 105, 19);
+            manufacture.setHorizontalAlignment(JLabel.CENTER);
+            manufacture.setBorder(BorderFactory.createEmptyBorder());
+            manufacture.setEditable(false);
+            manufacture.setFocusable(false);
+
+            String[] sizes = {
+                    "Small",
+                    "Medium",
+                    "Large"
+            };
+            JComboBox<String> prodSizes = new JComboBox<>(sizes);
+            prodSizes.setEnabled(true);
+            prodSizes.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 15));
+            prodSizes.setBounds(845, 5, 80, 30);
+            prodSizes.setBorder(BorderFactory.createEmptyBorder());
+            prodSizes.setSelectedItem(0);
+            prodSizes.setFocusable(false);
+            prodSizes.setForeground(new Color(93, 93, 93));
+
+
             save.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if(Objects.requireNonNull(category.getSelectedItem()).toString().trim().equals("_") || category.getSelectedItem().toString().trim().isEmpty() || name.getText().trim().isEmpty() || name.getText().trim().equals("_") ||!UIHandler.isNumbers(originalPrice.getText()) || !UIHandler.isNumbers(salePrice.getText()) || !UIHandler.isNumbers(pricePerUnit.getText())){
+                    if(Objects.requireNonNull(category.getSelectedItem()).toString().trim().equals("_") || category.getSelectedItem().toString().trim().isEmpty() || name.getText().trim().isEmpty() || name.getText().trim().equals("_") ||!UIHandler.isNumbers(originalPrice.getText()) || !UIHandler.isNumbers(salePrice.getText()) || !UIHandler.isNumbers(pricePerUnit.getText()) || !UIHandler.isNumbers(stocksProd.getText()) || manufacture.getText().trim().isEmpty() || manufacture.getText().equals("_")) {
                         JOptionPane.showMessageDialog(f,"Invalid Inputs", "Error",JOptionPane.ERROR_MESSAGE);
                     }
                     else{
-                        String adding = category.getSelectedItem().toString() + "," + name.getText() + "," + originalPrice.getText() + "," + salePrice.getText() + "," + pricePerUnit.getText();
+                        String adding = category.getSelectedItem().toString() + "," + name.getText() + "," + originalPrice.getText() + "," + salePrice.getText() + "," + pricePerUnit.getText() +","+stocksProd.getText() + "," + manufacture.getText() + "," + prodSizes.getSelectedItem().toString();
                         list = UIHandler.addNewVendorProduct(vendorID,adding);
                         refreshPanel(list,f,vendorID,false);
                     }
@@ -336,6 +391,9 @@ public class ExpandedInfo extends Theme {
             originalPrice.setBackground(new Color(217,217,217));
             salePrice.setBackground(new Color(217,217,217));
             pricePerUnit.setBackground(new Color(217,217,217));
+            stocksProd.setBackground(new Color(217,217,217));
+            manufacture.setBackground(new Color(217,217,217));
+            prodSizes.setBackground(new Color(217,217,217));
 
             name.setFocusable(true);
             name.setEditable(true);
@@ -345,12 +403,19 @@ public class ExpandedInfo extends Theme {
             salePrice.setEditable(true);
             pricePerUnit.setFocusable(true);
             pricePerUnit.setEditable(true);
+            stocksProd.setFocusable(true);
+            stocksProd.setEditable(true);
+            manufacture.setFocusable(true);
+            manufacture.setEditable(true);
 
             label.add(category);
             label.add(name);
             label.add(originalPrice);
             label.add(salePrice);
             label.add(pricePerUnit);
+            label.add(stocksProd);
+            label.add(manufacture);
+            label.add(prodSizes);
             panel.add(label);
         }
 
@@ -369,7 +434,7 @@ public class ExpandedInfo extends Theme {
                 edit.setText("<html><u>Edit</u></html>");
                 edit.setFont(new Font("Inter", Font.BOLD, 12));
                 edit.setForeground(new Color(3, 149, 255));
-                edit.setBounds(855, 13, 46, 15);
+                edit.setBounds(950, 5, 46, 15);
                 edit.setVerticalAlignment(JLabel.CENTER);
                 edit.setHorizontalAlignment(JLabel.CENTER);
                 label.add(edit);
@@ -378,7 +443,7 @@ public class ExpandedInfo extends Theme {
                 delete.setText("<html><u>Delete</u></html>");
                 delete.setFont(new Font("Inter", Font.BOLD, 12));
                 delete.setForeground(new Color(3, 149, 255));
-                delete.setBounds(900, 13, 55, 15);
+                delete.setBounds(952, 23, 38, 15);
                 delete.setVerticalAlignment(JLabel.CENTER);
                 delete.setHorizontalAlignment(JLabel.CENTER);
                 label.add(delete);
@@ -433,6 +498,40 @@ public class ExpandedInfo extends Theme {
                 pricePerUnit.setEditable(false);
                 pricePerUnit.setFocusable(false);
 
+                JTextField stocksProd = new JTextField();
+                stocksProd.setText(data[5]);
+                stocksProd.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 15));
+                stocksProd.setForeground(super.getSecondHeadingColor());
+                stocksProd.setBounds(608, 11, 105, 19);
+                stocksProd.setHorizontalAlignment(JLabel.CENTER);
+                stocksProd.setBorder(BorderFactory.createEmptyBorder());
+                stocksProd.setEditable(false);
+                stocksProd.setFocusable(false);
+
+                JTextField manufacture = new JTextField();
+                manufacture.setText(data[6]);
+                manufacture.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 15));
+                manufacture.setForeground(super.getSecondHeadingColor());
+                manufacture.setBounds(720, 11, 105, 19);
+                manufacture.setHorizontalAlignment(JLabel.CENTER);
+                manufacture.setBorder(BorderFactory.createEmptyBorder());
+                manufacture.setEditable(false);
+                manufacture.setFocusable(false);
+
+                String[] sizes = {
+                        "Small",
+                        "Medium",
+                        "Large"
+                };
+                JComboBox<String> prodSizes = new JComboBox<>(sizes);
+                prodSizes.setEnabled(false);
+                prodSizes.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 15));
+                prodSizes.setBounds(845, 5, 80, 30);
+                prodSizes.setBorder(BorderFactory.createEmptyBorder());
+                prodSizes.setSelectedItem(data[7]);
+                prodSizes.setFocusable(false);
+                prodSizes.setForeground(new Color(93, 93, 93));
+
                 edit.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
@@ -445,14 +544,19 @@ public class ExpandedInfo extends Theme {
                             salePrice.setEditable(true);
                             pricePerUnit.setFocusable(true);
                             pricePerUnit.setEditable(true);
+                            stocksProd.setFocusable(true);
+                            stocksProd.setEditable(true);
+                            manufacture.setFocusable(true);
+                            manufacture.setEditable(true);
+                            prodSizes.setEnabled(true);
                         }
                         else
                         {
-                            if(!UIHandler.isNumbers(originalPrice.getText()) || !UIHandler.isNumbers(salePrice.getText()) || !UIHandler.isNumbers(pricePerUnit.getText())){
+                            if(!UIHandler.isNumbers(originalPrice.getText()) || !UIHandler.isNumbers(salePrice.getText()) || !UIHandler.isNumbers(pricePerUnit.getText()) || manufacture.getText().trim().isEmpty()){
                                 JOptionPane.showMessageDialog(f,"Invalid Changes","Error",JOptionPane.ERROR_MESSAGE);
                             }
                             else{
-                                String improved = catagory.getText() + "," + name.getText() + "," + originalPrice.getText() + "," + salePrice.getText() + "," + pricePerUnit.getText();
+                                String improved = catagory.getText() + "," + name.getText() + "," + originalPrice.getText() + "," + salePrice.getText() + "," + pricePerUnit.getText() + "," + stocksProd.getText() + "," + manufacture.getText() + "," + prodSizes.getSelectedItem().toString();
                                 list = UIHandler.updateVendorProductInfo(Integer.parseInt(vendorIDValue.getText()),improved,name.getText());
                             }
                             originalPrice.setFocusable(false);
@@ -461,6 +565,11 @@ public class ExpandedInfo extends Theme {
                             salePrice.setEditable(false);
                             pricePerUnit.setFocusable(false);
                             pricePerUnit.setEditable(false);
+                            stocksProd.setFocusable(false);
+                            stocksProd.setEditable(false);
+                            manufacture.setFocusable(false);
+                            manufacture.setEditable(false);
+                            prodSizes.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
                             refreshPanel(list,f,vID,false);
                         }
@@ -504,12 +613,18 @@ public class ExpandedInfo extends Theme {
                 originalPrice.setBackground(super.getInfoFieldColor());
                 salePrice.setBackground(super.getInfoFieldColor());
                 pricePerUnit.setBackground(super.getInfoFieldColor());
+                stocksProd.setBackground(super.getInfoFieldColor());
+                manufacture.setBackground(super.getInfoFieldColor());
+                prodSizes.setBackground(super.getInfoFieldColor());
 
                 label.add(catagory);
                 label.add(name);
                 label.add(originalPrice);
                 label.add(salePrice);
                 label.add(pricePerUnit);
+                label.add(stocksProd);
+                label.add(manufacture);
+                label.add(prodSizes);
                 panel.add(label);
             }
         }

@@ -504,22 +504,23 @@ public class GUI_Manager
 
     public static void main(String[] args)
     {
-        Thread splashThread = new Thread(() -> {
-            GifPlayer gifPlayer = new GifPlayer();
-        });
-        splashThread.start();
+        GUI_Manager manager = new GUI_Manager();
+        manager.LogIn();
 
-        Thread GUI = new Thread(() -> {
-            GUI_Manager g = new GUI_Manager();
-            try {
-                splashThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            g.LogIn();
-        });
-        GUI.start();
+//        Thread splashThread = new Thread(() -> {
+//            GifPlayer gifPlayer = new GifPlayer();
+//        });
+//        splashThread.start();
+//
+//        Thread GUI = new Thread(() -> {
+//            GUI_Manager g = new GUI_Manager();
+//            try {
+//                splashThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            g.LogIn();
+//        });
+//        GUI.start();
     }
-
-
 }

@@ -170,58 +170,76 @@ public class UIHandler {
     }
 
     public static ArrayList<String> getVendorProducts(int Vid) {
-        // I provide vendor ID and I get all its products in comma separate
-        // list like (Category,Name,Original Price,Sale Price,Price Per Units)
-        return DataBaseHandler.getVendorProducts(Vid);
+        // i should get like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
+
+        //for testing
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Foods,Bread,100,100,100,50,Ali Express,Large");
+        return list;
+        //return DataBaseHandler.getVendorProducts(Vid);
     }
 
     public static ArrayList<String> addNewVendorProduct(int vID, String str) {
-        // I will provide the Vendor ID and Product in string comma separated (Catagory,Name,Original Price, Sale Price, Price Per Unit)
-        // the new product should be added against the vendor and should return the updated list of this vendor
-        String[]values=str.split(",");
-        String sample_manufaturer="Sample Factory";
-        int branch= dataEntryOperator.getBranchid();
-        DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
-                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID));
+        // new data is like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
+        // and it should return like this as well;
 
-       ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
+        //for testing
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
+        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         return list;
+
+//        String[]values=str.split(",");
+//        String sample_manufaturer="Sample Factory";
+//        int branch= dataEntryOperator.getBranchid();
+//        DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
+//                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID));
+//
+//       ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
+//
+//        return list;
     }
 
     public static ArrayList<String> updateVendorProductInfo(int vID, String str, String productName) {
-        // here you get Vendor ID with its product name to update info of
-        // in str we get update data with comma seperated (Catagory,Name,Original Price, Sales Price, Price Per Unit)
-        // this function updates the product and return the update list of particular vendor products
-            // here you get Vendor ID with its product name to update info of
-            // in str we get update data with comma seperated (Catagory,Name,Original Price, Sales Price, Price Per Unit)
-            // this function updates the product and return the update list of particular vendor products
-        String[]values=str.split(",");
-        int productid=DataBaseHandler.getProductidbyName(productName.trim());
-        boolean result=DataBaseHandler.updateProductInfo(vID,productid,values[1],values[0],values[2], Integer.parseInt(values[3]),values[4]);
-        if(!result) {
-            return null;
-        }
-        else{
-        ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
+        // new data is like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
+        // and it should return like this as well;
 
+        //for testing
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         return list;
-        }
 
-
+//        String[]values=str.split(",");
+//        int productid=DataBaseHandler.getProductidbyName(productName.trim());
+//        boolean result=DataBaseHandler.updateProductInfo(vID,productid,values[1],values[0],values[2], Integer.parseInt(values[3]),values[4]);
+//        if(!result) {
+//            return null;
+//        }
+//        else{
+//        ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
+//
+//        return list;
+//        }
     }
 
     public static ArrayList<String> deleteVendorProduct(int id, String catagory, String name, String originalPrice, String salesPrice, String pricePerUnit) {
         // here the product of a vendor should be deleted
         // I provide Vendor ID, catagory, name and many other values so you can use any of these or all of these
         // for deletion, after that I should get the updated list of particular vendor products
-        int prodid=DataBaseHandler.getProductidbyName(name);
-        boolean result=DataBaseHandler.deleteProductByVendorId(id,prodid);
-        if(!result){
-            return null;
-        }
-        ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
 
+        //for testing
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         return list;
+
+//        int prodid=DataBaseHandler.getProductidbyName(name);
+//        boolean result=DataBaseHandler.deleteProductByVendorId(id,prodid);
+//        if(!result){
+//            return null;
+//        }
+//        ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
+//
+//        return list;
     }
 
     public static ArrayList<String> getEmployeeInfo(int branchID){
@@ -537,30 +555,6 @@ public class UIHandler {
             return null;
         }
     }
-
-
-
-//Guide on how to use
-//    public static void main(String[] args) {
-//        ChartPanel lineChartPanel = DisplayChartRanged("15/11/2024","15/11/2024","bar");
-//  //   ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","01/01/2025","bar");
-//      //  ChartPanel barChartPanel = DisplayChartRanged("02/02/2024","03/08/2024","line");
-//        JFrame frame = new JFrame("Profit Data Charts");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setLayout(new java.awt.GridLayout(1, 2));
-//        frame.getContentPane().add(lineChartPanel);
-//       // frame.getContentPane().add(barChartPanel);
-//        frame.pack();
-//        frame.setVisible(true);
-//    }
-
-
-
-
-
-
-
-
 
     public static boolean isNumbers(String line) {
         for (int i = 0; i < line.length(); i++) {
