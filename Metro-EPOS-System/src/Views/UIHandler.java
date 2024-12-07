@@ -202,6 +202,127 @@ public class UIHandler {
         return list;
     }
 
+
+    public static ArrayList<String> getEmployeeInfo(int branchID){
+        // based on branchID it should return employees of that branch
+        ArrayList<String> list = new ArrayList<>();
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        return list;
+    }
+
+    public static ArrayList<String> addEmployeeInfo(int branchID ,String str) {
+        //here I provide with the empID and branchID and updated String (name,salary,phoneNo,role)
+        // it should return the updated employees list of the particular branch;
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        return list;
+    }
+
+    public static ArrayList<String> updateEmployeeInfo(int empID, int branchID ,String str) {
+        //here I provide with the empID and branchID and updated String (name,email,password,salary,phoneNo,role,status)
+        // it should return the updated employees list of the particular branch list;
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        return list;
+    }
+    //time can be daily, weekly, monthly or yearly, if time given is wrong it returns null
+    //Chart types are line and bar
+    public static ChartPanel DisplayChart(String Time, String chartType) {
+        ArrayList<Integer> profitData = DataBaseHandler.getProfitData(Time);
+        XYSeries series = new XYSeries("Profit");
+        for (int i = 0; i < profitData.size(); i++) {
+            series.add(i + 1, profitData.get(i));
+        }
+        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
+
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+        for (int i = 0; i < profitData.size(); i++) {
+            barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+        }
+
+        JFreeChart chart;
+        if (chartType.equalsIgnoreCase("line")) {
+            chart = ChartFactory.createXYLineChart(
+                    "Profit Line Chart",
+                    "Time",
+                    "Profit",
+                    lineDataset,
+                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+
+            XYPlot plot = chart.getXYPlot();
+            plot.setDomainGridlinesVisible(true);
+            plot.setRangeGridlinesVisible(true);
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));  // line ko bold krne ke lye
+
+            NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
+            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); //x axis wali values
+
+        } else if (chartType.equalsIgnoreCase("bar")) {
+            // Create bar chart
+            chart = ChartFactory.createBarChart(
+                    "Profit Bar Chart",
+                    "Time",
+                    "Profit",
+                    barDataset,
+                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+            CategoryPlot plot = chart.getCategoryPlot();
+            plot.setBackgroundPaint(Color.WHITE); // graph ki peechay walay color
+            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120/360f, 1.0f, 0.2f)); // Yahan se line color change hota
+        } else {
+            System.out.println("Invalid chart type.");
+            return null;
+        }
+
+        // Create and return the chart panel
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        return chartPanel;
+    }
+
+/* Guide for Asfand
+    public static void main(String[] args) {
+        ChartPanel lineChartPanel = DisplayChart("yearly","line");
+        ChartPanel barChartPanel = DisplayChart("weekly", "bar");
+
+        JFrame frame = new JFrame("Profit Data Charts");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new java.awt.GridLayout(1, 2));
+        frame.getContentPane().add(lineChartPanel);
+        frame.getContentPane().add(barChartPanel);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+ */
+
+
     public static boolean isNumbers(String line) {
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
