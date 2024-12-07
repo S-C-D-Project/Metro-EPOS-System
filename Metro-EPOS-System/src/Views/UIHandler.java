@@ -18,7 +18,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class UIHandler {
@@ -259,25 +262,70 @@ public class UIHandler {
     //time can be daily, weekly, monthly or yearly, if time given is wrong it returns null
     //Chart types are line and bar
     public static ChartPanel DisplayChart(String Time, String chartType) {
-        ArrayList<Integer> profitData = DataBaseHandler.getProfitData(Time);
+        ArrayList<Integer> profitData = new ArrayList<>();
+        ArrayList<String> profitTimeData = new ArrayList<>();
+        boolean isYearly = Time.equalsIgnoreCase("yearly");
+        boolean isDaily = Time.equalsIgnoreCase("daily");
 
-        // Create dataset for line chart
-        XYSeries series = new XYSeries("Profit");
-        for (int i = 0; i < profitData.size(); i++) {
-            series.add(i + 1, profitData.get(i));
+        // Fetch profit data based on time period
+        if (isDaily) {
+            profitTimeData = DataBaseHandler.getProfitAndTimeForToday();
+        } else {
+            profitData = DataBaseHandler.getProfitData(Time);
         }
-        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
 
+        XYSeries series = new XYSeries("Profit");
+
+        if (isDaily) {
+            for (int i = 0; i < profitTimeData.size(); i++) {
+                String[] data = profitTimeData.get(i).split(", ");
+                String profitStr = data[0].split(": ")[1];
+                String timeStr = data[1].split(": ")[1];
+
+                int profit = Integer.parseInt(profitStr);
+                int hour = Integer.parseInt(timeStr);
+
+                series.add(hour, profit);
+            }
+        } else {
+            for (int i = 0; i < profitData.size(); i++) {
+                series.add(i + 1, profitData.get(i));
+            }
+        }
+
+        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
-        for (int i = 0; i < profitData.size(); i++) {
-            barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+
+        if (isDaily) {
+
+            for (int i = 0; i < profitTimeData.size(); i++) {
+                String[] data = profitTimeData.get(i).split(", ");
+                String profitStr = data[0].split(": ")[1];
+                String timeStr = data[1].split(": ")[1];
+
+                int profit = Integer.parseInt(profitStr);
+                int hour = Integer.parseInt(timeStr);
+
+                barDataset.addValue(profit, "Profit", "Hour " + hour);
+            }
+        } else {
+
+            for (int i = 0; i < profitData.size(); i++) {
+                if (isYearly) {
+                    String monthName = java.time.Month.of(i + 1).name();
+                    barDataset.addValue(profitData.get(i), "Profit", monthName);
+                } else {
+                    barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+                }
+            }
         }
 
         JFreeChart chart;
+
         if (chartType.equalsIgnoreCase("line")) {
             chart = ChartFactory.createXYLineChart(
                     "Profit Line Chart",
-                    "Time",
+                    isDaily ? "Hour" : isYearly ? "Month" : "Day",
                     "Profit",
                     lineDataset,
                     org.jfree.chart.plot.PlotOrientation.VERTICAL,
@@ -290,16 +338,14 @@ public class UIHandler {
             plot.setDomainGridlinesVisible(true);
             plot.setRangeGridlinesVisible(true);
             plot.setBackgroundPaint(Color.WHITE);
-            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));  // line ko bold krne ke lye
+            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));  // Bold line
 
             NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
-            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); //x axis wali values
-
+            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         } else if (chartType.equalsIgnoreCase("bar")) {
-            // Create bar chart
             chart = ChartFactory.createBarChart(
                     "Profit Bar Chart",
-                    "Time",
+                    isDaily ? "Hour" : isYearly ? "Month" : "Day",
                     "Profit",
                     barDataset,
                     org.jfree.chart.plot.PlotOrientation.VERTICAL,
@@ -307,40 +353,101 @@ public class UIHandler {
                     true,
                     false
             );
+
             CategoryPlot plot = chart.getCategoryPlot();
-            plot.setBackgroundPaint(Color.WHITE); // graph ki peechay walay color
-            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120/360f, 1.0f, 0.2f)); // Yahan se line color change hota
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120 / 360f, 1.0f, 0.2f));  // Color for bars
         } else {
             System.out.println("Invalid chart type.");
             return null;
         }
 
-        // Create and return the chart panel
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
 
         return chartPanel;
+
     }
     //Start date: dd/mm/yyyy , enddate: dd/mm/yyyy, chartype= line/bar
-    public static ChartPanel DisplayChartRanged(String startDate, String endDate,String chartType){
-        ArrayList<Integer> profitData = DataBaseHandler.getProfitDataForTimeSlot(startDate,endDate);
+    public static ChartPanel DisplayChartRanged(String startDate, String endDate, String chartType) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date start = null;
+        Date end = null;
+        try {
+            start = sdf.parse(startDate);
+            end = sdf.parse(endDate);
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please use dd/MM/yyyy.");
+            return null;
+        }
+
+        long diffInMillies = end.getTime() - start.getTime();
+        long diffInDays = diffInMillies / (1000 * 60 * 60 * 24);
+        int diffInMonths = (int) (diffInDays / 30);
+
+        ArrayList<Integer> profitData = new ArrayList<>();
+        ArrayList<String> hourlyProfitData = new ArrayList<>();
+
+        boolean isDaily = diffInDays == 0;
+
+        if (isDaily) {
+
+            hourlyProfitData = DataBaseHandler.getProfitAndTimeForSpecificDay(startDate);
+        } else {
+
+            if (diffInMonths > 1) {
+                profitData = DataBaseHandler.getMonthlyProfitData(startDate, endDate);
+            } else {
+                profitData = DataBaseHandler.getProfitDataForTimeSlot(startDate, endDate);
+            }
+        }
 
         XYSeries series = new XYSeries("Profit");
-        for (int i = 0; i < profitData.size(); i++) {
-            series.add(i + 1, profitData.get(i));
-        }
-        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
+        if (isDaily) {
 
+            for (int i = 0; i < hourlyProfitData.size(); i++) {
+                String[] parts = hourlyProfitData.get(i).split(", ");
+                String profitStr = parts[0].split(": ")[1];
+                int profit = Integer.parseInt(profitStr);
+                String hoursStr = parts[1].split(": ")[1];
+                int hours = Integer.parseInt(hoursStr);
+
+                series.add(hours, profit);
+            }
+        } else {
+            for (int i = 0; i < profitData.size(); i++) {
+                series.add(i + 1, profitData.get(i));
+            }
+        }
+
+        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
-        for (int i = 0; i < profitData.size(); i++) {
-            barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+
+        if (isDaily) {
+            for (int i = 0; i < hourlyProfitData.size(); i++) {
+                String[] parts = hourlyProfitData.get(i).split(", ");
+                String profitStr = parts[0].split(": ")[1];
+                int profit = Integer.parseInt(profitStr);
+                String hoursStr = parts[1].split(": ")[1];
+                barDataset.addValue(profit,"Profit", "Hour " + hoursStr);
+            }
+        } else {
+
+            for (int i = 0; i < profitData.size(); i++) {
+                if (diffInMonths > 1) {
+                    String monthName = java.time.Month.of(i + 1).name();
+                    barDataset.addValue(profitData.get(i), "Profit", monthName);
+                } else {
+                    barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+                }
+            }
         }
 
         JFreeChart chart;
         if (chartType.equalsIgnoreCase("line")) {
             chart = ChartFactory.createXYLineChart(
                     "Profit Line Chart",
-                    "Time",
+                    isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
                     "Profit",
                     lineDataset,
                     org.jfree.chart.plot.PlotOrientation.VERTICAL,
@@ -353,16 +460,15 @@ public class UIHandler {
             plot.setDomainGridlinesVisible(true);
             plot.setRangeGridlinesVisible(true);
             plot.setBackgroundPaint(Color.WHITE);
-            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));  // line ko bold krne ke lye
+            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));
 
             NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
-            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); //x axis wali values
+            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 
         } else if (chartType.equalsIgnoreCase("bar")) {
-            // Create bar chart
             chart = ChartFactory.createBarChart(
                     "Profit Bar Chart",
-                    "Time",
+                    isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
                     "Profit",
                     barDataset,
                     org.jfree.chart.plot.PlotOrientation.VERTICAL,
@@ -371,8 +477,8 @@ public class UIHandler {
                     false
             );
             CategoryPlot plot = chart.getCategoryPlot();
-            plot.setBackgroundPaint(Color.WHITE); // graph ki peechay walay color
-            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120/360f, 1.0f, 0.2f)); // Yahan se line color change hota
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120 / 360f, 1.0f, 0.2f));
         } else {
             System.out.println("Invalid chart type.");
             return null;
@@ -380,24 +486,33 @@ public class UIHandler {
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-
         return chartPanel;
     }
 
-/*Guide on how to use
+
+
+//Guide on how to use
+/*
     public static void main(String[] args) {
-       // ChartPanel lineChartPanel = DisplayChart("yearly","line");
-        ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","07/08/2024","line");
+        ChartPanel lineChartPanel = DisplayChartRanged("15/11/2024","15/11/2024","bar");
+  //   ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","01/01/2025","bar");
+      //  ChartPanel barChartPanel = DisplayChartRanged("02/02/2024","03/08/2024","line");
         JFrame frame = new JFrame("Profit Data Charts");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new java.awt.GridLayout(1, 2));
-       // frame.getContentPane().add(lineChartPanel);
-        frame.getContentPane().add(barChartPanel);
+        frame.getContentPane().add(lineChartPanel);
+       // frame.getContentPane().add(barChartPanel);
         frame.pack();
         frame.setVisible(true);
     }
 
  */
+
+
+
+
+
+
 
 
 
