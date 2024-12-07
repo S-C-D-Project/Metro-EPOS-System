@@ -1,6 +1,8 @@
 package Models;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,7 +12,6 @@ public class ProfitModel {
         ArrayList<Integer> profitData = new ArrayList<>();
         String query = "";
 
-        // Set the query based on the time period
         switch (timePeriod.toLowerCase()) {
             case "daily":
                 query = "SELECT profit FROM graph WHERE profitDate = ?";
@@ -29,11 +30,11 @@ public class ProfitModel {
                 return profitData;
         }
 
-        // Fetch data based on the query
+
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // If it's a daily query, we need to specify the exact date
+
             if (timePeriod.equalsIgnoreCase("daily")) {
                 stmt.setDate(1, Date.valueOf(java.time.LocalDate.now()));
             }
@@ -47,6 +48,34 @@ public class ProfitModel {
             e.printStackTrace();
         }
 
+        return profitData;
+    }
+
+    public static ArrayList<Integer> getProfitDataForTimeSlot(String startDate, String endDate) {
+        ArrayList<Integer> profitData = new ArrayList<>();
+        String query = "SELECT profit FROM graph WHERE profitDate BETWEEN ? AND ?";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            java.sql.Date sqlStartDate = new java.sql.Date(sdf.parse(startDate).getTime());
+            java.sql.Date sqlEndDate = new java.sql.Date(sdf.parse(endDate).getTime());
+
+            stmt.setDate(1, sqlStartDate);
+            stmt.setDate(2, sqlEndDate);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                profitData.add(rs.getInt("profit"));
+            }
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please use dd/MM/yyyy.");
+
+        } catch (SQLException e) {
+
+        }
         return profitData;
     }
 
