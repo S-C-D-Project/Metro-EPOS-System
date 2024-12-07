@@ -10,8 +10,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class VendorInfo extends Theme {
@@ -92,11 +92,21 @@ public class VendorInfo extends Theme {
     }
 
     private void setLogo() {
-        vendorLogo = new ImageIcon(vendorLogoPath).getImage();
-        Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
-        logoLabel.setBounds(76, 278, 20, 20);
-        add(logoLabel);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(vendorLogoPath)) {
+            if (is != null) {
+                vendorLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + vendorLogoPath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (vendorLogo != null) {
+            Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(76, 278, 20, 20);
+            add(logoLabel);
+        }
     }
 
     private void setFields(){
@@ -170,7 +180,7 @@ public class VendorInfo extends Theme {
 
     private void setSearchBar(){
         try {
-            BufferedImage logo = ImageIO.read(new File(searchIconPath));
+            BufferedImage logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream(searchIconPath));
             int buttonWidth = 15;
             int buttonHeight = 15;
             Image scaledImg = logo.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -498,7 +508,7 @@ public class VendorInfo extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, frame f,ExpandedInfo expandedInfo) {
+    public void refreshPanel(ArrayList<String> newList, frame f, ExpandedInfo expandedInfo) {
         if (scroll != null) {
             remove(scroll);
             vendorsCount.setText("");

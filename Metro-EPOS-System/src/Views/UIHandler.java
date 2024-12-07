@@ -3,10 +3,30 @@ package Views;
 import Controllers.*;
 import Models.DataBaseHandler;
 import Models.VendorModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 
 public class UIHandler {
     private static Cashier cashier = new Cashier();
@@ -182,6 +202,7 @@ public class UIHandler {
         }
         else{
         ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
+
         return list;
         }
 
@@ -197,19 +218,20 @@ public class UIHandler {
         if(!result){
             return null;
         }
-        ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
+        ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
+
         return list;
     }
 
     public static ArrayList<String> getEmployeeInfo(int branchID){
         // based on branchID it should return employees of that branch
         ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
 
@@ -218,12 +240,12 @@ public class UIHandler {
         // it should return the updated employees list of the particular branch;
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
 
@@ -232,14 +254,312 @@ public class UIHandler {
         // it should return the updated employees list of the particular branch list;
 
         ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Operator");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
         return list;
     }
+
+    public static ArrayList<String> getStocksDataofBranch(int branchID)
+    {
+        // i provide branchID and should get the (productsName,Stocks status). If stocks are 0
+        // it should provide Out of Stock as status
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Bread,20");
+        list.add("Apple,45");
+        list.add("Eggs,5");
+        list.add("Keyboard,Out of Stock");
+        list.add("Oven,10");
+        return list;
+    }
+
+    public static int getBranchSales(int branchID,String type) {
+        //I will provide with the branch id and i should get the branch Sales and in type
+        //i will specify if it is daily,weekly,monthly,yearly
+        return 100;
+    }
+    public static int getBranchRemaingingStock(int branchID,String type) {
+        //I will provide with the branch id and i should get the branch remaining stocks
+        // and in type i will specify if it is daily,weekly,monthly,yearly
+        return 5000;
+    }
+    public static int getBranchProfit(int branchID,String type) {
+        //I will provide with the branch id and i should get the branch profit and in type
+        //i will specify if it is daily,weekly,monthly,yearly
+        return 5000;
+    }
+
+    public static int getBranchSalesRange(int branchID,String start,String end) {
+        //I will provide with the branch id and i should get the branch Sales and
+        // with start and end dates
+        return 200;
+    }
+    public static int getBranchRemaingingStockRange(int branchID,String start,String end) {
+        //I will provide with the branch id and i should get the branch remaining stocks
+        // with start and end dates
+        return 200;
+    }
+    public static int getBranchProfitRange(int branchID,String start,String end) {
+        //I will provide with the branch id and i should get the branch profit with
+        // start and end dates
+        return 200;
+    }
+
+    //time can be daily, weekly, monthly or yearly, if time given is wrong it returns null
+    //Chart types are line and bar
+    public static ChartPanel DisplayChart(String Time, String chartType) {
+        ArrayList<Integer> profitData = new ArrayList<>();
+        ArrayList<String> profitTimeData = new ArrayList<>();
+        boolean isYearly = Time.equalsIgnoreCase("yearly");
+        boolean isDaily = Time.equalsIgnoreCase("daily");
+
+        // Fetch profit data based on time period
+        if (isDaily) {
+            profitTimeData = DataBaseHandler.getProfitAndTimeForToday();
+        } else {
+            profitData = DataBaseHandler.getProfitData(Time);
+        }
+
+        XYSeries series = new XYSeries("Profit");
+
+        if (isDaily) {
+            for (int i = 0; i < profitTimeData.size(); i++) {
+                String[] data = profitTimeData.get(i).split(", ");
+                String profitStr = data[0].split(": ")[1];
+                String timeStr = data[1].split(": ")[1];
+
+                int profit = Integer.parseInt(profitStr);
+                int hour = Integer.parseInt(timeStr);
+
+                series.add(hour, profit);
+            }
+        } else {
+            for (int i = 0; i < profitData.size(); i++) {
+                series.add(i + 1, profitData.get(i));
+            }
+        }
+
+        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+
+        if (isDaily) {
+
+            for (int i = 0; i < profitTimeData.size(); i++) {
+                String[] data = profitTimeData.get(i).split(", ");
+                String profitStr = data[0].split(": ")[1];
+                String timeStr = data[1].split(": ")[1];
+
+                int profit = Integer.parseInt(profitStr);
+                int hour = Integer.parseInt(timeStr);
+
+                barDataset.addValue(profit, "Profit", "Hour " + hour);
+            }
+        } else {
+
+            for (int i = 0; i < profitData.size(); i++) {
+                if (isYearly) {
+                    String monthName = java.time.Month.of(i + 1).name();
+                    barDataset.addValue(profitData.get(i), "Profit", monthName);
+                } else {
+                    barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+                }
+            }
+        }
+
+        JFreeChart chart;
+
+        if (chartType.equalsIgnoreCase("line")) {
+            chart = ChartFactory.createXYLineChart(
+                    "Profit Line Chart",
+                    isDaily ? "Hour" : isYearly ? "Month" : "Day",
+                    "Profit",
+                    lineDataset,
+                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+
+            XYPlot plot = chart.getXYPlot();
+            plot.setDomainGridlinesVisible(true);
+            plot.setRangeGridlinesVisible(true);
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));  // Bold line
+
+            NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
+            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        } else if (chartType.equalsIgnoreCase("bar")) {
+            chart = ChartFactory.createBarChart(
+                    "Profit Bar Chart",
+                    isDaily ? "Hour" : isYearly ? "Month" : "Day",
+                    "Profit",
+                    barDataset,
+                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+
+            CategoryPlot plot = chart.getCategoryPlot();
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120 / 360f, 1.0f, 0.2f));  // Color for bars
+        } else {
+            System.out.println("Invalid chart type.");
+            return null;
+        }
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        return chartPanel;
+
+    }
+    //Start date: dd/mm/yyyy , enddate: dd/mm/yyyy, chartype= line/bar
+    public static ChartPanel DisplayChartRanged(String startDate, String endDate, String chartType) {
+        try {
+            // Use the correct date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+            // Parse start and end dates
+            LocalDate start = LocalDate.parse(startDate, formatter);
+            LocalDate end = LocalDate.parse(endDate, formatter);
+
+            // Check date range is within 1 year (365 days)
+            boolean isYearly=false;
+            long daysBetween = ChronoUnit.DAYS.between(start, end);
+            if(daysBetween==365)
+                isYearly=true;
+            if (daysBetween > 365 || daysBetween < 0) {
+
+                System.out.println("Invalid date range: exceeds one year or is negative.");
+                return null;
+            }
+
+            // Initialize profit data variables
+            long diffInDays = daysBetween;
+            int diffInMonths = (int) (diffInDays / 30);
+            boolean isDaily = diffInDays == 0;
+
+            ArrayList<Integer> profitData = new ArrayList<>();
+            ArrayList<String> hourlyProfitData = new ArrayList<>();
+
+            // Fetch data based on date range
+            if (isDaily) {
+                hourlyProfitData = DataBaseHandler.getProfitAndTimeForSpecificDay(startDate);
+            } else {
+                if (diffInMonths > 1) {
+                    profitData = DataBaseHandler.getMonthlyProfitData(startDate, endDate);
+                } else {
+                    profitData = DataBaseHandler.getProfitDataForTimeSlot(startDate, endDate);
+                }
+            }
+            // Create the chart
+            XYSeries series = new XYSeries("Profit");
+            if (isDaily) {
+                for (String data : hourlyProfitData) {
+                    String[] parts = data.split(", ");
+                    int profit = Integer.parseInt(parts[0].split(": ")[1]);
+                    int hours = Integer.parseInt(parts[1].split(": ")[1]);
+                    series.add(hours, profit);
+                }
+            } else {
+                for (int i = 0; i < profitData.size(); i++) {
+                    series.add(i + 1, profitData.get(i));
+                }
+            }
+
+            XYSeriesCollection lineDataset = new XYSeriesCollection(series);
+            DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+
+            if (isDaily) {
+                for (String data : hourlyProfitData) {
+                    String[] parts = data.split(", ");
+                    int profit = Integer.parseInt(parts[0].split(": ")[1]);
+                    String hoursStr = parts[1].split(": ")[1];
+                    barDataset.addValue(profit, "Profit", "Hour " + hoursStr);
+                }
+            } else {
+                for (int i = 0; i < profitData.size(); i++) {
+                    if (diffInMonths > 1 && i + 1 == 13) {
+                        System.out.println("Error: Unexpected data for 13 months.");
+                        return null;
+                    }
+                    String label = diffInMonths > 1 ? java.time.Month.of(i + 1).name() : "Day " + (i + 1);
+                    barDataset.addValue(profitData.get(i), "Profit", label);
+                }
+            }
+
+            // Generate chart based on type
+            JFreeChart chart;
+            if (chartType.equalsIgnoreCase("line")) {
+                chart = ChartFactory.createXYLineChart(
+                        "Profit Line Chart",
+                        isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
+                        "Profit",
+                        lineDataset,
+                        org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                        true,
+                        true,
+                        false
+                );
+                XYPlot plot = chart.getXYPlot();
+                plot.setBackgroundPaint(Color.WHITE);
+                plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));
+            } else if (chartType.equalsIgnoreCase("bar")) {
+                chart = ChartFactory.createBarChart(
+                        "Profit Bar Chart",
+                        isDaily ? "Hour" : (diffInMonths > 1 ? "Month" : "Time"),
+                        "Profit",
+                        barDataset,
+                        org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                        true,
+                        true,
+                        false
+                );
+                CategoryPlot plot = chart.getCategoryPlot();
+                plot.setBackgroundPaint(Color.WHITE);
+            } else {
+                System.out.println("Invalid chart type.");
+                return null;
+            }
+
+            // Return chart panel
+            ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(800, 600));
+            return chartPanel;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+//Guide on how to use
+//    public static void main(String[] args) {
+//        ChartPanel lineChartPanel = DisplayChartRanged("15/11/2024","15/11/2024","bar");
+//  //   ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","01/01/2025","bar");
+//      //  ChartPanel barChartPanel = DisplayChartRanged("02/02/2024","03/08/2024","line");
+//        JFrame frame = new JFrame("Profit Data Charts");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setLayout(new java.awt.GridLayout(1, 2));
+//        frame.getContentPane().add(lineChartPanel);
+//       // frame.getContentPane().add(barChartPanel);
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
+
+
+
+
+
+
+
+
 
     public static boolean isNumbers(String line) {
         for (int i = 0; i < line.length(); i++) {
@@ -249,6 +569,25 @@ public class UIHandler {
             }
         }
         return true;
+    }
+    public static boolean isValidDate(String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate.parse(dateStr, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+    public static boolean isStartDateBeforeOrEqual(String startDateStr, String endDateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        try {
+            LocalDate startDate = LocalDate.parse(startDateStr, formatter);
+            LocalDate endDate = LocalDate.parse(endDateStr, formatter);
+            return !startDate.isAfter(endDate);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     public static boolean changePasswordCashier(String newPassword) throws SQLException {

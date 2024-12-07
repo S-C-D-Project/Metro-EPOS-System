@@ -216,14 +216,12 @@ public class VendorModel {
 
                     if (productRs.next()) {
                         String productDetails =
-
                                 productRs.getString("category") + "," + productRs.getString("productName") + "," +
                                 productRs.getInt("originalPrice") + "," +
                                 productRs.getInt("salePrice") + "," +
                                 productRs.getInt("pricePerUnit") + "," +
                                 productRs.getString("Manufacturer") ;
-
-                        productsList.add(productDetails);
+                                productsList.add(productDetails);
                     }
                 }
             }
@@ -283,12 +281,17 @@ public class VendorModel {
     }
     public static boolean deleteProductByVendorId(int vendorId,int prodcutid){
         String deleteQuery = "DELETE FROM Purchase WHERE Productid = ? And VendorId = ?";
-
+        String query="Update Product\n" +
+                "set StockQuantity-=1 where PRODUCTid=?";
         try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+             PreparedStatement preparedStatement2 = connection.prepareStatement(query)) {
 
             preparedStatement.setInt(1, prodcutid);
             preparedStatement.setInt(2, vendorId);
+
+            preparedStatement2.setInt(1,prodcutid);
+            preparedStatement2.executeUpdate();
             int rowsAffected = preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -296,5 +299,6 @@ public class VendorModel {
         }
         return false;
     }
+
 
 }

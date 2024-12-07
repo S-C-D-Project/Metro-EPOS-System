@@ -2,7 +2,6 @@ package Views.Manager;
 
 import Views.Decorate.Theme;
 import Views.Frame.frame;
-import Views.Operator.ExpandedInfo;
 import Views.UIHandler;
 
 import javax.imageio.ImageIO;
@@ -15,8 +14,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class EmployeeInfo extends Theme {
@@ -38,6 +37,7 @@ public class EmployeeInfo extends Theme {
     private JButton branchInfoButton;
 
     private Image empLogo;
+    private Image branchLogo;
     private ArrayList<String> list;
     private JLabel branchNumber;
     private JLabel employeesCount;
@@ -100,12 +100,39 @@ public class EmployeeInfo extends Theme {
     }
 
     private void setLogo() {
-        empLogo = new ImageIcon(employeeInfoPath).getImage();
-        Image scaledImage = empLogo.getScaledInstance(16, 20, Image.SCALE_SMOOTH);
-        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
-        logoLabel.setBounds(79, 325, 16, 20);
-        add(logoLabel);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(employeeInfoPath)) {
+            if (is != null) {
+                empLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + employeeInfoPath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (empLogo != null) {
+            Image scaledImage = empLogo.getScaledInstance(16, 20, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(79, 325, 16, 20);
+            add(logoLabel);
+        }
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(branchInfoPath)) {
+            if (is != null) {
+                branchLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + branchLogo);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (branchLogo != null) {
+            Image scaledImage = branchLogo.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(78, 280, 15, 15);
+            add(logoLabel);
+        }
     }
+
 
     private void setFields(){
         typeName = new JTextField("  Type Name");
@@ -187,7 +214,7 @@ public class EmployeeInfo extends Theme {
 
     private void setSearchBar(){
         try {
-            BufferedImage logo = ImageIO.read(new File(searchIconPath));
+            BufferedImage logo = ImageIO.read(getClass().getClassLoader().getResourceAsStream(searchIconPath));
             int buttonWidth = 15;
             int buttonHeight = 15;
             Image scaledImg = logo.getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -304,16 +331,16 @@ public class EmployeeInfo extends Theme {
         employeesCount.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,18));
 
         totalEmployees.setBounds(316,216,127,18);
-        empID.setBounds(319,257,54,24);
-        name.setBounds(410,257,48,24);
-        email.setBounds(516,257,63,24);
+        empID.setBounds(324,257,54,24);
+        name.setBounds(415,257,48,24);
+        email.setBounds(521,257,63,24);
         employeesInfo.setBounds(110,329,86,10);
         branchInfo.setBounds(110,283,86,10);
-        password.setBounds(626,257,77,24);
-        salary.setBounds(744,257,54,24);
-        phoneNo.setBounds(838,257,77,24);
-        role.setBounds(944,257,77,24);
-        status.setBounds(1032,257,77,24);
+        password.setBounds(631,257,77,24);
+        salary.setBounds(749,257,54,24);
+        phoneNo.setBounds(840,257,77,24);
+        role.setBounds(955,257,77,24);
+        status.setBounds(1040,257,77,24);
         employeesCount.setBounds(447,216,83,21);
 
         add(totalEmployees);
@@ -430,7 +457,7 @@ public class EmployeeInfo extends Theme {
                 JComboBox<String> role = new JComboBox<>(array1);
                 role.setEnabled(false);
                 role.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 12));
-                role.setBounds(615, 13, 106, 16);
+                role.setBounds(615, 13, 90, 16);
                 role.setBorder(BorderFactory.createEmptyBorder());
                 role.setSelectedItem(data[6]);
                 role.setFocusable(false);
