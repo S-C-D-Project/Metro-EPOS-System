@@ -38,13 +38,7 @@ public class ProductModel {
         return product;
     }
     public static ArrayList<String> getProductStockStatus(int branchid) {
-        // Initialize an empty list to store product stock details
         ArrayList<String> productStockList = new ArrayList<>();
-
-        // Database connection parameters
-        String url = "jdbc:sqlserver://yourserver.database.windows.net:1433;databaseName=yourdatabase";
-        String username = "yourusername";
-        String password = "yourpassword";
 
         String query = "SELECT productName stockQuantity FROM Product WHERE BranchId = ?";
 
@@ -58,7 +52,7 @@ public class ProductModel {
                 while (resultSet.next()) {
                     String productName = resultSet.getString("productName");
                     int stockQuantity = resultSet.getInt("stockQuantity");
-                    
+
                     String productDetails = productName + ", " + stockQuantity ;
                     productStockList.add(productDetails);
                 }
@@ -67,8 +61,7 @@ public class ProductModel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        // Return the list of product stock details
+        
         return productStockList;
     }
     public static boolean productExists(String productName, int branchId, Connection connection) {
