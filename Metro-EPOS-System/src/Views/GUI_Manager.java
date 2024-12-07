@@ -215,7 +215,7 @@ public class GUI_Manager
             }
         });
         branchInfo.getGenerateButtonReport().addActionListener(e->{
-            UIHandler.GenerateReport();
+            UIHandler.GenerateReport(branchID);
             JOptionPane.showMessageDialog(f.getFrame(),"Report Has been Saved","Success",JOptionPane.INFORMATION_MESSAGE);
         });
 

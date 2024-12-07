@@ -567,15 +567,24 @@ public class UIHandler {
             return null;
         }
     }
-    public static void GenerateReport(){
+    public static void GenerateReport(String branchid){
         ChartPanel chartPanelYearly = DisplayChart("yearly", "line");
         ChartPanel chartPanelMonthly = DisplayChart("monthly", "bar");
         ChartPanel chartPanelWeekly = DisplayChart("weekly", "bar");
         ChartPanel chartPanelDaily = DisplayChart("daily", "bar");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+        String currentDateStr = currentDate.format(formatter);
+
+        // Get the date 12 months ahead
+        LocalDate twelveMonthsBehind = currentDate.plusMonths(-12);
+        String twelveMonthsAheadStr = twelveMonthsBehind.format(formatter);
 
         ChartPanel[] chartPanels = {chartPanelYearly, chartPanelMonthly, chartPanelWeekly, chartPanelDaily};
-        ArrayList<String> productStockList = DataBaseHandler.getProductStockStatus(1);
-        ArrayList<Integer> monthlyProfits = DataBaseHandler.getMonthlyProfitData("08/12/2023", "08/12/2024");
+        ArrayList<String> productStockList = DataBaseHandler.getProductStockStatus(Integer.parseInt(branchid));;
+        ArrayList<Integer> monthlyProfits = DataBaseHandler.getMonthlyProfitData(twelveMonthsAheadStr,currentDateStr);
         ArrayList<String> billCalculations = DataBaseHandler.Bills();
         ArrayList<Integer> total = DataBaseHandler.getProfitData("yearly");
         int annualProfit = 0;
