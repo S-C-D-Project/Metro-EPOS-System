@@ -34,17 +34,17 @@ public class LogInTheme extends JPanel {
     private JButton notSelectedCashierButton;
     private JButton notSelectedDataOperatorButton;
 
-    private String profileVectorPath = "Metro-EPOS-System/Images/profile.png";
-    private String lockVectorPath = "Metro-EPOS-System/Images/Lock.png";
-    private String backgroundImgPath = "Metro-EPOS-System/Images/Bacground.png";
-    private String unselectedAdminButtonImgPath = "Metro-EPOS-System/Images/notselectedAdmin.png";
-    private String unselectedManagerButtonImgPath = "Metro-EPOS-System/Images/notselectedManager.png";
-    private String unselectedCashierButtonImgPath = "Metro-EPOS-System/Images/notselectedCashier.png";
-    private String unselectedOperatorButtonImgPath = "Metro-EPOS-System/Images/notselectedOperator.png";
-    private String selectedAdminButtonImgPath = "Metro-EPOS-System/Images/selectedAdmin.png";
-    private String selectedMangerButtonImgPath = "Metro-EPOS-System/Images/selectedManager.png";
-    private String selectedCashierButtonImgPath = "Metro-EPOS-System/Images/selectedCashier.png";
-    private String selectedOperatorButtonImgPath = "Metro-EPOS-System/Images/selectedOperator.png";
+    private String profileVectorPath = "Images/profile.png";
+    private String lockVectorPath = "Images/Lock.png";
+                                        private String backgroundImgPath = "Images/Bacground.png";
+    private String unselectedAdminButtonImgPath = "Images/notselectedAdmin.png";
+    private String unselectedManagerButtonImgPath = "Images/notselectedManager.png";
+    private String unselectedCashierButtonImgPath = "Images/notselectedCashier.png";
+    private String unselectedOperatorButtonImgPath = "Images/notselectedOperator.png";
+    private String selectedAdminButtonImgPath = "Images/selectedAdmin.png";
+    private String selectedMangerButtonImgPath = "Images/selectedManager.png";
+    private String selectedCashierButtonImgPath = "Images/selectedCashier.png";
+    private String selectedOperatorButtonImgPath = "Images/selectedOperator.png";
 
     public LogInTheme() {
         firstHeading = new Color(70,70,70);

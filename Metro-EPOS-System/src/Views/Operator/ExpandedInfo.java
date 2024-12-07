@@ -30,8 +30,8 @@ public class ExpandedInfo extends Theme {
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
 
-    private String vendorProfileImgPath = "Metro-EPOS-System/Images/DataOperatorProfile.png";
-    private String vendorLogoPath = "Metro-EPOS-System/Images/VendorInfoIcon.png";
+    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Images/VendorInfoIcon.png";
 
     public ExpandedInfo()
     {

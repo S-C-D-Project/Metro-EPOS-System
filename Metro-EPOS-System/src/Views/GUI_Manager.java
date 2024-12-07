@@ -17,6 +17,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 public class GUI_Manager
 {
     frame f;
@@ -326,6 +328,11 @@ public class GUI_Manager
                     adds.remove();
                     sales.resetFields();
                     sales.refreshPanel(null,0,f.getFrame());
+                    try {
+                        sleep(1500);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     UIHandler.deleteTempBill(file);
                 }
             }

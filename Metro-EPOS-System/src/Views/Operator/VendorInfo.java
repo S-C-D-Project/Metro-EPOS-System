@@ -35,9 +35,9 @@ public class VendorInfo extends Theme {
     private JLabel branchNumber;
     private JLabel vendorsCount;
 
-    private String vendorProfileImgPath = "Metro-EPOS-System/Images/DataOperatorProfile.png";
-    private String vendorLogoPath = "Metro-EPOS-System/Images/VendorInfoIcon.png";
-    private String searchIconPath = "Metro-EPOS-System/Images/searchlogo.png";
+    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String vendorLogoPath = "Images/VendorInfoIcon.png";
+    private String searchIconPath = "Images/searchlogo.png";
 
     public VendorInfo()
     {

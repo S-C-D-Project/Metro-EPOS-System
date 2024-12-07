@@ -77,7 +77,7 @@ public class UIHandler {
         if (branchManager != null) {
             branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "branchManager");
 
-            return branchManager.getName() + "," + branchManager.getEmployeeNumber();
+            return branchManager.getName() + "," + branchManager.getBranchid();
         } else {
             return "not";
         }
@@ -87,8 +87,7 @@ public class UIHandler {
         if (cashier != null) {
             cashier = (Cashier) cashier.vallidateEmployee(id, pass, "cashier");
             if (cashier != null) {
-
-                return cashier.getName() + "," + cashier.getEmployeeNumber();
+                return cashier.getName() + "," + cashier.getBranchid();
             } else {
                 return "not";
             }
@@ -111,7 +110,7 @@ public class UIHandler {
         String name= DataBaseHandler.getEmployeeName(id);
         dataEntryOperator.setName(name);
         String branch= DataBaseHandler.getEmployeeBranch(id);
-      
+
         dataEntryOperator.setBranchid(Integer.parseInt(branch));
         if(result){
             return name+","+branch;

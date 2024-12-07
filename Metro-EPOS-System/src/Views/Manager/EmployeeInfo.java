@@ -42,10 +42,10 @@ public class EmployeeInfo extends Theme {
     private JLabel branchNumber;
     private JLabel employeesCount;
 
-    private String managerProfileImgPath = "Metro-EPOS-System/Images/ManagerLogo.png";
-    private String employeeInfoPath = "Metro-EPOS-System/Images/EmpInfoLogo.png";
-    private String branchInfoPath = "Metro-EPOS-System/Images/branchWhite.png";
-    private String searchIconPath = "Metro-EPOS-System/Images/searchlogo.png";
+    private String managerProfileImgPath = "Images/ManagerLogo.png";
+    private String employeeInfoPath = "Images/EmpInfoLogo.png";
+    private String branchInfoPath = "Images/branchWhite.png";
+    private String searchIconPath = "Images/searchlogo.png";
 
     public EmployeeInfo()
     {

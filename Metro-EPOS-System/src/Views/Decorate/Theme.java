@@ -23,7 +23,7 @@ public class Theme extends JPanel {
 
     private JLabel infoField;
 
-    private String logoutIconPath = "Metro-EPOS-System/Images/LogoutLogo.png";
+    private String logoutIconPath = "Images/LogoutLogo.png";
 
     public Theme()
     {
