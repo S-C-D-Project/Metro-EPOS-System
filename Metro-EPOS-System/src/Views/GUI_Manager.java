@@ -475,18 +475,30 @@ public class GUI_Manager
         if(e.getSource()==managerLogIn.getAdminButton() || e.getSource()==cashierLogIn.getAdminButton() || e.getSource()==dataOperatorLogIn.getAdminButton()){
             f.replacePanel(oldPanel,adminLogIn.getPanel());
             oldPanel = adminLogIn.getPanel();
+            managerLogIn.resetFields();
+            cashierLogIn.resetFields();
+            dataOperatorLogIn.resetFields();
         }
         else if(e.getSource()==adminLogIn.getManagerButton() || e.getSource()==cashierLogIn.getManagerButton() || e.getSource()==dataOperatorLogIn.getManagerButton()){
             f.replacePanel(oldPanel,managerLogIn.getPanel());
             oldPanel = managerLogIn.getPanel();
+            adminLogIn.resetFields();
+            cashierLogIn.resetFields();
+            dataOperatorLogIn.resetFields();
         }
         else if(e.getSource()==adminLogIn.getCashierButton() || e.getSource()==managerLogIn.getCashierButton() || e.getSource()==dataOperatorLogIn.getCashierButton()){
             f.replacePanel(oldPanel,cashierLogIn.getPanel());
             oldPanel=cashierLogIn.getPanel();
+            adminLogIn.resetFields();
+            managerLogIn.resetFields();
+            dataOperatorLogIn.resetFields();
         }
         else if(e.getSource()==adminLogIn.getDataOperatorButton() || e.getSource()==managerLogIn.getDataOperatorButton() || e.getSource()==cashierLogIn.getDataOperatorButton()){
             f.replacePanel(oldPanel,dataOperatorLogIn.getPanel());
             oldPanel = dataOperatorLogIn.getPanel();
+            adminLogIn.resetFields();
+            cashierLogIn.resetFields();
+            managerLogIn.resetFields();
         }
     }
 
