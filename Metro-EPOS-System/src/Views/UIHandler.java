@@ -559,8 +559,7 @@ public class UIHandler {
         generateChartPDF(chartPanels, productStockList, monthlyProfits, billCalculations, "Report.pdf", annualProfit, budgetRemaining);
 
     }
-
-
+    
 
 //Guide on how to use
 //    public static void main(String[] args) {

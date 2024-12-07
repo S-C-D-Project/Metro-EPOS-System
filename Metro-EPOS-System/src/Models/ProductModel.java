@@ -40,7 +40,7 @@ public class ProductModel {
     public static ArrayList<String> getProductStockStatus(int branchid) {
         ArrayList<String> productStockList = new ArrayList<>();
 
-        String query = "SELECT productName stockQuantity FROM Product WHERE BranchId = ?";
+        String query = "SELECT productName, stockQuantity FROM Product WHERE BranchId = ?";
 
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -61,7 +61,7 @@ public class ProductModel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         return productStockList;
     }
     public static boolean productExists(String productName, int branchId, Connection connection) {

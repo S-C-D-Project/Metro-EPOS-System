@@ -191,7 +191,7 @@ public class PDFGenerator {
 
             // Draw the first table (Product Stock Status)
             contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-            float yPosition = 1020;
+            float yPosition = 720;
             float marginLeft = 50;
             float columnWidth = 180;
             float rowHeight = 20;
@@ -348,9 +348,6 @@ public class PDFGenerator {
         }
         document.close();
         return imageFiles;
-    }
-    public static void main(String[] args) {
-
     }
 }
 
