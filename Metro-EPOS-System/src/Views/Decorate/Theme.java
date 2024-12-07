@@ -161,4 +161,6 @@ public class Theme extends JPanel {
     {
         return this;
     }
+
+    public Color getLineColor2(){return lineColor2;}
 }
