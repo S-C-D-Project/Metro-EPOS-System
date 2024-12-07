@@ -28,6 +28,7 @@ public class BranchInfo extends Theme {
     private JButton logoutButton;
     private JButton enterButton;
     private JButton employeeInfoButton;
+    private JButton generateButtonReport;
 
     private Image empLogo;
     private Image branchLogo;
@@ -165,9 +166,19 @@ public class BranchInfo extends Theme {
         enterButton.setOpaque(true);
         enterButton.setBackground(super.getInfoFieldButtonColor());
 
+        generateButtonReport = new JButton("Save");
+        generateButtonReport.setForeground(super.getInfoFieldColor());
+        generateButtonReport.setFocusable(false);
+        generateButtonReport.setBorderPainted(false);
+        generateButtonReport.setContentAreaFilled(false);
+        generateButtonReport.setBounds(1250, 56, 70, 26);
+        generateButtonReport.setOpaque(true);
+        generateButtonReport.setBackground(super.getInfoFieldButtonColor());
+
         add(logoutButton);
         add(enterButton);
         add(employeeInfoButton);
+        add(generateButtonReport);
     }
 
     private void setHeading(){
@@ -569,6 +580,7 @@ public class BranchInfo extends Theme {
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getEnterButton(){return enterButton;}
     public JButton getEmployeeInfoButton(){return employeeInfoButton;}
+    public JButton getGenerateButtonReport(){return generateButtonReport;}
 
     public String getStartRange(){return start.getText();}
     public String getEndRange(){return end.getText();}

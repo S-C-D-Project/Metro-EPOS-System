@@ -214,6 +214,10 @@ public class GUI_Manager
                 branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)),f,UIHandler.getBranchSales(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.getBranchProfit(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.DisplayChartRanged(start,end,"line"));
             }
         });
+        branchInfo.getGenerateButtonReport().addActionListener(e->{
+            UIHandler.GenerateReport();
+            JOptionPane.showMessageDialog(f.getFrame(),"Report Has been Saved","Success",JOptionPane.INFORMATION_MESSAGE);
+        });
 
         //-------------------EMPLOYEE INFO PANEL LOGIC-----------------------------//
         employeeInfo.getLogoutButton().addActionListener(e->{
