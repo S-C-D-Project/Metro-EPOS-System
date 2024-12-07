@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
+
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +43,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+
     "git-widget-placeholder": "Asfandyar",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -59,28 +62,18 @@
     "DatabaseDriversLRU": [
       "sqlserver"
     ]
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\Metro-EPOS-System\Metro-EPOS-System\Images" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Asfandyar Ali\Desktop\Metro-EPOS-System\Metro-EPOS-System\src\main\resources" />
-      <recent name="C:\Users\Asfandyar Ali\Desktop\Metro-EPOS-System\Metro-EPOS-System\src\main" />
-    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="Views.Manager" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.GUI_Manager">
-    <configuration name="GIFPlayer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="GIFPlayer" />
-      <module name="Metro-EPOS-System" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="GUI_Manager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Views.GUI_Manager" />
       <module name="Metro-EPOS-System" />
@@ -97,7 +90,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GUI_Manager" />
-        <item itemvalue="Application.GIFPlayer" />
       </list>
     </recent_temporary>
   </component>
@@ -124,6 +116,7 @@
       <workItem from="1733582271872" duration="5100000" />
       <workItem from="1733590878452" duration="275000" />
       <workItem from="1733592319767" duration="3901000" />
+
       <workItem from="1733596269027" duration="4496000" />
     </task>
     <servers />

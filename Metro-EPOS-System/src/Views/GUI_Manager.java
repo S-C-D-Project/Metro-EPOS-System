@@ -1,24 +1,23 @@
 package Views;
+import Controllers.Branch;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
-import Views.Frame.GifPlayer;
 import Views.Frame.frame;
 import Views.LogIn.AdminLogIn;
 import Views.LogIn.CashierLogIn;
 import Views.LogIn.DataOperatorLogIn;
 import Views.LogIn.ManagerLogIn;
-import Views.Manager.BranchInfo;
 import Views.Manager.EmployeeInfo;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
-import org.apache.commons.logging.Log;
-import org.jfree.chart.ChartPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static java.lang.Thread.sleep;
 
 public class GUI_Manager
 {
@@ -33,10 +32,11 @@ public class GUI_Manager
     private CashierLogIn cashierLogIn;
     private DataOperatorLogIn dataOperatorLogIn;
     private EmployeeInfo employeeInfo;
-    private BranchInfo branchInfo;
 
     public GUI_Manager() {
         f = new frame();
+        f.show();
+
         vendor = new VendorInfo();
         operatorExpandedInfo = new ExpandedInfo();
         adminLogIn = new AdminLogIn();
@@ -46,7 +46,6 @@ public class GUI_Manager
         adds = new addOns(f.getFrame());
         sales = new SalesData();
         employeeInfo = new EmployeeInfo();
-        branchInfo = new BranchInfo();
     }
 
     public void LogIn() {
@@ -55,7 +54,6 @@ public class GUI_Manager
         }
         else{
             f.addPanel(adminLogIn.getPanel());
-            f.show();
         }
         oldPanel = adminLogIn.getPanel();
 
@@ -182,39 +180,6 @@ public class GUI_Manager
         f.replacePanel(oldPanel,employeeInfo.getPanel());
         oldPanel=employeeInfo.getPanel();
 
-        //-----------------------BRANCH INFO PANEL LOGIC------------------------//
-        branchInfo.setNameBranch(name,branchID);
-        branchInfo.getLogoutButton().addActionListener(e->{
-            branchInfo.resetFields();
-            LogIn();
-        });
-        branchInfo.getEmployeeInfoButton().addActionListener(e->{
-            employeeInfo.refreshPanel(UIHandler.getEmployeeInfo(Integer.parseInt(branchID)),f);
-            f.replacePanel(oldPanel,employeeInfo.getPanel());
-            oldPanel=employeeInfo.getPanel();
-        });
-        branchInfo.getEnterButton().addActionListener(e->{
-            String start = branchInfo.getStartRange();
-            String end = branchInfo.getEndRange();
-
-            if(start.equals("dd/MM/yyyy") || end.equals("dd/MM/yyyy") || start.trim().isEmpty() || end.trim().isEmpty() || !UIHandler.isValidDate(start) || !UIHandler.isValidDate(end) || !UIHandler.isStartDateBeforeOrEqual(start, end)){
-                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else if(UIHandler.DisplayChartRanged(start,end,"line")==null){
-                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
-            }
-            else{
-                String type;
-                if(branchInfo.getSelectedTime().equals("yearly")){
-                    type = "line";
-                }
-                else{
-                    type = "bar";
-                }
-                branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)),f,UIHandler.getBranchSales(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.getBranchProfit(Integer.parseInt(branchID),branchInfo.getSelectedTime()),UIHandler.DisplayChartRanged(start,end,"line"));
-            }
-        });
-
         //-------------------EMPLOYEE INFO PANEL LOGIC-----------------------------//
         employeeInfo.getLogoutButton().addActionListener(e->{
             employeeInfo.resetFields();
@@ -253,12 +218,6 @@ public class GUI_Manager
                 employeeInfo.refreshPanel(newList,f);
             }
         });
-        employeeInfo.getBranchInfoButton().addActionListener(e->{
-            branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)),f,UIHandler.getBranchSales(Integer.parseInt(branchID),"today"),UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID),"today"),UIHandler.getBranchProfit(Integer.parseInt(branchID),"today"),UIHandler.DisplayChart("daily","bar"));
-            f.replacePanel(oldPanel,branchInfo.getPanel());
-            oldPanel=branchInfo.getPanel();
-        });
-
     }
 
     public void CashierPanels(String name, String branchID)
@@ -369,6 +328,11 @@ public class GUI_Manager
                     adds.remove();
                     sales.resetFields();
                     sales.refreshPanel(null,0,f.getFrame());
+                    try {
+                        sleep(1500);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     UIHandler.deleteTempBill(file);
                 }
             }
@@ -492,6 +456,7 @@ public class GUI_Manager
             adminLogIn.resetFields();
             managerLogIn.resetFields();
             cashierLogIn.resetFields();
+
         }
         else if(e.getSource()==adminLogIn.getDataOperatorButton() || e.getSource()==managerLogIn.getDataOperatorButton() || e.getSource()==cashierLogIn.getDataOperatorButton()){
             f.replacePanel(oldPanel,dataOperatorLogIn.getPanel());
@@ -499,27 +464,16 @@ public class GUI_Manager
             adminLogIn.resetFields();
             managerLogIn.resetFields();
             cashierLogIn.resetFields();
+
         }
     }
 
-    public static void main(String[] args)
-    {
-        Thread splashThread = new Thread(() -> {
-            GifPlayer gifPlayer = new GifPlayer();
-        });
-        splashThread.start();
-
-        Thread GUI = new Thread(() -> {
-            GUI_Manager g = new GUI_Manager();
-            try {
-                splashThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            g.LogIn();
-        });
-        GUI.start();
+    public static void main(String[] args) {
+        //  Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
+        // UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
+        //       "EMP123", "BR001", 50000, "01/01/2020",
+        //     "N/A", true, branch, true);
+        GUI_Manager g = new GUI_Manager();
+        g.LogIn();
     }
-
-
 }
