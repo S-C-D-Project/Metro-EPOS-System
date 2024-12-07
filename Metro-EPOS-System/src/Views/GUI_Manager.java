@@ -200,6 +200,9 @@ public class GUI_Manager
             if(start.equals("dd/MM/yyyy") || end.equals("dd/MM/yyyy") || start.trim().isEmpty() || end.trim().isEmpty() || !UIHandler.isValidDate(start) || !UIHandler.isValidDate(end) || !UIHandler.isStartDateBeforeOrEqual(start, end)){
                 JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
             }
+            else if(UIHandler.DisplayChartRanged(start,end,"line")==null){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
+            }
             else{
                 String type;
                 if(branchInfo.getSelectedTime().equals("yearly")){
