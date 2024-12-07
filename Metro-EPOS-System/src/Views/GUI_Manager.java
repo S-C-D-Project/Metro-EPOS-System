@@ -1,6 +1,7 @@
 package Views;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
+import Views.Frame.GifPlayer;
 import Views.Frame.frame;
 import Views.LogIn.AdminLogIn;
 import Views.LogIn.CashierLogIn;
@@ -36,8 +37,6 @@ public class GUI_Manager
 
     public GUI_Manager() {
         f = new frame();
-        f.show();
-
         vendor = new VendorInfo();
         operatorExpandedInfo = new ExpandedInfo();
         adminLogIn = new AdminLogIn();
@@ -56,6 +55,7 @@ public class GUI_Manager
         }
         else{
             f.addPanel(adminLogIn.getPanel());
+            f.show();
         }
         oldPanel = adminLogIn.getPanel();
 
@@ -490,12 +490,24 @@ public class GUI_Manager
         }
     }
 
-    public static void main(String[] args) {
-        //  Branch branch = new Branch("Main Branch", 1, "123 Main St, Lahore","123-456-7890", 50, true);
-        // UIHandler.createCashier("Ahmad Shamail", "password123", "ahmad@example.com",
-        //       "EMP123", "BR001", 50000, "01/01/2020",
-        //     "N/A", true, branch, true);
-        GUI_Manager g = new GUI_Manager();
-        g.LogIn();
+    public static void main(String[] args)
+    {
+        Thread splashThread = new Thread(() -> {
+            GifPlayer gifPlayer = new GifPlayer();
+        });
+        splashThread.start();
+
+        Thread GUI = new Thread(() -> {
+            GUI_Manager g = new GUI_Manager();
+            try {
+                splashThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            g.LogIn();
+        });
+        GUI.start();
     }
+
+
 }
