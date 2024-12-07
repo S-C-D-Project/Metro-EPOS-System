@@ -125,17 +125,14 @@ public class UIHandler {
         // you can use isNumber function of UIHandler as well for validation
         // If operator is valid It should return the name,branchID of the operator comma separated,
         // if not then it should return "not
-        dataEntryOperator=new DataEntryOperator();
         dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
 
 
-        boolean result= DataBaseHandler.isValidDataOperator(id,pass);
-        String name= DataBaseHandler.getEmployeeName(id);
-        dataEntryOperator.setName(name);
+
         String branch= DataBaseHandler.getEmployeeBranch(id);
-      
         dataEntryOperator.setBranchid(Integer.parseInt(branch));
-        if(result){
+        if(dataEntryOperator !=null){
+            String name= dataEntryOperator.getName();
             return name+","+branch;
         }
         else{
@@ -175,10 +172,13 @@ public class UIHandler {
         // i should get like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
 
         //for testing
+        /*
         ArrayList<String> list = new ArrayList<>();
         list.add("Foods,Bread,100,100,100,50,Ali Express,Large");
         return list;
-        //return DataBaseHandler.getVendorProducts(Vid);
+
+         */
+        return DataBaseHandler.getVendorProducts(Vid);
     }
 
     public static ArrayList<String> addNewVendorProduct(int vID, String str) {
@@ -186,20 +186,24 @@ public class UIHandler {
         // and it should return like this as well;
 
         //for testing
+        /*
         ArrayList<String> list = new ArrayList<>();
         list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         return list;
 
-//        String[]values=str.split(",");
-//        String sample_manufaturer="Sample Factory";
-//        int branch= dataEntryOperator.getBranchid();
-//        DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
-//                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID));
-//
-//       ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
-//
-//        return list;
+         */
+
+        String[]values=str.split(",");
+       String sample_manufaturer=values[6];
+        System.out.println(sample_manufaturer);
+       int branch= dataEntryOperator.getBranchid();
+      DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
+                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID),values[7], Integer.parseInt(values[5]));
+
+      ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
+
+        return list;
     }
 
     public static ArrayList<String> updateVendorProductInfo(int vID, String str, String productName) {
@@ -207,21 +211,24 @@ public class UIHandler {
         // and it should return like this as well;
 
         //for testing
+        /*
         ArrayList<String> list = new ArrayList<>();
         list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         return list;
 
-//        String[]values=str.split(",");
-//        int productid=DataBaseHandler.getProductidbyName(productName.trim());
-//        boolean result=DataBaseHandler.updateProductInfo(vID,productid,values[1],values[0],values[2], Integer.parseInt(values[3]),values[4]);
-//        if(!result) {
-//            return null;
-//        }
-//        else{
-//        ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
-//
-//        return list;
-//        }
+         */
+
+       String[]values=str.split(",");
+        int productid=DataBaseHandler.getProductidbyName(productName.trim());
+       boolean result=DataBaseHandler.updateProductInfo(vID,productid,values[1],values[0],values[2], Integer.parseInt(values[3]),values[4], Integer.parseInt(values[5]),values[6],values[7]);
+       if(!result) {
+           return null;
+       }
+       else{
+      ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
+
+        return list;
+        }
     }
 
     public static ArrayList<String> deleteVendorProduct(int id, String catagory, String name, String originalPrice, String salesPrice, String pricePerUnit) {
@@ -230,18 +237,21 @@ public class UIHandler {
         // for deletion, after that I should get the updated list of particular vendor products
 
         //for testing
+        /*
         ArrayList<String> list = new ArrayList<>();
         list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
         return list;
 
-//        int prodid=DataBaseHandler.getProductidbyName(name);
-//        boolean result=DataBaseHandler.deleteProductByVendorId(id,prodid);
-//        if(!result){
-//            return null;
-//        }
-//        ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
-//
-//        return list;
+         */
+
+        int prodid=DataBaseHandler.getProductidbyName(name);
+        boolean result=DataBaseHandler.deleteProductByVendorId(id,prodid);
+       if(!result){
+           return null;
+       }
+       ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
+
+        return list;
     }
 
     public static ArrayList<String> getEmployeeInfo(int branchID){

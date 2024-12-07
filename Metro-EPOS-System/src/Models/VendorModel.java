@@ -220,7 +220,9 @@ public class VendorModel {
                                 productRs.getInt("originalPrice") + "," +
                                 productRs.getInt("salePrice") + "," +
                                 productRs.getInt("pricePerUnit") + "," +
-                                productRs.getString("Manufacturer") ;
+                                productRs.getInt("stockQuantity")+  ","+
+                                productRs.getString("Manufacturer") + ","+
+                                productRs.getString("ProductSize");
                                 productsList.add(productDetails);
                     }
                 }
@@ -234,13 +236,13 @@ public class VendorModel {
     }
     public static boolean updateProductInfo(int vendorId,int productId,String productName,
                                             String category, String originalPrice,
-                                            int salePrice, String pricePerUnit) {
+                                            int salePrice, String pricePerUnit,int StockQunatity,String Manufacturer,String ProductSize) {
 
 
         String checkProductQuery = "SELECT COUNT(*) FROM Purchase WHERE VendorId = ? AND productId = ?";
 
         String updateProductQuery = "UPDATE Product SET productName = ?, category = ?," +
-                "originalPrice = ?, salePrice = ?, pricePerUnit = ?,"+
+                "originalPrice = ?, salePrice = ?, pricePerUnit = ?, stockQuantity=?, Manufacturer=?,ProductSize=?,"+
                 "salestax = ? WHERE productId = ? AND BranchId = (SELECT BranchId FROM Vendor WHERE vendorId = ?)";
 
 
@@ -264,9 +266,12 @@ public class VendorModel {
                 salePrice += (int) salesTax;
                 updateStmt.setInt(4, salePrice);
                 updateStmt.setInt(5, Integer.parseInt(pricePerUnit));
-                updateStmt.setDouble(6, salesTax);
-                updateStmt.setInt(7, productId);
-                updateStmt.setInt(8, vendorId);
+                updateStmt.setInt(6, StockQunatity);
+                updateStmt.setString(7, Manufacturer);
+                updateStmt.setString(8, ProductSize);
+                updateStmt.setDouble(9, salesTax);
+                updateStmt.setInt(10, productId);
+                updateStmt.setInt(11, vendorId);
 
                 int rowsUpdated = updateStmt.executeUpdate();
                 return rowsUpdated > 0;
@@ -275,7 +280,7 @@ public class VendorModel {
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println("Error in updating prdoucts info");
+            System.out.println(e.getMessage());
             return false;
         }
     }

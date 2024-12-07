@@ -122,8 +122,8 @@ public static boolean changePassword(String newPassword, int id){
     public static boolean insertVendor(String vendorName, String city, String address, String status, int branchId) {
     return VendorModel.insertVendor(vendorName,city,address,status,branchId);
     }
-    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName) {
-    return PurchaseModel.addOrUpdateProductAndPurchase(branchId,productName,category,manufacturer,originalPrice,salePrice,pricePerUnit,vendorId,vendorName);
+    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName,String size, int stocks) {
+    return PurchaseModel.addOrUpdateProductAndPurchase(branchId,productName,category,manufacturer,originalPrice,salePrice,pricePerUnit,vendorId,vendorName,size,stocks);
     }
     public static String getVendorName(int vendorId) {
     return VendorModel.getVendorName(vendorId);
@@ -133,8 +133,8 @@ public static boolean changePassword(String newPassword, int id){
     }
     public static boolean updateProductInfo(int vendorId,int productId,String productName,
                                             String category, String originalPrice,
-                                            int salePrice, String pricePerUnit) {
-    return VendorModel.updateProductInfo(vendorId,productId,productName,category,originalPrice,salePrice,pricePerUnit);
+                                            int salePrice, String pricePerUnit,int Stocks,String Man,String size) {
+    return VendorModel.updateProductInfo(vendorId,productId,productName,category,originalPrice,salePrice,pricePerUnit,Stocks,Man,size);
     }
     public static int getProductidbyName(String PrdouctName){
             return ProductModel.getProductidbyName(PrdouctName);
