@@ -321,22 +321,85 @@ public class UIHandler {
 
         return chartPanel;
     }
+    //Start date: dd/mm/yyyy , enddate: dd/mm/yyyy, chartype= line/bar
+    public static ChartPanel DisplayChartRanged(String startDate, String endDate,String chartType){
+        ArrayList<Integer> profitData = DataBaseHandler.getProfitDataForTimeSlot(startDate,endDate);
 
-/* Guide for Asfand
+        XYSeries series = new XYSeries("Profit");
+        for (int i = 0; i < profitData.size(); i++) {
+            series.add(i + 1, profitData.get(i));
+        }
+        XYSeriesCollection lineDataset = new XYSeriesCollection(series);
+
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+        for (int i = 0; i < profitData.size(); i++) {
+            barDataset.addValue(profitData.get(i), "Profit", "Day " + (i + 1));
+        }
+
+        JFreeChart chart;
+        if (chartType.equalsIgnoreCase("line")) {
+            chart = ChartFactory.createXYLineChart(
+                    "Profit Line Chart",
+                    "Time",
+                    "Profit",
+                    lineDataset,
+                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+
+            XYPlot plot = chart.getXYPlot();
+            plot.setDomainGridlinesVisible(true);
+            plot.setRangeGridlinesVisible(true);
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.getRenderer().setSeriesStroke(0, new java.awt.BasicStroke(3.0f));  // line ko bold krne ke lye
+
+            NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
+            domainAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); //x axis wali values
+
+        } else if (chartType.equalsIgnoreCase("bar")) {
+            // Create bar chart
+            chart = ChartFactory.createBarChart(
+                    "Profit Bar Chart",
+                    "Time",
+                    "Profit",
+                    barDataset,
+                    org.jfree.chart.plot.PlotOrientation.VERTICAL,
+                    true,
+                    true,
+                    false
+            );
+            CategoryPlot plot = chart.getCategoryPlot();
+            plot.setBackgroundPaint(Color.WHITE); // graph ki peechay walay color
+            plot.getRenderer().setSeriesPaint(0, Color.getHSBColor(120/360f, 1.0f, 0.2f)); // Yahan se line color change hota
+        } else {
+            System.out.println("Invalid chart type.");
+            return null;
+        }
+
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        return chartPanel;
+    }
+
+/*Guide on how to use
     public static void main(String[] args) {
-        ChartPanel lineChartPanel = DisplayChart("yearly","line");
-        ChartPanel barChartPanel = DisplayChart("weekly", "bar");
-
+       // ChartPanel lineChartPanel = DisplayChart("yearly","line");
+        ChartPanel barChartPanel = DisplayChartRanged("01/01/2024","07/08/2024","line");
         JFrame frame = new JFrame("Profit Data Charts");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new java.awt.GridLayout(1, 2));
-        frame.getContentPane().add(lineChartPanel);
+       // frame.getContentPane().add(lineChartPanel);
         frame.getContentPane().add(barChartPanel);
         frame.pack();
         frame.setVisible(true);
     }
 
  */
+
+
 
     public static boolean isNumbers(String line) {
         for (int i = 0; i < line.length(); i++) {

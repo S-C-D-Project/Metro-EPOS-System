@@ -142,6 +142,9 @@ public static boolean changePassword(String newPassword, int id){
     public static ArrayList<Integer> getProfitData(String period) {
                  return ProfitModel.getProfitData(period);
     }
+    public static ArrayList<Integer> getProfitDataForTimeSlot(String startDate, String endDate) {
+    return ProfitModel.getProfitDataForTimeSlot(startDate,endDate);
+    }
         public static void main(String[] args) {
         // Main method can be used to test methods, if needed
 
