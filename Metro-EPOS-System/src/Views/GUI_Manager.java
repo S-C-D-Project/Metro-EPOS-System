@@ -455,16 +455,14 @@ public class GUI_Manager
             oldPanel=cashierLogIn.getPanel();
             adminLogIn.resetFields();
             managerLogIn.resetFields();
-            cashierLogIn.resetFields();
-
+            dataOperatorLogIn.resetFields();
         }
         else if(e.getSource()==adminLogIn.getDataOperatorButton() || e.getSource()==managerLogIn.getDataOperatorButton() || e.getSource()==cashierLogIn.getDataOperatorButton()){
             f.replacePanel(oldPanel,dataOperatorLogIn.getPanel());
             oldPanel = dataOperatorLogIn.getPanel();
             adminLogIn.resetFields();
-            managerLogIn.resetFields();
             cashierLogIn.resetFields();
-
+            managerLogIn.resetFields();
         }
     }
 
