@@ -84,7 +84,12 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
+                    adminLogIn.resetFields();
+                }
+                else if(UIHandler.isNewAdmin(id, pass)){
+                    adminLogIn.displayNewUserWindow(f.getFrame());
+                }
+                else {
                     adminLogIn.resetFields();
                     String[] data = repsone.split(",");
                     AdminPanels(data[0]);
@@ -94,6 +99,23 @@ public class GUI_Manager {
         adminLogIn.getManagerButton().addActionListener(this::ActionPerformer);
         adminLogIn.getCashierButton().addActionListener(this::ActionPerformer);
         adminLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+        adminLogIn.getSaveButton().addActionListener(e->{
+            String newPass = adminLogIn.getNewPass();
+            String confirmPass = adminLogIn.getConfirmPass();
+
+            if(!newPass.equals(confirmPass) || newPass.trim().isEmpty() || confirmPass.trim().isEmpty()){
+                JOptionPane.showMessageDialog(adminLogIn.getFrame2(),"Invalid Password","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                try {
+                    UIHandler.changePasswordSuperAdmin(newPass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                JOptionPane.showMessageDialog(adminLogIn.getFrame2(),"Password Changed","Success",JOptionPane.INFORMATION_MESSAGE);
+                adminLogIn.removeFrame2();
+            }
+        });
 
         //----------------------------------MANAGER LOGIN PANEL LOGIC------------------------------//
         managerLogIn.getLogInButton().addActionListener(e -> {
@@ -111,7 +133,11 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
+                }
+                else if(UIHandler.isNewBranchManager(id, pass)){
+                    managerLogIn.displayNewUserWindow(f.getFrame());
+                }
+                else {
                     String[] data = repsone.split(",");
                     managerLogIn.resetFields();
                     ManagerPanels(data[0], data[1]);
@@ -121,6 +147,23 @@ public class GUI_Manager {
         managerLogIn.getAdminButton().addActionListener(this::ActionPerformer);
         managerLogIn.getCashierButton().addActionListener(this::ActionPerformer);
         managerLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+        managerLogIn.getSaveButton().addActionListener(e->{
+            String newPass = managerLogIn.getNewPass();
+            String confirmPass = managerLogIn.getConfirmPass();
+
+            if(!newPass.equals(confirmPass) || newPass.trim().isEmpty() || confirmPass.trim().isEmpty()){
+                JOptionPane.showMessageDialog(managerLogIn.getFrame2(),"Invalid Password","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                try {
+                    UIHandler.changePasswordBranchManager(newPass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                JOptionPane.showMessageDialog(managerLogIn.getFrame2(),"Password Changed","Success",JOptionPane.INFORMATION_MESSAGE);
+                managerLogIn.removeFrame2();
+            }
+        });
 
         //----------------------------------CASHIER LOGIN PANEL LOGIC------------------------------//
         cashierLogIn.getLogInButton().addActionListener(e -> {
@@ -139,7 +182,11 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
+                }
+                else if(UIHandler.isNewCashier(id, pass)){
+                    cashierLogIn.displayNewUserWindow(f.getFrame());
+                }
+                else {
                     String[] data = repsone.split(",");
                     cashierLogIn.resetFields();
                     CashierPanels(data[0], data[1]);
@@ -149,6 +196,23 @@ public class GUI_Manager {
         cashierLogIn.getAdminButton().addActionListener(this::ActionPerformer);
         cashierLogIn.getManagerButton().addActionListener(this::ActionPerformer);
         cashierLogIn.getDataOperatorButton().addActionListener(this::ActionPerformer);
+        cashierLogIn.getSaveButton().addActionListener(e->{
+            String newPass = cashierLogIn.getNewPass();
+            String confirmPass = cashierLogIn.getConfirmPass();
+
+            if(!newPass.equals(confirmPass) || newPass.trim().isEmpty() || confirmPass.trim().isEmpty()){
+                JOptionPane.showMessageDialog(cashierLogIn.getFrame2(),"Invalid Password","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                try {
+                    UIHandler.changePasswordCashier(newPass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                JOptionPane.showMessageDialog(cashierLogIn.getFrame2(),"Password Changed","Success",JOptionPane.INFORMATION_MESSAGE);
+                cashierLogIn.removeFrame2();
+            }
+        });
 
         //----------------------------------Data Operator LOGIN PANEL LOGIC------------------------------//
         dataOperatorLogIn.getLogInButton().addActionListener(e -> {
@@ -166,7 +230,11 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
+                }
+                else if(UIHandler.isNewOperator(id, pass)){
+                    dataOperatorLogIn.displayNewUserWindow(f.getFrame());
+                }
+                else {
                     String[] data = repsone.split(",");
                     dataOperatorLogIn.resetFields();
                     DataOpeatorPanels(data[0], data[1]);
@@ -176,6 +244,23 @@ public class GUI_Manager {
         dataOperatorLogIn.getAdminButton().addActionListener(this::ActionPerformer);
         dataOperatorLogIn.getManagerButton().addActionListener(this::ActionPerformer);
         dataOperatorLogIn.getCashierButton().addActionListener(this::ActionPerformer);
+        dataOperatorLogIn.getSaveButton().addActionListener(e->{
+            String newPass = dataOperatorLogIn.getNewPass();
+            String confirmPass = dataOperatorLogIn.getConfirmPass();
+
+            if(!newPass.equals(confirmPass) || newPass.trim().isEmpty() || confirmPass.trim().isEmpty()){
+                JOptionPane.showMessageDialog(dataOperatorLogIn.getFrame2(),"Invalid Password","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                try {
+                    UIHandler.changePasswordDataEntryOperator(newPass);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                JOptionPane.showMessageDialog(dataOperatorLogIn.getFrame2(),"Password Changed","Success",JOptionPane.INFORMATION_MESSAGE);
+                dataOperatorLogIn.removeFrame2();
+            }
+        });
     }
 
     public void AdminPanels(String name) {
@@ -699,33 +784,5 @@ public class GUI_Manager {
             managerLogIn.resetFields();
             cashierLogIn.resetFields();
         }
-    }
-
-    public static void main(String[] args) {
-
-        Thread splashThread = new Thread(() -> {
-            GifPlayer gifPlayer = new GifPlayer();
-        });
-        splashThread.start();
-
-        Thread GUI = new Thread(() -> {
-            GUI_Manager g = new GUI_Manager();
-            if (!UIHandler.checkInternetConnection()) {
-                JOptionPane.showMessageDialog(g.f.getFrame(), "No Internet Connection", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                try {
-                    DataBaseHandler.getInstance();
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            try {
-                splashThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            g.LogIn();
-        });
-        GUI.start();
     }
 }

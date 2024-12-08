@@ -368,6 +368,9 @@ public class ExpandedInfo extends Theme {
                     if(Objects.requireNonNull(category.getSelectedItem()).toString().trim().equals("_") || category.getSelectedItem().toString().trim().isEmpty() || name.getText().trim().isEmpty() || name.getText().trim().equals("_") ||!UIHandler.isNumbers(originalPrice.getText()) || !UIHandler.isNumbers(salePrice.getText()) || !UIHandler.isNumbers(pricePerUnit.getText()) || !UIHandler.isNumbers(stocksProd.getText()) || manufacture.getText().trim().isEmpty() || manufacture.getText().equals("_")) {
                         JOptionPane.showMessageDialog(f,"Invalid Inputs", "Error",JOptionPane.ERROR_MESSAGE);
                     }
+                    else if(Integer.parseInt(salePrice.getText())<Integer.parseInt(originalPrice.getText())){
+                        JOptionPane.showMessageDialog(f,"Sales Price Less than Orignal", "Error",JOptionPane.ERROR_MESSAGE);
+                    }
                     else{
                         String adding = category.getSelectedItem().toString() + "," + name.getText() + "," + originalPrice.getText() + "," + salePrice.getText() + "," + pricePerUnit.getText() +","+stocksProd.getText() + "," + manufacture.getText() + "," + prodSizes.getSelectedItem().toString();
                         list = UIHandler.addNewVendorProduct(vendorID,adding);
@@ -554,6 +557,9 @@ public class ExpandedInfo extends Theme {
                         {
                             if(!UIHandler.isNumbers(originalPrice.getText()) || !UIHandler.isNumbers(salePrice.getText()) || !UIHandler.isNumbers(pricePerUnit.getText()) || manufacture.getText().trim().isEmpty()){
                                 JOptionPane.showMessageDialog(f,"Invalid Changes","Error",JOptionPane.ERROR_MESSAGE);
+                            }
+                            else if(Integer.parseInt(salePrice.getText())<Integer.parseInt(originalPrice.getText())){
+                                JOptionPane.showMessageDialog(f,"Sales Price Less than Orignal", "Error",JOptionPane.ERROR_MESSAGE);
                             }
                             else{
                                 String improved = catagory.getText() + "," + name.getText() + "," + originalPrice.getText() + "," + salePrice.getText() + "," + pricePerUnit.getText() + "," + stocksProd.getText() + "," + manufacture.getText() + "," + prodSizes.getSelectedItem().toString();
