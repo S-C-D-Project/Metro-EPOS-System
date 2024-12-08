@@ -2,6 +2,7 @@ package Models;
 import Controllers.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class EmployeeModel {
     public static Object validateEmployee(String employeeNumber, String password, Connection connection, String choice) {
@@ -27,17 +28,16 @@ public class EmployeeModel {
                 }
                 switch (role.toLowerCase()) {
                     case "branchmanager":
-                        employee = new BranchManager(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
+                        employee = new BranchManager(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
                     case "dataentryoperator":
-                        employee = new DataEntryOperator(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
+                        employee = new DataEntryOperator(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
                     case "cashier":
-                        employee = new Cashier(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
+                        employee = new Cashier(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
-                    case "superadmin":
-                        return SuperAdmin.getInstance(name, password, email,String.valueOf(employeeID),isActive,"dataEntryOperator");
-
+                    case "superadmin": {
+                        return new Object[]{name, password, email, employeeID, isActive};   }
                 }
             }
         } catch (SQLException e) {
@@ -79,25 +79,26 @@ public class EmployeeModel {
             return false;
         }
     }
-    public static boolean addEmployee(String name, String email, int salary, int branchid, String role,  Connection connection) {
+    public static int addEmployee(String name, int salary, int branchId, String role, Connection connection) {
         try {
-            String sql = "{ ? = call ADDEMPOLYEE(?, ?, ?, ?, ?) }";
-            PreparedStatement stmt = connection.prepareStatement(sql);
-
+            String sql = "{ call ADDEMPOLYEE(?, ?, ?, ?, ?, ?) }";
+            CallableStatement stmt = connection.prepareCall(sql);
 
             stmt.setString(1, name);
-            stmt.setString(2, email);
-            stmt.setInt(3, salary);
-            stmt.setInt(4, branchid);
-            stmt.setString(5, role);
+            stmt.setInt(2, salary);
+            stmt.setInt(3, branchId);
+            stmt.setString(4, role);
+            stmt.setString(5, "123");
+            stmt.registerOutParameter(6, Types.INTEGER);
 
-            return stmt.execute();
-        } catch (SQLException e){
+            stmt.execute();
+
+            return stmt.getInt(6);
+        } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
-    }
-    public static boolean isValidDataOperator(String id, String pass) {
+    }  public static boolean isValidDataOperator(String id, String pass) {
         boolean isValid = false;
         String sql = "SELECT * FROM employee WHERE EmployeeID = ? AND Password = ? AND Role LIKE 'DataEntryOperator'";
 
@@ -161,9 +162,38 @@ public class EmployeeModel {
             e.printStackTrace();
             System.out.println("Error in Data entry login's getting branch");
         }
-        System.out.println();
         return branchid;
     }
+    public static ArrayList<String> getEmployeesByBranch(Connection connection, int branchID) {
+        ArrayList<String> employeeList = new ArrayList<>();
+        String storedProc = "{call GetEmployeesByBranch(?)}";
+
+        try (CallableStatement callableStatement = connection.prepareCall(storedProc)) {
+            callableStatement.setInt(1, branchID);
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int employeeId = resultSet.getInt("Employeeid");
+                String name = resultSet.getString("Name");
+                String email = resultSet.getString("Email");
+                String passwordFromDb = resultSet.getString("Password");
+                double salary = resultSet.getDouble("Salary");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                String role = resultSet.getString("Role");
+                String isActive = resultSet.getBoolean("IsActive") ? "Active" : "Inactive";
+
+                String formattedString = String.format("%03d,%s,%s,%s,%.2f,%s,%s,%s",
+                        employeeId, name, email, passwordFromDb, salary, phoneNumber, role, isActive);
+                employeeList.add(formattedString);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employeeList;
+    }
+
 
 }
 

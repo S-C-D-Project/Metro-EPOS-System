@@ -633,7 +633,7 @@ public class ExpandedReport extends Theme {
 
     public JPanel getPanel(){return this;}
 
-    public int getBranchID(){
-        return Integer.parseInt(branchNumber.getText());
+    public String getBranchID(){
+        return branchNumber.getText();
     }
 }
