@@ -125,8 +125,10 @@ public class DataBaseHandler {
     public static String getEmployeeBranch(String id) {
         return EmployeeModel.getEmployeeBranch(id);
     }
-
-    public static boolean updateVendorInfo(int id, String newName, String newCity, String newAddress, String status) {
+    public static ArrayList<String> getAllProductsLocal() {
+    return ProductModel.getAllProductsLocal();
+    }
+        public static boolean updateVendorInfo(int id, String newName, String newCity, String newAddress, String status) {
         return VendorModel.updateVendorInfo(id, newName, newCity, newAddress, status);
     }
 

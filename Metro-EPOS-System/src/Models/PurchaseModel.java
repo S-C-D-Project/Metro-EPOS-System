@@ -1,9 +1,6 @@
 package Models;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import static Models.DataBaseHandler.getSalesTax;
 
@@ -20,79 +17,87 @@ FOREIGN KEY (VendorID) REFERENCES Vendors(VendorID)
 */
 public class PurchaseModel {
 
-    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName,String size,int stocks) {
+    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer,
+                                                    float originalPrice, int salePrice, float pricePerUnit, int vendorId,
+                                                    String vendorName, String size, int stocks) {
         String checkProductQuery = """
-            SELECT ProductID
-            FROM Product
-            Where Branchid=? and productName = ?;
-            """;
+        SELECT ProductID
+        FROM Product
+        WHERE BranchId = ? AND productName = ?;
+        """;
 
         String updateProductQuery = """
-            UPDATE Product
-            SET stockQuantity = stockQuantity + ?, Manufacturer=?,ProductSize=?,originalPrice=?,salePrice=?,pricePerUnit=?,
-            OUTPUT INSERTED.ProductID
-            WHERE BranchId = ? AND productName = ?;
-            """;
-            double salesTax = getSalesTax();
-            double temporary = salesTax;
-            salesTax = salesTax / 100 * originalPrice;
-            salePrice += (int) salesTax;
-            String insertProductQuery = """
-            INSERT INTO Product (BranchId, productName, category, Manufacturer, originalPrice, salePrice,pricePerUnit, stockQuantity,salesTax,ProductSize)
-            OUTPUT INSERTED.ProductID
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?);
-            """;
+        UPDATE Product
+        SET stockQuantity = stockQuantity + ?, 
+            Manufacturer = ?, 
+            ProductSize = ?, 
+            originalPrice = ?, 
+            salePrice = ?, 
+            pricePerUnit = ?
+        WHERE BranchId = ? AND productName = ?;
+        """;
+
+        String insertProductQuery = """
+        INSERT INTO Product (BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity, salesTax, ProductSize)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """;
 
         String insertPurchaseQuery = """
-            INSERT INTO Purchase (VendorId, VendorName, productId)
-            VALUES (?, ?, ?);
-            """;
+        INSERT INTO Purchase (VendorId, VendorName, ProductID)
+        VALUES (?, ?, ?);
+        """;
+
+        double salesTaxRate = getSalesTax();
+        double salesTax = (salesTaxRate / 100) * originalPrice;
+        salePrice += (int) salesTax;
 
         try (Connection con = DataBaseConnection.getConnection()) {
             int productId;
 
-
+            // Check if the product exists
             try (PreparedStatement checkStmt = con.prepareStatement(checkProductQuery)) {
                 checkStmt.setInt(1, branchId);
                 checkStmt.setString(2, productName);
 
                 ResultSet rs = checkStmt.executeQuery();
-
                 if (rs.next()) {
-
+                    // Product exists, update it
+                    productId = rs.getInt("ProductID");
                     try (PreparedStatement updateStmt = con.prepareStatement(updateProductQuery)) {
                         updateStmt.setInt(1, stocks);
-                        updateStmt.setString(2,manufacturer);
+                        updateStmt.setString(2, manufacturer);
                         updateStmt.setString(3, size);
-                        updateStmt.setInt(4, (int) originalPrice);
+                        updateStmt.setFloat(4, originalPrice);
                         updateStmt.setInt(5, salePrice);
-                        updateStmt.setInt(6, (int) pricePerUnit);
-                        updateStmt.setString(7, productName);
-                        updateStmt.setInt(8, branchId);
-                        ResultSet updateRs = updateStmt.executeQuery();
-                        if (updateRs.next()) {
-                            productId = updateRs.getInt("ProductID");
-                        } else {
-                            throw new SQLException("Failed to update product stock quantity.");
-                        }
+                        updateStmt.setFloat(6, pricePerUnit);
+                        updateStmt.setInt(7, branchId);
+                        updateStmt.setString(8, productName);
+
+                        updateStmt.executeUpdate(); // Execute the update
                     }
                 } else {
-
-                    try (PreparedStatement insertStmt = con.prepareStatement(insertProductQuery)) {
+                    // Product does not exist, insert it
+                    try (PreparedStatement insertStmt = con.prepareStatement(insertProductQuery, Statement.RETURN_GENERATED_KEYS)) {
                         insertStmt.setInt(1, branchId);
                         insertStmt.setString(2, productName);
                         insertStmt.setString(3, category);
                         insertStmt.setString(4, manufacturer);
-                        insertStmt.setInt(5, (int) originalPrice);
+                        insertStmt.setFloat(5, originalPrice);
                         insertStmt.setInt(6, salePrice);
-                        insertStmt.setInt(7, (int) pricePerUnit);
+                        insertStmt.setFloat(7, pricePerUnit);
                         insertStmt.setInt(8, stocks);
-                        insertStmt.setInt(9, (int) salesTax);
-                        insertStmt.setString(10,size);
-                        System.out.println(manufacturer);
-                        ResultSet insertRs = insertStmt.executeQuery();
-                        if (insertRs.next()) {
-                            productId = insertRs.getInt("ProductID");
+                        insertStmt.setDouble(9, salesTax);
+                        insertStmt.setString(10, size);
+
+                        int rowsInserted = insertStmt.executeUpdate();
+                        if (rowsInserted > 0) {
+                            try (ResultSet generatedKeys = insertStmt.getGeneratedKeys()) {
+                                if (generatedKeys.next()) {
+                                    productId = generatedKeys.getInt(1);
+                                } else {
+                                    throw new SQLException("Failed to retrieve ProductID.");
+                                }
+                            }
                         } else {
                             throw new SQLException("Failed to insert product.");
                         }
@@ -100,7 +105,7 @@ public class PurchaseModel {
                 }
             }
 
-
+            // Insert into Purchase table
             try (PreparedStatement purchaseStmt = con.prepareStatement(insertPurchaseQuery)) {
                 purchaseStmt.setInt(1, vendorId);
                 purchaseStmt.setString(2, vendorName);
@@ -118,4 +123,5 @@ public class PurchaseModel {
             return -1;
         }
     }
+
 }

@@ -64,6 +64,47 @@ public class ProductModel {
 
         return productStockList;
     }
+    public static ArrayList<String> getAllProductsLocal() {
+        ArrayList<String> products = new ArrayList<>();
+
+        // Establish connection to the database
+        try (Connection connection = DataBaseConnection.getConnection()) {
+            if (connection == null) {
+                System.out.println("Failed to establish connection.");
+                return products; // Return an empty list if connection fails
+            }
+
+            // Query to fetch all products
+            String query = "SELECT BranchId, productName, category, Manufacturer, originalPrice, " +
+                    "salePrice, pricePerUnit, stockQuantity, ProductSize, salestax FROM Product";
+
+            try (PreparedStatement stmt = connection.prepareStatement(query);
+                 ResultSet resultSet = stmt.executeQuery()) {
+
+
+                while (resultSet.next()) {
+                    String productDetails = resultSet.getInt("BranchId") +
+                            ","+ resultSet.getString("productName") +
+                            ","+ resultSet.getString("category") +
+                            "," + resultSet.getString("Manufacturer") +
+                            "," + resultSet.getFloat("originalPrice") +
+                            "," + resultSet.getInt("salePrice") +
+                            "," + resultSet.getInt("pricePerUnit") +
+                            "," + resultSet.getInt("stockQuantity") +
+                            "," + resultSet.getString("ProductSize") +
+                            "," + resultSet.getInt("salestax");
+
+
+                    products.add(productDetails);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching products: " + e.getMessage());
+          //  e.printStackTrace();
+        }
+
+        return products;
+    }
     public static boolean productExists(String productName, int branchId, Connection connection) {
         boolean exists = false;
         String sql = "SELECT COUNT(*) FROM Products WHERE productName = ? AND branchId = ?";
