@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee7556f3-06f0-4f8d-a47a-9b3a47d149ed" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Admin/ExpandedVendorInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Admin/ExpandedVendorInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/LogInTheme.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Decorate/LogInTheme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/GUI_Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/ExpandedInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/Operator/ExpandedInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/Views/UIHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Metro-EPOS-System/src/main/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +41,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "AdminUI",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Asfandyar Ali/Desktop/Metro-EPOS-System",
@@ -147,7 +141,7 @@
       <workItem from="1733596269027" duration="3201000" />
       <workItem from="1733605233033" duration="5687000" />
       <workItem from="1733610998858" duration="17026000" />
-      <workItem from="1733661577529" duration="2776000" />
+      <workItem from="1733661577529" duration="5306000" />
     </task>
     <servers />
   </component>

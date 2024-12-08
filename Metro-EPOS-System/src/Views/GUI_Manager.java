@@ -133,6 +133,7 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                    managerLogIn.resetFields();
                 }
                 else if(UIHandler.isNewBranchManager(id, pass)){
                     managerLogIn.displayNewUserWindow(f.getFrame());
@@ -182,6 +183,7 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                    cashierLogIn.resetFields();
                 }
                 else if(UIHandler.isNewCashier(id, pass)){
                     cashierLogIn.displayNewUserWindow(f.getFrame());
@@ -230,6 +232,7 @@ public class GUI_Manager {
                 }
                 if (repsone.equals("not")) {
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
+                    dataOperatorLogIn.resetFields();
                 }
                 else if(UIHandler.isNewOperator(id, pass)){
                     dataOperatorLogIn.displayNewUserWindow(f.getFrame());
