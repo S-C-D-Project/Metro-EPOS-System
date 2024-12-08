@@ -25,6 +25,10 @@ public class Product {
         this.salesTax = salesTax;
     }
 
+    public Product() {
+
+    }
+
     @Override
     public String toString() {
         return "Product{" +

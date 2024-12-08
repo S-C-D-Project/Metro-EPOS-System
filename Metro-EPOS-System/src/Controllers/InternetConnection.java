@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-public class InternetConnection {
+public  class InternetConnection {
 
     public static boolean isInternetConnected() {
         String ipAddress = "8.8.8.8";
@@ -27,4 +27,5 @@ public class InternetConnection {
             System.out.println("No internet connection.");
         }
     }
+
 }
