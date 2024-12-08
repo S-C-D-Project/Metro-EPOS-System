@@ -15,6 +15,10 @@ public class BranchManager extends Employee {
         super();
     }
 
+    public BranchManager( String name,String password,String email,int employeeID,int branchId, int salary, boolean isActive, String role,String phoneNumber) {
+        super(name,password,email,employeeID,branchId,salary,isActive,role,phoneNumber);
+    }
+
     public int addEmployee(String name, String email, int salary, int branchid, String role) {
         return DataBaseHandler.addEmployee(name, email, salary, branchid, role);
     }
@@ -23,7 +27,7 @@ public class BranchManager extends Employee {
         if (!employee.isActive()) {
             employee.setLeavingDate(String.valueOf(new Date()));
         }
-        return DataBaseHandler.updateEmployee(employee.getEmployeeNumber(), employee.getName(), employee.getEmail(), employee.getBranch(), employee.getSalary(), employee.getJoiningDate(), employee.getLeavingDate(), employee.isActive(), employee.isFirstTime(), employee.getRole());
+        return DataBaseHandler.updateEmployee(employee.getEmployeeNumber(), employee.getName(), employee.getEmail(), employee.getBranchid(), employee.getSalary(),  employee.isActive(), employee.getRole(),employee.getPhoneNumber());
     }
 
     public ArrayList<String> getEmployeesByBranch(int branchID) {

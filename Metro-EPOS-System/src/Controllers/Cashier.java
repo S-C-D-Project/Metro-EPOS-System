@@ -16,11 +16,9 @@ private Product comfirmProduct;
         return new Bill();
     }
 
-//    public Cashier(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role, Branch branch, Product comfirmProduct) {
-//        super(employeeID, name, email, salary, joiningDate, leavingDate, isActive, branchID, firstTime, role, branch);
-//        this.comfirmProduct = comfirmProduct;
-//    }
-//
+    public Cashier( String name,String password,String email,int employeeID,int branchId, int salary, boolean isActive, String role,String phoneNumber) {
+        super(name,password,email,employeeID,branchId,salary,isActive,role,phoneNumber);
+    }
 public Cashier() {
         super();
      }

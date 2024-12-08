@@ -15,5 +15,8 @@ public class DataEntryOperator extends Employee {
     public DataEntryOperator() {
         super();
     }
+    public DataEntryOperator( String name,String password,String email,int employeeID,int branchId, int salary, boolean isActive, String role,String phoneNumber) {
+        super(name,password,email,employeeID,branchId,salary,isActive,role,phoneNumber);
+    }
 
 }

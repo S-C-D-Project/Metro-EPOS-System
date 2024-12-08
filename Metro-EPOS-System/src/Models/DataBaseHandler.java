@@ -60,8 +60,8 @@ public class DataBaseHandler {
         return ProfitModel.Bills();
     }
 
-    public static boolean updateEmployee(int employeeId, String name, String email, Branch branch, int salary, String joiningDate, String leavingDate, boolean active, boolean firstTime, String role) {
-        return EmployeeModel.updateEmployee(employeeId, name, email, branch, salary, joiningDate, leavingDate, active, firstTime, role, connection);
+    public static boolean updateEmployee(int employeeId, String name, String email, int branch, int salary, boolean active,  String role,String phoneNumber) {
+        return EmployeeModel.updateEmployee(employeeId, name, email, branch, salary, active, role, phoneNumber,connection);
     }
 
     public int insertProductData(int branchId, String productName, String category,
