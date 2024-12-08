@@ -154,7 +154,7 @@ public class VendorModel {
             return rowsInserted > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error inserting vendor: ");
+            System.out.println("Error inserting vendor: "+e.getMessage());
             return false;
         }
     }

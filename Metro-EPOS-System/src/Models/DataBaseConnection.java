@@ -14,22 +14,25 @@ public class DataBaseConnection {
     public static Connection getConnection() {
         try {
             Connection con = DriverManager.getConnection(JDBC_URL);
-           // System.out.println("Connection established successfully!");
+            System.out.println("Connection established successfully!");
             if (!DataMigrated) {
                 DataMigration();
+                storeBackup();
             }
             return con;
         } catch (SQLException e) {
             try {
                 Connection con = DriverManager.getConnection(Local_URL);
-                System.out.println(e.getMessage());
+                System.out.println("Local Connection established successfully!");
+
                 return con;
             } catch (SQLException e1) {
-                System.out.println(e1.getMessage());
+               System.out.println("failed");
+               // System.out.println(e1.getMessage());
                 return null;
             }
         }
-
+    }
 
     public static Connection getLocalConnection() {
         try {
@@ -40,7 +43,52 @@ public class DataBaseConnection {
             return null;
         }
     }
+    public static void storeBackup() {
+        try (Connection jdbcConnection = DriverManager.getConnection(JDBC_URL);
+             Connection localConnection = getLocalConnection()) {
 
+            if (localConnection == null) {
+                System.out.println("Failed to connect to the local database.");
+                return;
+            }
+
+            String selectQuery = "SELECT BranchId, productName, category, Manufacturer, originalPrice, salePrice, " +
+                    "pricePerUnit, stockQuantity, ProductSize, salestax FROM Product";
+            try (PreparedStatement selectStmt = jdbcConnection.prepareStatement(selectQuery);
+                 ResultSet resultSet = selectStmt.executeQuery()) {
+
+
+                String insertQuery = "INSERT INTO Product (BranchId, productName, category, Manufacturer, " +
+                        "originalPrice, salePrice, pricePerUnit, stockQuantity, ProductSize, salestax) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                try (PreparedStatement insertStmt = localConnection.prepareStatement(insertQuery)) {
+
+                    while (resultSet.next()) {
+                        insertStmt.setInt(1, resultSet.getInt("BranchId"));
+                        insertStmt.setString(2, resultSet.getString("productName"));
+                        insertStmt.setString(3, resultSet.getString("category"));
+                        insertStmt.setString(4, resultSet.getString("Manufacturer"));
+                        insertStmt.setFloat(5, resultSet.getFloat("originalPrice"));
+                        insertStmt.setInt(6, resultSet.getInt("salePrice"));
+                        insertStmt.setFloat(7, resultSet.getFloat("pricePerUnit"));
+                        insertStmt.setInt(8, resultSet.getInt("stockQuantity"));
+                        insertStmt.setString(9, resultSet.getString("ProductSize"));
+                        insertStmt.setFloat(10, resultSet.getFloat("salestax"));
+
+
+                        insertStmt.executeUpdate();
+                    }
+
+                    System.out.println("Data migration to local database completed successfully.");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error during storing bakcup " + e.getMessage());
+           // e.printStackTrace();
+        }
+    }
     public static void DataMigration() {
         DataMigrated = true;
         ArrayList<String> data = getDatafromLocal();
@@ -55,7 +103,7 @@ public class DataBaseConnection {
 
             String[][] tables = {
                     {"Product", "BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity, ProductSize, salestax"},
-                    {"Branch", "Address, PhoneNumber, NumberofEmployees, isActive"},
+                   // {"Branch", "Address, PhoneNumber, NumberofEmployees, isActive"},
                     {"Vendor", "VendorName, City, Address, Status, BranchId"},
                     {"Employee", "Name, Password, Email, BranchID, Salary, JoiningDate, LeavingDate, isActive, FirstTime, Role"},
                     {"Bill", "CashAmount, ReturnAmount, TotalBill, AdditionalCharges, Discount, BillDate, SalesTaxAmount"},
@@ -63,7 +111,7 @@ public class DataBaseConnection {
                     {"graph", "profitDate, profit"},
                     {"monthlyprofit", "monthlyid, time, profit"},
                     {"Purchase", "Vendorid, VendorName, ProductId"},
-                    {"tax", "type, price"}
+                 //   {"tax", "type, price"}
             };
 
             for (String[] table : tables) {
@@ -87,7 +135,22 @@ public class DataBaseConnection {
 
                             if (values.length == columnArray.length) {
                                 for (int i = 0; i < values.length; i++) {
+                                    if(tableName.equals("Product")&&i==0){
+                                       ArrayList<String> products= DataBaseHandler.getAllProductsLocal();
+                                       boolean already=false;
+                                       for(int j=0;j<products.size();j++){
+                                           String[] product=products.get(j).split(",");
+                                           if(product[0].equals(values[0])&&product[1].equals(values[1]) &&product[2].equals(values[2])&&product[3].equals(values[3])){
+                                                already=true;
+                                           }
+                                       }
+                                       if(already)
+                                           break;
+                                       else {
 
+                                           System.out.println(values[0]);
+                                       }
+                                    }
                                     if (tableName.equals("Purchase") && i == 0) {
 
                                         String localVendorName = values[1];
@@ -157,10 +220,10 @@ public class DataBaseConnection {
                 "DELETE FROM Employee",
                 "DELETE FROM graph",
                 "DELETE FROM monthlyprofit",
-                "DELETE FROM tax",
+              //  "DELETE FROM tax",
                 "DELETE FROM Product",
                 "DELETE FROM Vendor",
-                "DELETE FROM Branch"
+              //  "DELETE FROM Branch"
         };
 
         try (Connection connection = getLocalConnection()) {
@@ -208,7 +271,7 @@ public class DataBaseConnection {
         ArrayList<String> dataList = new ArrayList<>();
         String[][] tables = {
                 {"Product", "BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity, ProductSize, salestax"},
-                {"Branch", "Address, PhoneNumber, NumberofEmployees, isActive"},
+              //  {"Branch", "Address, PhoneNumber, NumberofEmployees, isActive"},
                 {"Vendor", "VendorName, City, Address, Status, BranchId"},
                 {"Employee", "Name, Password, Email, BranchID, Salary, JoiningDate, LeavingDate, isActive, FirstTime, Role"},
                 {"Bill", "CashAmount, ReturnAmount, TotalBill, AdditionalCharges, Discount, BillDate, SalesTaxAmount"},
@@ -216,7 +279,7 @@ public class DataBaseConnection {
                 {"graph", "profitDate, profit"},
                 {"monthlyprofit", "monthlyid, time, profit"},
                 {"Purchase", "VendorId, VendorName, ProductId"},
-                {"tax", "type, price"}
+              //  {"tax", "type, price"}
         };
 
         try (Connection connection = getLocalConnection()) {

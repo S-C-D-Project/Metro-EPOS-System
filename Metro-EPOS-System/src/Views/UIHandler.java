@@ -133,21 +133,19 @@ public static void superAdminlogout(){
 
 
     public static String isValidDataOperator(String id, String pass) throws SQLException {
-       if(dataEntryOperator!=null) {
-           dataEntryOperator = (DataEntryOperator) dataEntryOperator.vallidateEmployee(id, pass, "operator");
+        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+        boolean result= DataBaseHandler.isValidDataOperator(id,pass);
+        String name= DataBaseHandler.getEmployeeName(id);
+        String branch= DataBaseHandler.getEmployeeBranch(id);
+        dataEntryOperator=new DataEntryOperator();
+        dataEntryOperator.setBranchid(Integer.parseInt(branch));
+        if(result){
+            return name+","+branch;
+        }
+        else {
+            return "not";
+        }
 
-           if (dataEntryOperator != null) {
-
-               String branch = DataBaseHandler.getEmployeeBranch(id);
-           dataEntryOperator.setBranchid(Integer.parseInt(branch));
-               String name = dataEntryOperator.getName();
-               return name + "," + branch;
-           } else {
-               return "not";
-           }
-       }else{
-           return "not";
-       }
     }
 
     public static ArrayList<String> getVendorsList(int branchID) {
