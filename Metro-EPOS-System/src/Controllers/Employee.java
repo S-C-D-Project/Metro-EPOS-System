@@ -61,8 +61,6 @@ public abstract class Employee {
     }
 
 
-
-
     public boolean isFirstTime() {
         return firstTime;
     }

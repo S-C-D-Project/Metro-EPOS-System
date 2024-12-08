@@ -54,16 +54,17 @@ private static ArrayList<String>employeeList=new ArrayList<>();
     }
 
     public static boolean isNewAdmin(String id, String pass){
-        return true;
+        return false;
     }
     public static boolean isNewBranchManager(String id, String pass){
-        return true;
+       // return branchManager.isFirstTime();
+    return true;
     }
     public static boolean isNewCashier(String id, String pass){
-        return true;
+        return cashier.isFirstTime();
     }
     public static boolean isNewOperator(String id, String pass){
-        return true;
+        return dataEntryOperator.isFirstTime();
     }
 
     public static String getProductPrice(int qty) {
