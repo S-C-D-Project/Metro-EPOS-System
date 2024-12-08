@@ -35,9 +35,8 @@ public class EmployeeModel {
                     case "cashier":
                         employee = new Cashier(name,password,email, String.valueOf(employeeID), String.valueOf(branchID),salary,joiningDate,leavingDate,isActive,null,firstTime);
                         break;
-                    case "superadmin":
-                        return SuperAdmin.getInstance(name, password, email,String.valueOf(employeeID),isActive,"dataEntryOperator");
-
+                    case "superadmin": {
+                        return new Object[]{name, password, email, employeeID, isActive};   }
                 }
             }
         } catch (SQLException e) {

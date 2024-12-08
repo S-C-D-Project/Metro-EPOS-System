@@ -34,7 +34,7 @@ public class UIHandler {
     private static Cashier cashier = new Cashier();
     private static BranchManager branchManager = new BranchManager();
     private static DataEntryOperator dataEntryOperator = new DataEntryOperator();
-    private static SuperAdmin superAdmin = null;
+    private static SuperAdmin superAdmin;
 
     public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
         cashier = new Cashier(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
@@ -81,15 +81,19 @@ public class UIHandler {
         // you can use isNumber function of UIHandler as well for validation
         // If admin is valid It should return the name of the admin, if not then it should return "not"
 
-        if (superAdmin != null) {
+        if (superAdmin == null) {
             superAdmin = SuperAdmin.getInstance(id, pass, "superAdmin");
 
+        } if (superAdmin != null) {
             return superAdmin.getName() + "," + superAdmin.getEmployeeNumber();
         } else {
             return "not";
         }
     }
-
+public static void superAdminlogout(){
+        superAdmin.logout();
+        superAdmin = null;
+}
     public static String isValidManager(String id, String pass) throws SQLException {
         // string is passed such that we can verify if even the string is valid or not
         // you can use isNumber function of UIHandler as well for validation
@@ -120,22 +124,20 @@ public class UIHandler {
     }
 
 
-    public static String isValidDataOperator(String id, String pass) throws SQLException{
+    public static String isValidDataOperator(String id, String pass) throws SQLException {
         // string is passed such that we can verify if even the string is valid or not
         // you can use isNumber function of UIHandler as well for validation
         // If operator is valid It should return the name,branchID of the operator comma separated,
         // if not then it should return "not
-        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+        dataEntryOperator = (DataEntryOperator) dataEntryOperator.vallidateEmployee(id, pass, "dataEntryOperator");
 
 
-
-        String branch= DataBaseHandler.getEmployeeBranch(id);
+        String branch = DataBaseHandler.getEmployeeBranch(id);
         dataEntryOperator.setBranchid(Integer.parseInt(branch));
-        if(dataEntryOperator !=null){
-            String name= dataEntryOperator.getName();
-            return name+","+branch;
-        }
-        else{
+        if (dataEntryOperator != null) {
+            String name = dataEntryOperator.getName();
+            return name + "," + branch;
+        } else {
             return "not";
         }
     }
@@ -143,7 +145,7 @@ public class UIHandler {
     public static ArrayList<String> getVendorsList(int branchID) {
         // I will provide the branchID and I should get all the vendors in comma separated string list
         //For now branch id is set to 1
-        ArrayList<String> list =  DataBaseHandler.getVendorsList(branchID);
+        ArrayList<String> list = DataBaseHandler.getVendorsList(branchID);
         return list;
     }
 
@@ -152,9 +154,9 @@ public class UIHandler {
         // like (Name,City,Address,Products,Status) and we update vendor data in DB using vendor ID
         // then the updated VendorList is returned
         // below code is just for testing
-        String[]values=str.split(",");
-        DataBaseHandler.updateVendorInfo(id,values[0],values[1],values[2],values[4]);
-        ArrayList<String> list=DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
+        String[] values = str.split(",");
+        DataBaseHandler.updateVendorInfo(id, values[0], values[1], values[2], values[4]);
+        ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
         return list;
     }
 
@@ -162,8 +164,8 @@ public class UIHandler {
         // I will provide with the branch id and strings to add in vendors list
         // then the updated VendorList is returned
         // below code is just for testing
-        String status="Inactive";
-        VendorModel.insertVendor(vendorName,vendorCity,vendorAddress,status,branchId);
+        String status = "Inactive";
+        VendorModel.insertVendor(vendorName, vendorCity, vendorAddress, status, branchId);
         return getVendorsList(branchId);
 
     }
@@ -194,14 +196,14 @@ public class UIHandler {
 
          */
 
-        String[]values=str.split(",");
-       String sample_manufaturer=values[6];
+        String[] values = str.split(",");
+        String sample_manufaturer = values[6];
         System.out.println(sample_manufaturer);
-       int branch= dataEntryOperator.getBranchid();
-      DataBaseHandler.addOrUpdateProductAndPurchase(branch,values[1],values[0],sample_manufaturer,Float.parseFloat(values[2]), Integer.parseInt(values[3]),
-                Float.parseFloat(values[4]),vID,DataBaseHandler.getVendorName(vID),values[7], Integer.parseInt(values[5]));
+        int branch = dataEntryOperator.getBranchid();
+        DataBaseHandler.addOrUpdateProductAndPurchase(branch, values[1], values[0], sample_manufaturer, Float.parseFloat(values[2]), Integer.parseInt(values[3]),
+                Float.parseFloat(values[4]), vID, DataBaseHandler.getVendorName(vID), values[7], Integer.parseInt(values[5]));
 
-      ArrayList<String> list=DataBaseHandler.getVendorProducts(vID);
+        ArrayList<String> list = DataBaseHandler.getVendorProducts(vID);
 
         return list;
     }
@@ -218,16 +220,15 @@ public class UIHandler {
 
          */
 
-       String[]values=str.split(",");
-        int productid=DataBaseHandler.getProductidbyName(productName.trim());
-       boolean result=DataBaseHandler.updateProductInfo(vID,productid,values[1],values[0],values[2], Integer.parseInt(values[3]),values[4], Integer.parseInt(values[5]),values[6],values[7]);
-       if(!result) {
-           return null;
-       }
-       else{
-      ArrayList<String> list= DataBaseHandler.getVendorProducts(vID);
+        String[] values = str.split(",");
+        int productid = DataBaseHandler.getProductidbyName(productName.trim());
+        boolean result = DataBaseHandler.updateProductInfo(vID, productid, values[1], values[0], values[2], Integer.parseInt(values[3]), values[4], Integer.parseInt(values[5]), values[6], values[7]);
+        if (!result) {
+            return null;
+        } else {
+            ArrayList<String> list = DataBaseHandler.getVendorProducts(vID);
 
-        return list;
+            return list;
         }
     }
 
@@ -244,17 +245,17 @@ public class UIHandler {
 
          */
 
-        int prodid=DataBaseHandler.getProductidbyName(name);
-        boolean result=DataBaseHandler.deleteProductByVendorId(id,prodid);
-       if(!result){
-           return null;
-       }
-       ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
+        int prodid = DataBaseHandler.getProductidbyName(name);
+        boolean result = DataBaseHandler.deleteProductByVendorId(id, prodid);
+        if (!result) {
+            return null;
+        }
+        ArrayList<String> list = DataBaseHandler.getVendorProducts(id);
 
         return list;
     }
 
-    public static ArrayList<String> getEmployeeInfo(int branchID){
+    public static ArrayList<String> getEmployeeInfo(int branchID) {
         // based on branchID it should return employees of that branch
         ArrayList<String> list = new ArrayList<>();
         list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
@@ -266,7 +267,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> addEmployeeInfo(int branchID ,String str) {
+    public static ArrayList<String> addEmployeeInfo(int branchID, String str) {
         //here I provide with the empID and branchID and updated String (name,salary,phoneNo,role)
         // it should return the updated employees list of the particular branch;
 
@@ -280,7 +281,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> updateEmployeeInfo(int empID, int branchID ,String str) {
+    public static ArrayList<String> updateEmployeeInfo(int empID, int branchID, String str) {
         //here I provide with the empID and branchID and updated String (name,email,password,salary,phoneNo,role,status)
         // it should return the updated employees list of the particular branch list;
 
@@ -294,8 +295,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> getStocksDataofBranch(int branchID)
-    {
+    public static ArrayList<String> getStocksDataofBranch(int branchID) {
         // i provide branchID and should get the (productsName,Stocks status). If stocks are 0
         // it should provide Out of Stock as status
         ArrayList<String> list = new ArrayList<>();
@@ -307,7 +307,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> addBranch(String bName, String city, String address){
+    public static ArrayList<String> addBranch(String bName, String city, String address) {
         // a branch should be entered and updated list should be returned like below
 
         ArrayList<String> list = new ArrayList<>();
@@ -318,13 +318,13 @@ public class UIHandler {
         return list;
     }
 
-    public static String getAllBranchIDs(){
+    public static String getAllBranchIDs() {
         // return all ids there are for a branch
         String ids = "123,456,786,101";
         return ids;
     }
 
-    public static ArrayList<String> getAllEmployees(){
+    public static ArrayList<String> getAllEmployees() {
         // returns emp info like this
         ArrayList<String> list = new ArrayList<>();
         list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
@@ -334,7 +334,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> getAllVendorsList(){
+    public static ArrayList<String> getAllVendorsList() {
         // returns vendors info like this
         ArrayList<String> list = new ArrayList<>();
         list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
@@ -344,7 +344,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> updateAdminVendorInfo(String vID, String str){
+    public static ArrayList<String> updateAdminVendorInfo(String vID, String str) {
         // this method updates vendor info and return updated list
         // str contains (branchID,Name,city,address,products,status) like this
         ArrayList<String> list = new ArrayList<>();
@@ -355,7 +355,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> addEmployeeforAdmin(String name, String salary, String phoneNo){
+    public static ArrayList<String> addEmployeeforAdmin(String name, String salary, String phoneNo) {
         // add employee as this method can add manager too and return updaye list like this
         ArrayList<String> list = new ArrayList<>();
         list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
@@ -365,7 +365,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> addVendorforAdmin(String name, String city, String address){
+    public static ArrayList<String> addVendorforAdmin(String name, String city, String address) {
         // adds vendor and return updated list like this
         ArrayList<String> list = new ArrayList<>();
         list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
@@ -375,7 +375,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> updateAdminsEmployeeInfo(int empID,String str){
+    public static ArrayList<String> updateAdminsEmployeeInfo(int empID, String str) {
         // str contains (BranchID,name,email,password,salary,phone No,role,status)
         // updates emp info and return updated list like this
         ArrayList<String> list = new ArrayList<>();
@@ -386,7 +386,7 @@ public class UIHandler {
         return list;
     }
 
-    public static ArrayList<String> getAllBranchInfo(){
+    public static ArrayList<String> getAllBranchInfo() {
         //all branch info in example down below should be returned
 
         ArrayList<String> list = new ArrayList<>();
@@ -396,7 +396,8 @@ public class UIHandler {
         list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
         return list;
     }
-    public static ArrayList<String> updateBranchesInfo(int BranchID,String str){
+
+    public static ArrayList<String> updateBranchesInfo(int BranchID, String str) {
         //Based on branch ID update Data of branchInfo
         //str has Data like (name,city,address,employees,status) and i should get updated list
 
@@ -408,33 +409,37 @@ public class UIHandler {
         return list;
     }
 
-    public static int getBranchSales(int branchID,String type) {
+    public static int getBranchSales(int branchID, String type) {
         //I will provide with the branch id and i should get the branch Sales and in type
         //i will specify if it is daily,weekly,monthly,yearly
         return 100;
     }
-    public static int getBranchRemaingingStock(int branchID,String type) {
+
+    public static int getBranchRemaingingStock(int branchID, String type) {
         //I will provide with the branch id and i should get the branch remaining stocks
         // and in type i will specify if it is daily,weekly,monthly,yearly
         return 5000;
     }
-    public static int getBranchProfit(int branchID,String type) {
+
+    public static int getBranchProfit(int branchID, String type) {
         //I will provide with the branch id and i should get the branch profit and in type
         //i will specify if it is daily,weekly,monthly,yearly
         return 5000;
     }
 
-    public static int getBranchSalesRange(int branchID,String start,String end) {
+    public static int getBranchSalesRange(int branchID, String start, String end) {
         //I will provide with the branch id and i should get the branch Sales and
         // with start and end dates
         return 200;
     }
-    public static int getBranchRemaingingStockRange(int branchID,String start,String end) {
+
+    public static int getBranchRemaingingStockRange(int branchID, String start, String end) {
         //I will provide with the branch id and i should get the branch remaining stocks
         // with start and end dates
         return 200;
     }
-    public static int getBranchProfitRange(int branchID,String start,String end) {
+
+    public static int getBranchProfitRange(int branchID, String start, String end) {
         //I will provide with the branch id and i should get the branch profit with
         // start and end dates
         return 200;
@@ -549,6 +554,7 @@ public class UIHandler {
         return chartPanel;
 
     }
+
     //Start date: dd/mm/yyyy , enddate: dd/mm/yyyy, chartype= line/bar
     public static ChartPanel DisplayChartRanged(String startDate, String endDate, String chartType) {
         try {
@@ -560,10 +566,10 @@ public class UIHandler {
             LocalDate end = LocalDate.parse(endDate, formatter);
 
             // Check date range is within 1 year (365 days)
-            boolean isYearly=false;
+            boolean isYearly = false;
             long daysBetween = ChronoUnit.DAYS.between(start, end);
-            if(daysBetween==365)
-                isYearly=true;
+            if (daysBetween == 365)
+                isYearly = true;
             if (daysBetween > 365 || daysBetween < 0) {
 
                 System.out.println("Invalid date range: exceeds one year or is negative.");
@@ -668,7 +674,8 @@ public class UIHandler {
             return null;
         }
     }
-    public static void GenerateReport(String branchid){
+
+    public static void GenerateReport(String branchid) {
         ChartPanel chartPanelYearly = DisplayChart("yearly", "line");
         ChartPanel chartPanelMonthly = DisplayChart("monthly", "bar");
         ChartPanel chartPanelWeekly = DisplayChart("weekly", "bar");
@@ -684,8 +691,9 @@ public class UIHandler {
         String twelveMonthsAheadStr = twelveMonthsBehind.format(formatter);
 
         ChartPanel[] chartPanels = {chartPanelYearly, chartPanelMonthly, chartPanelWeekly, chartPanelDaily};
-        ArrayList<String> productStockList = DataBaseHandler.getProductStockStatus(Integer.parseInt(branchid));;
-        ArrayList<Integer> monthlyProfits = DataBaseHandler.getMonthlyProfitData(twelveMonthsAheadStr,currentDateStr);
+        ArrayList<String> productStockList = DataBaseHandler.getProductStockStatus(Integer.parseInt(branchid));
+        ;
+        ArrayList<Integer> monthlyProfits = DataBaseHandler.getMonthlyProfitData(twelveMonthsAheadStr, currentDateStr);
         ArrayList<String> billCalculations = DataBaseHandler.Bills();
         ArrayList<Integer> total = DataBaseHandler.getProfitData("yearly");
         int annualProfit = 0;
@@ -695,7 +703,7 @@ public class UIHandler {
         int budgetRemaining = 64000;
         generateChartPDF(chartPanels, productStockList, monthlyProfits, billCalculations, "Report.pdf", annualProfit, budgetRemaining);
     }
-    
+
     public static boolean isNumbers(String line) {
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
@@ -705,6 +713,7 @@ public class UIHandler {
         }
         return true;
     }
+
     public static boolean isValidDate(String dateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
@@ -714,6 +723,7 @@ public class UIHandler {
             return false;
         }
     }
+
     public static boolean isStartDateBeforeOrEqual(String startDateStr, String endDateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {
@@ -740,12 +750,15 @@ public class UIHandler {
     public static boolean changePasswordSuperAdmin(String newPassword) throws SQLException {
         return superAdmin.changePassword(newPassword);
     }
-    public static boolean addEmployee(String name, String email,  int salary  ,int branchid, String role) {
+
+    public static boolean addEmployee(String name, String email, int salary, int branchid, String role) {
         return branchManager.addEmployee(name, email, salary, branchid, role);
     }
-    public static boolean checkInternetConnection(){
+
+    public static boolean checkInternetConnection() {
         return InternetConnection.isInternetConnected();
     }
+
     public static boolean updateEmployee(Employee employee) {
         return branchManager.updateEmployee(employee);
     }
