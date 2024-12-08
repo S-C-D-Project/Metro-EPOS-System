@@ -1,4 +1,4 @@
-package Views.Manager;
+package Views.Admin;
 
 import Views.Decorate.Theme;
 import Views.Frame.frame;
@@ -7,7 +7,6 @@ import org.jfree.chart.ChartPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class BranchInfo extends Theme {
+public class ExpandedReport extends Theme {
     frame f2;
     private JLabel user;
     private JLabel branchID;
@@ -29,9 +28,12 @@ public class BranchInfo extends Theme {
     private JButton enterButton;
     private JButton employeeInfoButton;
     private JButton generateButtonReport;
+    private JButton BackButton;
+    private JButton vendorInfoButton;
 
     private Image empLogo;
     private Image branchLogo;
+    private Image vendorLogo;
     private Image salesLogo;
     private Image remainingStockLogo;
     private Image profitLogo;
@@ -49,22 +51,23 @@ public class BranchInfo extends Theme {
     private ChartPanel chartPanel;
     private String selectedTime;
 
-    private String managerProfileImgPath = "Images/ManagerLogo.png";
+    private String adminProfileImg = "Images/adminLogo.png";
     private String employeeInfoPath = "Images/EmpInfoWhite.png";
     private String branchInfoPath = "Images/BranchInfoGreen.png";
+    private String vendorInfoPath = "Images/vendorLogoWhite.png";
     private String salesLogoPath = "Images/CashLogo.png";
     private String remainingStockLogoPath = "Images/BagLogo.png";
     private String profitLogoPath = "Images/CashBagLogo.png";
 
-    public BranchInfo()
+    public ExpandedReport()
     {
         super.setLineSize5(315,120);
         super.setLineSize5(315,138);
         super.setLineSizeCustom(321,216,3);
         super.setLineSizeCustom(321,382,3);
-        super.setText("Branch Manager");
+        super.setText("Admin");
         super.setLogoutLogo();
-        super.setProfileLogo(managerProfileImgPath);
+        super.setProfileLogo(adminProfileImg);
 
         setHeading();
         setFields();
@@ -140,6 +143,22 @@ public class BranchInfo extends Theme {
             logoLabel.setBounds(78, 280, 15, 15);
             add(logoLabel);
         }
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(vendorInfoPath)) {
+            if (is != null) {
+                vendorLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + vendorLogo);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (vendorLogo != null) {
+            Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(76, 373, 20, 20);
+            add(logoLabel);
+        }
     }
 
     private void setButtons(){
@@ -154,6 +173,12 @@ public class BranchInfo extends Theme {
         employeeInfoButton.setBorderPainted(false);
         employeeInfoButton.setContentAreaFilled(false);
         employeeInfoButton.setOpaque(false);
+
+        vendorInfoButton = new JButton();
+        vendorInfoButton.setBounds(75, 373, 106, 20);
+        vendorInfoButton.setBorderPainted(false);
+        vendorInfoButton.setContentAreaFilled(false);
+        vendorInfoButton.setOpaque(false);
 
         enterButton = new JButton("Enter");
         enterButton.setFont(new Font("Arial", Font.BOLD, 10));
@@ -171,19 +196,31 @@ public class BranchInfo extends Theme {
         generateButtonReport.setFocusable(false);
         generateButtonReport.setBorderPainted(false);
         generateButtonReport.setContentAreaFilled(false);
-        generateButtonReport.setBounds(1250, 56, 70, 26);
+        generateButtonReport.setBounds(1180, 56, 70, 26);
         generateButtonReport.setOpaque(true);
         generateButtonReport.setBackground(super.getInfoFieldButtonColor());
+
+        BackButton = new JButton("Back");
+        BackButton.setForeground(super.getInfoFieldColor());
+        BackButton.setFocusable(false);
+        BackButton.setBorderPainted(false);
+        BackButton.setContentAreaFilled(false);
+        BackButton.setBounds(1254, 56, 70, 26);
+        BackButton.setOpaque(true);
+        BackButton.setBackground(super.getInfoFieldButtonColor());
 
         add(logoutButton);
         add(enterButton);
         add(employeeInfoButton);
         add(generateButtonReport);
+        add(vendorInfoButton);
+        add(BackButton);
     }
 
     private void setHeading(){
-        JLabel employeesInfo = new JLabel("Employees Info");
+        JLabel employeesInfo = new JLabel("Employee Info");
         JLabel branchInfo = new JLabel("Branch Info");
+        JLabel vendorInfo = new JLabel("Vendor Info");
         JLabel currentStock = new JLabel("Current Products Status:");
         JLabel range = new JLabel("Range");
         JLabel startLabel = new JLabel("Start");
@@ -192,6 +229,7 @@ public class BranchInfo extends Theme {
 
         employeesInfo.setForeground(super.getSideMenuTextColor());
         branchInfo.setForeground(super.getSideMenuSelectedTextColor());
+        vendorInfo.setForeground(super.getSideMenuTextColor());
         currentStock.setForeground(super.getFirstHeadingColor());
         range.setForeground(super.getSecondHeadingColor());
         startLabel.setForeground(super.getSecondHeadingColor());
@@ -200,14 +238,16 @@ public class BranchInfo extends Theme {
 
         branchInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
         employeesInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
+        vendorInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
         currentStock.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,20));
         range.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
         startLabel.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,10));
         endLabel.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,10));
         toLabel.setFont(new Font("Yu Gothic UI SemiBold",Font.PLAIN,15));
 
-        employeesInfo.setBounds(110,329,86,10);
-        branchInfo.setBounds(110,283,86,10);
+        vendorInfo.setBounds(110,376,86,10);
+        employeesInfo.setBounds(110,329,71,13);
+        branchInfo.setBounds(110,283,86,13);
         currentStock.setBounds(321,391,248,36);
         range.setBounds(1041,145,48,19);
         startLabel.setBounds(1046,166,24,12);
@@ -216,6 +256,7 @@ public class BranchInfo extends Theme {
 
         add(employeesInfo);
         add(branchInfo);
+        add(vendorInfo);
         add(currentStock);
         add(range);
         add(startLabel);
@@ -581,6 +622,8 @@ public class BranchInfo extends Theme {
     public JButton getEnterButton(){return enterButton;}
     public JButton getEmployeeInfoButton(){return employeeInfoButton;}
     public JButton getGenerateButtonReport(){return generateButtonReport;}
+    public JButton getBackButton(){return BackButton;}
+    public JButton getVendorInfoButton(){return vendorInfoButton;}
 
     public String getStartRange(){return start.getText();}
     public String getEndRange(){return end.getText();}
@@ -590,7 +633,7 @@ public class BranchInfo extends Theme {
 
     public JPanel getPanel(){return this;}
 
-    public int getBranchID(){
-        return Integer.parseInt(branchNumber.getText());
+    public String getBranchID(){
+        return branchNumber.getText();
     }
 }

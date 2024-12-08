@@ -29,7 +29,7 @@ public class DataBaseConnection {
                 return null;
             }
         }
-    }
+
 
     public static Connection getLocalConnection() {
         try {

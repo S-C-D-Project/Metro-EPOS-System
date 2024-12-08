@@ -20,7 +20,7 @@ FOREIGN KEY (VendorID) REFERENCES Vendors(VendorID)
 */
 public class PurchaseModel {
 
-    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName) {
+    public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName,String size,int stocks) {
         String checkProductQuery = """
             SELECT ProductID
             FROM Product
@@ -29,7 +29,7 @@ public class PurchaseModel {
 
         String updateProductQuery = """
             UPDATE Product
-            SET stockQuantity = stockQuantity + 1
+            SET stockQuantity = stockQuantity + ?, Manufacturer=?,ProductSize=?,originalPrice=?,salePrice=?,pricePerUnit=?,
             OUTPUT INSERTED.ProductID
             WHERE BranchId = ? AND productName = ?;
             """;
@@ -40,7 +40,7 @@ public class PurchaseModel {
             String insertProductQuery = """
             INSERT INTO Product (BranchId, productName, category, Manufacturer, originalPrice, salePrice,pricePerUnit, stockQuantity,salesTax,ProductSize)
             OUTPUT INSERTED.ProductID
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1,?,?);
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?);
             """;
 
         String insertPurchaseQuery = """
@@ -61,9 +61,14 @@ public class PurchaseModel {
                 if (rs.next()) {
 
                     try (PreparedStatement updateStmt = con.prepareStatement(updateProductQuery)) {
-                        updateStmt.setInt(1, branchId);
-                        updateStmt.setString(2, productName);
-
+                        updateStmt.setInt(1, stocks);
+                        updateStmt.setString(2,manufacturer);
+                        updateStmt.setString(3, size);
+                        updateStmt.setInt(4, (int) originalPrice);
+                        updateStmt.setInt(5, salePrice);
+                        updateStmt.setInt(6, (int) pricePerUnit);
+                        updateStmt.setString(7, productName);
+                        updateStmt.setInt(8, branchId);
                         ResultSet updateRs = updateStmt.executeQuery();
                         if (updateRs.next()) {
                             productId = updateRs.getInt("ProductID");
@@ -81,9 +86,10 @@ public class PurchaseModel {
                         insertStmt.setInt(5, (int) originalPrice);
                         insertStmt.setInt(6, salePrice);
                         insertStmt.setInt(7, (int) pricePerUnit);
-                        insertStmt.setInt(8, (int) salesTax);
-                        insertStmt.setString(9,"Normal");
-
+                        insertStmt.setInt(8, stocks);
+                        insertStmt.setInt(9, (int) salesTax);
+                        insertStmt.setString(10,size);
+                        System.out.println(manufacturer);
                         ResultSet insertRs = insertStmt.executeQuery();
                         if (insertRs.next()) {
                             productId = insertRs.getInt("ProductID");

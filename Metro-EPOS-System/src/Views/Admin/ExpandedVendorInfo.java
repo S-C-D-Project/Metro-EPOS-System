@@ -1,4 +1,4 @@
-package Views.Operator;
+package Views.Admin;
 import Views.Decorate.Theme;
 import Views.UIHandler;
 
@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ExpandedInfo extends Theme {
+public class ExpandedVendorInfo extends Theme {
     private BufferedImage image;
     private JLabel user;
     private JLabel branchID;
@@ -24,8 +24,12 @@ public class ExpandedInfo extends Theme {
     private JButton logoutButton;
     private JButton addButton;
     private JButton backButton;
+    private JButton branchInfoButton;
+    private JButton employeeInfoButton;
 
     private Image vendorLogo;
+    private Image employeeLogo;
+    private Image branchLogo;
     private ArrayList<String> list;
     private JLabel branchNumber;
     private JLabel productsCountHeading;
@@ -34,24 +38,26 @@ public class ExpandedInfo extends Theme {
     private JLabel producstsCountValue;
     private JLabel vendorIDValue;
 
-    private String vendorProfileImgPath = "Images/DataOperatorProfile.png";
+    private String adminProfileImgPath = "Images/adminLogo.png";
     private String vendorLogoPath = "Images/VendorInfoIcon.png";
+    private String branchIconPath = "Images/branchWhite.png";
+    private String employeeInfoLogoPath = "Images/EmpInfoWhite.png";
 
-    public ExpandedInfo()
+    public ExpandedVendorInfo()
     {
         super.setLineSize5(315,120);
         super.setLineSize5(315,138);
         super.setLineSizeCustom(315,212,2);
         super.setLineSizeCustom(315,252,2);
-        super.setText("Data Entry Operator");
+        super.setText("Admin");
         super.setLogoutLogo();
-        super.setProfileLogo(vendorProfileImgPath);
+        super.setProfileLogo(adminProfileImgPath);
 
         setHeading();
         setLogo();
         setButtons();
 
-        super.setRectangle(48,272);
+        super.setRectangle(48,366);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -100,7 +106,39 @@ public class ExpandedInfo extends Theme {
         if (vendorLogo != null) {
             Image scaledImage = vendorLogo.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
             JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
-            logoLabel.setBounds(76, 278, 20, 20);
+            logoLabel.setBounds(76, 373, 20, 20);
+            add(logoLabel);
+        }
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(employeeInfoLogoPath)) {
+            if (is != null) {
+                employeeLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + employeeLogo);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (employeeLogo != null) {
+            Image scaledImage = employeeLogo.getScaledInstance(16, 20, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(79, 325, 16, 20);
+            add(logoLabel);
+        }
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(branchIconPath)) {
+            if (is != null) {
+                branchLogo = ImageIO.read(is);
+            } else {
+                System.err.println("Resource not found: " + branchLogo);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (branchLogo != null) {
+            Image scaledImage = branchLogo.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+            JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
+            logoLabel.setBounds(78, 280, 15, 15);
             add(logoLabel);
         }
     }
@@ -132,17 +170,43 @@ public class ExpandedInfo extends Theme {
         backButton.setOpaque(true);
         backButton.setBackground(super.getInfoFieldButtonColor());
 
+        employeeInfoButton = new JButton();
+        employeeInfoButton.setBounds(79, 325, 101, 20);
+        employeeInfoButton.setBorderPainted(false);
+        employeeInfoButton.setContentAreaFilled(false);
+        employeeInfoButton.setOpaque(false);
+
+        branchInfoButton = new JButton();
+        branchInfoButton.setBounds(79, 281, 117, 15);
+        branchInfoButton.setBorderPainted(false);
+        branchInfoButton.setContentAreaFilled(false);
+        branchInfoButton.setOpaque(false);
+
         add(logoutButton);
         add(addButton);
         add(backButton);
+        add(employeeInfoButton);
+        add(branchInfoButton);
     }
 
     private void setHeading(){
         JLabel vendorInfo = new JLabel("Vendor Info");
         vendorInfo.setForeground(super.getSideMenuSelectedTextColor());
         vendorInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
-        vendorInfo.setBounds(110,283,86,10);
+        vendorInfo.setBounds(110,376,86,10);
         add(vendorInfo);
+
+        JLabel empInfo = new JLabel("Employee Info");
+        empInfo.setForeground(super.getSideMenuTextColor());
+        empInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
+        empInfo.setBounds(110,329,70,13);
+        add(empInfo);
+
+        JLabel branchInfo = new JLabel("Branch Info");
+        branchInfo.setForeground(super.getSideMenuTextColor());
+        branchInfo.setFont(new Font("Yu Gothic UI SemiBold",Font.BOLD,10));
+        branchInfo.setBounds(110,283,86,13);
+        add(branchInfo);
 
         vendorIDHeading = new JLabel("Vendor ID:");
         vendorIDHeading.setHorizontalAlignment(JLabel.LEFT);
@@ -667,6 +731,8 @@ public class ExpandedInfo extends Theme {
     public JButton getLogoutButton(){return logoutButton;}
     public JButton getAddButton(){return addButton;}
     public JButton getBackButton(){return backButton;}
+    public JButton getBranchInfoButton(){return branchInfoButton;}
+    public JButton getEmployeeInfoButton(){return employeeInfoButton;}
 
     public ArrayList<String> getList(){return list;}
     public JPanel getPanel(){return this;}

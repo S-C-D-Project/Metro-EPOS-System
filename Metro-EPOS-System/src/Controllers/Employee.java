@@ -1,8 +1,11 @@
 package Controllers;
 
 import Models.DataBaseHandler;
+import Models.EmployeeModel;
 
 import java.sql.SQLException;
+import java.util.AbstractList;
+import java.util.ArrayList;
 
 public abstract class Employee {
     private String name;
@@ -17,6 +20,15 @@ public abstract class Employee {
     private boolean firstTime;
     private Branch branch;
     private String role;
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getRole() {
         return role;
@@ -27,9 +39,10 @@ public abstract class Employee {
     }
 
 
-public Employee(){}
-    public Employee(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role,Branch branch) {
-        this.employeeNumber= employeeID;
+    public Employee() {
+    }
+    public Employee( String name,String password,String email,int employeeID,int branchId, int salary, String joiningDate, String leavingDate, boolean isActive,boolean firstTime, String role) {
+        this.employeeNumber = employeeID;
         this.name = name;
         this.email = email;
         this.salary = salary;
@@ -37,19 +50,15 @@ public Employee(){}
         this.leavingDate = leavingDate;
         this.isActive = isActive;
 
-        if(branch==null) {
-            this.branch = new Branch(branchID);
-        }
-        else{
-            this.branch=branch;
-        }this.firstTime = firstTime;
+            this.branch = new Branch(branchId);
+
+        this.firstTime = firstTime;
         this.role = role;
     }
 
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
-
 
 
     public boolean isFirstTime() {
@@ -63,6 +72,7 @@ public Employee(){}
     public Branch getBranch() {
         return branch;
     }
+
     public String getName() {
         return name;
     }
@@ -127,22 +137,25 @@ public Employee(){}
     public void setActive(boolean active) {
         isActive = active;
     }
-    public Object vallidateEmployee(String id,String password,String choice) throws SQLException {
-        return DataBaseHandler.getInstance().getEmployee(id,password,choice);
+
+    public Object vallidateEmployee(String id, String password, String choice) throws SQLException {
+        return DataBaseHandler.getInstance().getEmployee(id, password, choice);
     }
+
     public boolean changePassword(String newPassword) throws SQLException {
-firstTime=false;
-    return DataBaseHandler.changePassword(newPassword,employeeNumber);
+        firstTime = false;
+        return DataBaseHandler.changePassword(newPassword, employeeNumber);
     }
 
     public void setBranchid(int branchId) {
-        if(this.branch == null) {
+        if (this.branch == null) {
             this.branch = new Branch(branchId);
         } else {
             this.branch.setId(branchId);
         }
     }
-    public int getBranchid(){
+
+    public int getBranchid() {
         return branch.getId();
     }
 }
