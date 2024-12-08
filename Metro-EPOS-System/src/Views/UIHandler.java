@@ -35,18 +35,18 @@ public class UIHandler {
     private static BranchManager branchManager = new BranchManager();
     private static DataEntryOperator dataEntryOperator = new DataEntryOperator();
     private static SuperAdmin superAdmin;
-
-    public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-        cashier = new Cashier(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-    }
-
-    public static void createBranchManager(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-        branchManager = new BranchManager(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-    }
-
-    public static void createDataEntryOperator(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-        dataEntryOperator = new DataEntryOperator(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-    }
+private static ArrayList<String>employeeList=new ArrayList<>();
+//    public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
+//        cashier = new Cashier(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
+//    }
+//
+//    public static void createBranchManager(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
+//        branchManager = new BranchManager(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
+//    }
+//
+//    public static void createDataEntryOperator(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
+//        dataEntryOperator = new DataEntryOperator(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
+//    }
 
     public static boolean isProductExist(int pID, int qty) throws SQLException {
 
@@ -77,10 +77,6 @@ public class UIHandler {
     }
 
     public static String isValidAdmin(String id, String pass) throws SQLException {
-        // string is passed such that we can verify if even the string is valid or not
-        // you can use isNumber function of UIHandler as well for validation
-        // If admin is valid It should return the name of the admin, if not then it should return "not"
-
         if (superAdmin == null) {
             superAdmin = SuperAdmin.getInstance(id, pass, "superAdmin");
 
@@ -95,15 +91,10 @@ public static void superAdminlogout(){
         superAdmin = null;
 }
     public static String isValidManager(String id, String pass) throws SQLException {
-        // string is passed such that we can verify if even the string is valid or not
-        // you can use isNumber function of UIHandler as well for validation
-        // If manager is valid It should return the name,branchID of the manager comma separated,
-        // if not then it should return "not"
 
         if (branchManager != null) {
             branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "branchManager");
-
-            return branchManager.getName() + "," + branchManager.getEmployeeNumber();
+            return branchManager.getName() + "," + branchManager.getBranch().getId();
         } else {
             return "not";
         }
@@ -125,10 +116,6 @@ public static void superAdminlogout(){
 
 
     public static String isValidDataOperator(String id, String pass) throws SQLException {
-        // string is passed such that we can verify if even the string is valid or not
-        // you can use isNumber function of UIHandler as well for validation
-        // If operator is valid It should return the name,branchID of the operator comma separated,
-        // if not then it should return "not
         dataEntryOperator = (DataEntryOperator) dataEntryOperator.vallidateEmployee(id, pass, "dataEntryOperator");
 
 
@@ -256,29 +243,27 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> getEmployeeInfo(int branchID) {
-        // based on branchID it should return employees of that branch
-        ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        return list;
+
+        employeeList= branchManager.getEmployeesByBranch(branchID);
+        return employeeList;
     }
 
     public static ArrayList<String> addEmployeeInfo(int branchID, String str) {
         //here I provide with the empID and branchID and updated String (name,salary,phoneNo,role)
         // it should return the updated employees list of the particular branch;
-
-        ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        return list;
+        String []employee=str.split(",");
+        int id= branchManager.addEmployee(employee[0], "email", Integer.parseInt(employee[1]), branchID, employee[3]);
+        String employeeInfo = id+","+employee[0]+","+id+"@gmail.com"+","+"123"+","+employee[1]+","+employee[2]+","+employee[3]+","+"Active";
+        employeeList.add(employeeInfo);
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
+//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
+//        return list;
+        return employeeList;
     }
 
     public static ArrayList<String> updateEmployeeInfo(int empID, int branchID, String str) {
@@ -751,9 +736,6 @@ public static void superAdminlogout(){
         return superAdmin.changePassword(newPassword);
     }
 
-    public static boolean addEmployee(String name, String email, int salary, int branchid, String role) {
-        return branchManager.addEmployee(name, email, salary, branchid, role);
-    }
 
     public static boolean checkInternetConnection() {
         return InternetConnection.isInternetConnected();

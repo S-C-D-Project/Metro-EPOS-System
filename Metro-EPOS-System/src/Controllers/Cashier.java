@@ -8,18 +8,20 @@ import java.util.ArrayList;
 
 public class Cashier extends Employee {
 private Product comfirmProduct;
-    public Cashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-        super(Integer.parseInt(employeeNumber), name, email,salary,joiningDate,leavingDate,isActive,Integer.parseInt(branchCode),firstTime,"Cashier",null); }
+    public Cashier( String name,String password,String email,int employeeID,int branchId, int salary, String joiningDate, String leavingDate, boolean isActive,boolean firstTime, String role) {
 
+        super(name,password,email, employeeID, branchId,salary,joiningDate,leavingDate,isActive,firstTime,role);
+    }
     public Bill createNewBill() {
         return new Bill();
     }
 
-    public Cashier(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role, Branch branch, Product comfirmProduct) {
-        super(employeeID, name, email, salary, joiningDate, leavingDate, isActive, branchID, firstTime, role, branch);
-        this.comfirmProduct = comfirmProduct;
-    }
-    public Cashier() {
+//    public Cashier(int employeeID, String name, String email, int salary, String joiningDate, String leavingDate, boolean isActive, int branchID, boolean firstTime, String role, Branch branch, Product comfirmProduct) {
+//        super(employeeID, name, email, salary, joiningDate, leavingDate, isActive, branchID, firstTime, role, branch);
+//        this.comfirmProduct = comfirmProduct;
+//    }
+//
+public Cashier() {
         super();
      }
 
