@@ -17,7 +17,7 @@ public class DataBaseConnection {
             System.out.println("Connection established successfully!");
             if (!DataMigrated) {
                 DataMigration();
-                storeBackup();
+                //storeBackup();
             }
             return con;
         } catch (SQLException e) {
@@ -135,7 +135,7 @@ public class DataBaseConnection {
 
                             if (values.length == columnArray.length) {
                                 for (int i = 0; i < values.length; i++) {
-                                    if(tableName.equals("Product")&&i==0){
+                                   /* if(tableName.equals("Product")&&i==0){
                                        ArrayList<String> products= DataBaseHandler.getAllProductsLocal();
                                        boolean already=false;
                                        for(int j=0;j<products.size();j++){
@@ -151,6 +151,7 @@ public class DataBaseConnection {
                                            System.out.println(values[0]);
                                        }
                                     }
+                                    */
                                     if (tableName.equals("Purchase") && i == 0) {
 
                                         String localVendorName = values[1];
