@@ -36,17 +36,6 @@ public class UIHandler {
     private static DataEntryOperator dataEntryOperator = new DataEntryOperator();
     private static SuperAdmin superAdmin;
 private static ArrayList<String>employeeList=new ArrayList<>();
-//    public static void createCashier(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-//        cashier = new Cashier(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-//    }
-//
-//    public static void createBranchManager(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-//        branchManager = new BranchManager(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-//    }
-//
-//    public static void createDataEntryOperator(String name, String password, String email, String employeeNumber, String branchCode, int salary, String joiningDate, String leavingDate, boolean isActive, Branch branch, boolean firstTime) {
-//        dataEntryOperator = new DataEntryOperator(name, password, email, employeeNumber, branchCode, salary, joiningDate, leavingDate, isActive, branch, firstTime);
-//    }
 
     public static boolean isProductExist(int pID, int qty) throws SQLException {
 
@@ -56,9 +45,7 @@ private static ArrayList<String>employeeList=new ArrayList<>();
     public static boolean isNewAdmin(String id, String pass){
         return false;
     }
-    public static boolean isNewBranchManager(String id, String pass){
-       // return branchManager.isFirstTime();
-    return true;
+    public static boolean isNewBranchManager(String id, String pass){return branchManager.isFirstTime();
     }
     public static boolean isNewCashier(String id, String pass){
         return cashier.isFirstTime();
@@ -151,17 +138,11 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> getVendorsList(int branchID) {
-        // I will provide the branchID and I should get all the vendors in comma separated string list
-        //For now branch id is set to 1
         ArrayList<String> list = DataBaseHandler.getVendorsList(branchID);
         return list;
     }
 
     public static ArrayList<String> updateVendorInfo(int id, String str) {
-        // I will provide with the vendor id and a string str where data is stored comma separated
-        // like (Name,City,Address,Products,Status) and we update vendor data in DB using vendor ID
-        // then the updated VendorList is returned
-        // below code is just for testing
         String[] values = str.split(",");
         DataBaseHandler.updateVendorInfo(id, values[0], values[1], values[2], values[4]);
         ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
@@ -169,9 +150,6 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> addVendor(int branchId, String vendorName, String vendorAddress, String vendorCity) {
-        // I will provide with the branch id and strings to add in vendors list
-        // then the updated VendorList is returned
-        // below code is just for testing
         String status = "Inactive";
         VendorModel.insertVendor(vendorName, vendorCity, vendorAddress, status, branchId);
         return getVendorsList(branchId);
@@ -179,31 +157,10 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> getVendorProducts(int Vid) {
-        // i should get like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
-
-        //for testing
-        /*
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Foods,Bread,100,100,100,50,Ali Express,Large");
-        return list;
-
-         */
         return DataBaseHandler.getVendorProducts(Vid);
     }
 
     public static ArrayList<String> addNewVendorProduct(int vID, String str) {
-        // new data is like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
-        // and it should return like this as well;
-
-        //for testing
-        /*
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
-        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
-        return list;
-
-         */
-
         String[] values = str.split(",");
         String sample_manufaturer = values[6];
         System.out.println(sample_manufaturer);
@@ -217,16 +174,6 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> updateVendorProductInfo(int vID, String str, String productName) {
-        // new data is like this (catagory,product name,Original Price,Sales Price,price per unit,stocks,manufacture name,size)
-        // and it should return like this as well;
-
-        //for testing
-        /*
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
-        return list;
-
-         */
 
         String[] values = str.split(",");
         int productid = DataBaseHandler.getProductidbyName(productName.trim());
@@ -241,17 +188,6 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> deleteVendorProduct(int id, String catagory, String name, String originalPrice, String salesPrice, String pricePerUnit) {
-        // here the product of a vendor should be deleted
-        // I provide Vendor ID, catagory, name and many other values so you can use any of these or all of these
-        // for deletion, after that I should get the updated list of particular vendor products
-
-        //for testing
-        /*
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Foods,Bread,100,100,100,50,Ali Express,Small");
-        return list;
-
-         */
 
         int prodid = DataBaseHandler.getProductidbyName(name);
         boolean result = DataBaseHandler.deleteProductByVendorId(id, prodid);
@@ -277,20 +213,37 @@ public static void superAdminlogout(){
         employeeList.add(employeeInfo);
         return employeeList;
     }
-
     public static ArrayList<String> updateEmployeeInfo(int empID, int branchID, String str) {
-        //here I provide with the empID and branchID and updated String (name,email,password,salary,phoneNo,role,status)
-        // it should return the updated employees list of the particular branch list;
+        String[] data = str.split(",");
+        if (data.length != 7) {
+            throw new IllegalArgumentException("Invalid input format for employee data.");
+        }
 
-        ArrayList<String> list = new ArrayList<>();
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-        return list;
+        Employee employee = new BranchManager(
+                data[0], // Name
+                data[2], // Email
+                data[1], // Password
+                empID,   // Employee ID
+                branchID, // Branch ID
+                Integer.parseInt(data[3]), // Salary
+                Boolean.parseBoolean(data[6]), // Is Active
+                data[5], // Role
+                data[4]  // Phone Number
+        );
+
+        branchManager.updateEmployee(employee);
+
+        for (int i = 0; i < employeeList.size(); i++) {
+            String[] existingData = employeeList.get(i).split(",");
+            if (Integer.parseInt(existingData[0]) == empID) {
+                employeeList.set(i,empID+","+ employee.toString());
+                break;
+            }
+        }
+
+        return employeeList;
     }
+
 
     public static ArrayList<String> getStocksDataofBranch(int branchID) {
         // i provide branchID and should get the (productsName,Stocks status). If stocks are 0
@@ -753,7 +706,5 @@ public static void superAdminlogout(){
         return InternetConnection.isInternetConnected();
     }
 
-    public static boolean updateEmployee(Employee employee) {
-        return branchManager.updateEmployee(employee);
-    }
+
 }

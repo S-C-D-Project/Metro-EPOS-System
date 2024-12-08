@@ -498,13 +498,13 @@ public class EmployeeInfo extends Theme {
                         }
                         else
                         {
-                            if(!UIHandler.isNumbers(salary.getText()) || phoneNo.getText().length()!=11 || !UIHandler.isNumbers(phoneNo.getText()) || !email.getText().contains("@gmail.com")){
-                                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Update","Error",JOptionPane.ERROR_MESSAGE);
-                            }
-                            else{
-                                String improved = name.getText()+","+email.getText()+","+password.getText()+","+ salary.getText() + ","+ phoneNo.getText()+","+ role.getSelectedItem() +","+status.getSelectedItem();
+//                            if(!UIHandler.isNumbers(salary.getText()) || phoneNo.getText().length()!=11 || !UIHandler.isNumbers(phoneNo.getText())){// || !email.getText().contains("@gmail.com")){
+//                                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Update","Error",JOptionPane.ERROR_MESSAGE);
+//                            }
+//                            else{
+                              String improved = name.getText()+","+email.getText()+","+password.getText()+","+ salary.getText() + ","+ phoneNo.getText()+","+ role.getSelectedItem() +","+status.getSelectedItem();
                                 list = UIHandler.updateEmployeeInfo(Integer.parseInt(empID.getText()), Integer.parseInt(branchNumber.getText()),improved);
-                            }
+                          //  }
                             name.setFocusable(false);
                             name.setEditable(false);
                             email.setFocusable(false);

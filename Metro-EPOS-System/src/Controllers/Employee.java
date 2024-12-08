@@ -21,6 +21,19 @@ public abstract class Employee {
     private Branch branch;
     private String role;
     private String phoneNumber;
+    int branchid;
+
+    public Employee(String name, String password, String email, int employeeID, int branchId, int salary, boolean isActive, String role, String phoneNumber) {
+
+    this.name = name;
+        this.password = password;
+        this.email = email;
+        this.employeeNumber = employeeID;
+        this.salary = salary;
+        this.isActive = isActive;
+        this.role = role;
+    this.branchid=branchId;
+    this.phoneNumber=phoneNumber;}
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -155,7 +168,14 @@ public abstract class Employee {
         }
     }
 
+    @Override
+    public String toString() {
+        return
+                 name + ',' +email+','+
+                 password  + ","+salary +','+phoneNumber+ "," + role +","+isActive;
+    }
+
     public int getBranchid() {
-        return branch.getId();
+        return branchid;
     }
 }

@@ -24,6 +24,7 @@ public class EmployeeModel {
                 boolean firstTime = resultSet.getBoolean("FirstTime");
                 String role = resultSet.getString("Role");
                 if(!role.equalsIgnoreCase(choice)){
+                    System.out.println("Invalid role selected. Please try again.");
                     return null;
                 }
                 switch (role.toLowerCase()) {
@@ -47,32 +48,38 @@ public class EmployeeModel {
         return employee;
     }
 
-    public static boolean changePassword(String newPassword,int employeeID,Connection connection){
+    public static boolean changePassword(String newPassword, int employeeID, Connection connection) {
         String sql = "EXEC ChangePassword @NewPassword = ?, @EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, employeeID);
-            statement.setString(2, newPassword);
-            ResultSet resultSet = statement.executeQuery();
+            statement.setString(1, newPassword);
+            statement.setInt(2, employeeID);
+            int rowsAffected = statement.executeUpdate(); // Use executeUpdate for non-select statements
+
+            if (rowsAffected > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
-            return  false;
+            System.out.println("Error while changing password.");
+            e.printStackTrace();
+            return false;
         }
-        return true;
     }
-    public static boolean updateEmployee(int employeeId,String name, String email, Branch branch, int salary, String joiningDate, String leavingDate, boolean active, boolean firstTime, String role, Connection connection) {
+
+    public static boolean updateEmployee(int employeeId,String name, String email, int branchid, int salary, boolean active, String role,String phoneNumber ,Connection connection) {
         try {
-            String sql = "EXEC UPDATEEMPLOYEE ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+            String sql = "EXEC UPDATEEMPLOYEE ?,?, ?, ?, ?, ?, ?, ? ";
             PreparedStatement stmt = connection.prepareStatement(sql);
 
             stmt.setInt(1, employeeId);
             stmt.setString(2, name);
             stmt.setString(3, email);
-            stmt.setInt(4, branch.getId());
+            stmt.setInt(4, branchid);
             stmt.setInt(5, salary);
-            stmt.setDate(6, Date.valueOf(joiningDate));
-            stmt.setDate(7, Date.valueOf(leavingDate));
-            stmt.setBoolean(8, active);
-            stmt.setBoolean(9, firstTime);
-            stmt.setString(10, role);
+            stmt.setString(6, phoneNumber);
+            stmt.setBoolean(7, active);
+            stmt.setString(8, role);
 
             return stmt.execute();
         } catch (SQLException e){
@@ -178,15 +185,15 @@ public class EmployeeModel {
                 String name = resultSet.getString("Name");
                 String email = resultSet.getString("Email");
                 String passwordFromDb = resultSet.getString("Password");
-                double salary = resultSet.getDouble("Salary");
+                int salary = resultSet.getInt("Salary");
                 String phoneNumber = resultSet.getString("PhoneNumber");
                 String role = resultSet.getString("Role");
                 String isActive = resultSet.getBoolean("IsActive") ? "Active" : "Inactive";
-
-                String formattedString = String.format("%03d,%s,%s,%s,%.2f,%s,%s,%s",
+if(role.equalsIgnoreCase("cashier")||role.equalsIgnoreCase("operator")){
+                String formattedString = String.format("%03d,%s,%s,%s,%d,%s,%s,%s",
                         employeeId, name, email, passwordFromDb, salary, phoneNumber, role, isActive);
                 employeeList.add(formattedString);
-            }
+            }}
 
         } catch (SQLException e) {
             e.printStackTrace();
