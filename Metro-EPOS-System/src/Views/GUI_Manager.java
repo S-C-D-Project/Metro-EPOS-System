@@ -1,4 +1,5 @@
 package Views;
+import Views.Admin.*;
 import Views.Cashier.SalesData;
 import Views.Cashier.addOns;
 import Views.Frame.GifPlayer;
@@ -11,8 +12,6 @@ import Views.Manager.BranchInfo;
 import Views.Manager.EmployeeInfo;
 import Views.Operator.ExpandedInfo;
 import Views.Operator.VendorInfo;
-import org.apache.commons.logging.Log;
-import org.jfree.chart.ChartPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -34,6 +33,11 @@ public class GUI_Manager
     private DataOperatorLogIn dataOperatorLogIn;
     private EmployeeInfo employeeInfo;
     private BranchInfo branchInfo;
+    private AdminBranchInfo adminBranchInfo;
+    private ExpandedReport expandedReport;
+    private AdminEmpInfo adminEmpInfo;
+    private AdminVendorInfo adminVendorInfo;
+    private ExpandedVendorInfo expandedVendorInfo;
 
     public GUI_Manager() {
         f = new frame();
@@ -47,6 +51,11 @@ public class GUI_Manager
         sales = new SalesData();
         employeeInfo = new EmployeeInfo();
         branchInfo = new BranchInfo();
+        adminBranchInfo = new AdminBranchInfo();
+        expandedReport = new ExpandedReport();
+        adminEmpInfo = new AdminEmpInfo();
+        adminVendorInfo = new AdminVendorInfo();
+        expandedVendorInfo = new ExpandedVendorInfo();
     }
 
     public void LogIn() {
@@ -78,7 +87,8 @@ public class GUI_Manager
                     JOptionPane.showMessageDialog(f.getFrame(), "Account Not Found", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     adminLogIn.resetFields();
-                    // admin panels
+                    String[] data = repsone.split(",");
+                    AdminPanels(data[0]);
                 }
             }
         });
@@ -174,6 +184,231 @@ public class GUI_Manager
 
     public void AdminPanels(String name){
 
+        //----------------------EXPANDED REPORT PANEL LOGIC-------------------//
+        expandedReport.getBackButton().addActionListener(e->{
+            expandedReport.resetFields();
+            f.replacePanel(expandedReport.getPanel(),adminBranchInfo.getPanel());
+            oldPanel = adminBranchInfo.getPanel();
+        });
+        expandedReport.getGenerateButtonReport().addActionListener(e->{
+            UIHandler.GenerateReport();
+        });
+        expandedReport.getLogoutButton().addActionListener(e->{
+            expandedReport.resetFields();
+            LogIn();
+        });
+        expandedReport.getEmployeeInfoButton().addActionListener(e->{
+            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(),f);
+            expandedReport.resetFields();
+            f.replacePanel(expandedReport.getPanel(),adminEmpInfo.getPanel());
+            oldPanel = adminEmpInfo.getPanel();
+        });
+        expandedReport.getVendorInfoButton().addActionListener(e->{
+            expandedReport.resetFields();
+            adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(),f,expandedVendorInfo);
+            f.replacePanel(expandedReport.getPanel(),adminVendorInfo.getPanel());
+            oldPanel = adminVendorInfo.getPanel();
+        });
+        expandedReport.getEnterButton().addActionListener(e->{
+            String start = expandedReport.getStartRange();
+            String end = expandedReport.getEndRange();
+            int branchID = expandedReport.getBranchID();
+
+            if(start.equals("dd/MM/yyyy") || end.equals("dd/MM/yyyy") || start.trim().isEmpty() || end.trim().isEmpty() || !UIHandler.isValidDate(start) || !UIHandler.isValidDate(end) || !UIHandler.isStartDateBeforeOrEqual(start, end)){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else if(UIHandler.DisplayChartRanged(start,end,"line")==null){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                String type;
+                if(expandedReport.getSelectedTime().equals("yearly")){
+                    type = "line";
+                }
+                else{
+                    type = "bar";
+                }
+                expandedReport.refreshPanel(UIHandler.getStocksDataofBranch(branchID),f,UIHandler.getBranchSales(branchID,expandedReport.getSelectedTime()),UIHandler.getBranchRemaingingStock(branchID,expandedReport.getSelectedTime()),UIHandler.getBranchProfit(branchID,expandedReport.getSelectedTime()),UIHandler.DisplayChartRanged(start,end,"line"));
+            }
+        });
+
+        //---------------------------EXPANDED VENDOR PANEL------------------------------------
+        expandedVendorInfo.getLogoutButton().addActionListener(e->{
+            expandedReport.resetFields();
+            LogIn();
+        });
+        expandedVendorInfo.getBackButton().addActionListener(e->{
+            expandedVendorInfo.resetFields();
+            ArrayList<String> vendorsList = UIHandler.getAllVendorsList();
+            adminVendorInfo.refreshPanel(vendorsList,f,expandedVendorInfo);
+            f.replacePanel(expandedVendorInfo.getPanel(),adminVendorInfo.getPanel());
+            oldPanel = adminVendorInfo.getPanel();
+        });
+        expandedVendorInfo.getAddButton().addActionListener(e->{
+            ArrayList<String> list = expandedVendorInfo.getList();
+            int id = expandedVendorInfo.getVendorID();
+            expandedVendorInfo.refreshPanel(list,f.getFrame(),id,true);
+        });
+        expandedVendorInfo.getEmployeeInfoButton().addActionListener(e->{
+            expandedVendorInfo.resetFields();
+            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(),f);
+            f.replacePanel(expandedVendorInfo.getPanel(),adminEmpInfo.getPanel());
+            oldPanel = adminBranchInfo.getPanel();
+        });
+        expandedVendorInfo.getBranchInfoButton().addActionListener(e->{
+            expandedVendorInfo.resetFields();
+            adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(),f,expandedReport);
+            f.replacePanel(expandedVendorInfo.getPanel(),adminBranchInfo.getPanel());
+            oldPanel = adminBranchInfo.getPanel();
+        });
+
+        //---------------------------------ADMIN BRANCH INFO PANEL LOGIC-------------
+        adminBranchInfo.getLogoutButton().addActionListener(e->{
+            adminBranchInfo.resetFields();
+            LogIn();
+        });
+        adminBranchInfo.getVendorInfoButton().addActionListener(e->{
+            adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(),f,expandedVendorInfo);
+            f.replacePanel(oldPanel,adminVendorInfo.getPanel());
+            oldPanel = adminVendorInfo.getPanel();
+        });
+        adminBranchInfo.getEmployeeInfoButton().addActionListener(e->{
+            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(),f);
+            f.replacePanel(oldPanel,adminEmpInfo.getPanel());
+            oldPanel = adminEmpInfo.getPanel();
+        });
+        adminBranchInfo.getSearchButton().addActionListener(e->{
+            String search = adminBranchInfo.getSearched();
+            if(search.trim().equals("Search") || search.trim().isEmpty()){
+                adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(),f,expandedReport);
+            }
+            else
+            {
+                ArrayList<String> newList = new ArrayList<>();
+                ArrayList<String> oldList = adminBranchInfo.getList();
+                for(int i=0; i<oldList.size(); i++){
+                    String[] data = oldList.get(i).split(",");
+                    if(data[0].equals(search) || data[1].equals(search) || data[2].equals(search) || data[3].equals(search) || data[4].equals(search) || data[5].equals(search)){
+                        newList.add(oldList.get(i));
+                    }
+                }
+                adminBranchInfo.refreshPanel(newList,f,expandedReport);
+            }
+        });
+        adminBranchInfo.getAddButton().addActionListener(e->{
+            String branchName = adminBranchInfo.getVendorName();
+           String cityName = adminBranchInfo.getVendorCity();
+           String address = adminBranchInfo.getVendorAddress();
+
+           if(branchName.isEmpty() || cityName.isEmpty() || address.isEmpty() || branchName.equals("  Type Name") || cityName.equals("  Enter City Name") || address.equals("  Type Address")){
+               JOptionPane.showMessageDialog(f.getFrame(),"Invalid Branch Info","Error",JOptionPane.ERROR_MESSAGE);
+           }
+           else{
+               adminBranchInfo.refreshPanel(UIHandler.addBranch(branchName,cityName,address),f,expandedReport);
+           }
+        });
+
+        //--------------------------------------ADMIN EMPLOYEE INFO PANELS------------------------//
+        adminEmpInfo.getLogoutButton().addActionListener(e->{
+            adminEmpInfo.resetFields();
+            LogIn();
+        });
+        adminEmpInfo.getAddButton().addActionListener(e->{
+            String empName = adminEmpInfo.getVendorName();
+            String salary = adminEmpInfo.getVendorCity();
+            String phone = adminEmpInfo.getVendorAddress();
+
+            if(empName.isEmpty() || salary.isEmpty() || phone.isEmpty() || empName.equals("  Type Name") || salary.equals("  Enter Salary") || phone.equals("  Type Phone No.")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Employee Info","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                ArrayList<String> list = UIHandler.addEmployeeforAdmin(empName,salary,phone);
+                adminEmpInfo.refreshPanel(list,f);
+            }
+        });
+        adminEmpInfo.getSearchButton().addActionListener(e->{
+            String search = adminEmpInfo.getSearched();
+            if(search.trim().equals("Search") || search.trim().isEmpty()){
+                adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(),f);
+            }
+            else
+            {
+                ArrayList<String> newList = new ArrayList<>();
+                ArrayList<String> oldList = adminEmpInfo.getList();
+                for(int i=0; i<oldList.size(); i++){
+                    String[] data = oldList.get(i).split(",");
+                    if(data[0].equals(search) || data[1].equals(search) || data[2].equals(search) || data[3].equals(search) || data[4].equals(search) || data[5].equals(search) || data[6].equals(search) || data[7].equals(search) || data[8].equals(search)){
+                        newList.add(oldList.get(i));
+                    }
+                }
+                adminEmpInfo.refreshPanel(newList,f);
+            }
+        });
+        adminEmpInfo.getBranchInfoButton().addActionListener(e->{
+            adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(),f,expandedReport);
+            f.replacePanel(oldPanel,adminBranchInfo.getPanel());
+            oldPanel=adminBranchInfo.getPanel();
+        });
+        adminEmpInfo.getVendorInfoButton().addActionListener(e->{
+           adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(),f,expandedVendorInfo);
+           f.replacePanel(oldPanel,adminVendorInfo.getPanel());
+           oldPanel=adminVendorInfo.getPanel();
+        });
+
+        //--------------------------------ADMIN VENDOR INFO PANEL-------------------------//
+        adminVendorInfo.getLogoutButton().addActionListener(e->{
+            adminEmpInfo.resetFields();
+            LogIn();
+        });
+        adminVendorInfo.getAddButton().addActionListener(e->{
+            String vName = adminEmpInfo.getVendorName();
+            String city = adminEmpInfo.getVendorCity();
+            String vAddress = adminEmpInfo.getVendorAddress();
+
+            if(vName.trim().isEmpty() || vName.equals("  Type Name") || city.trim().isEmpty() || city.equals("  Enter City Name") || vAddress.trim().isEmpty() || vAddress.equals("  Type Address")){
+                JOptionPane.showMessageDialog(f.getFrame(),"Invalid Information Entered","Error",JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                ArrayList<String> newList = UIHandler.addVendorforAdmin(vName,vAddress,city);
+                adminVendorInfo.refreshPanel(newList,f,expandedVendorInfo);
+            }
+        });
+        adminVendorInfo.getSearchButton().addActionListener(e->{
+            String search = adminVendorInfo.getSearched();
+            if(search.trim().equals("Search") || search.trim().isEmpty()){
+                adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(),f,expandedVendorInfo);
+            }
+            else
+            {
+                ArrayList<String> newList = new ArrayList<>();
+                ArrayList<String> oldList = adminVendorInfo.getList();
+                for(int i=0; i<oldList.size(); i++){
+                    String[] data = oldList.get(i).split(",");
+                    if(data[0].equals(search) || data[1].equals(search) || data[2].equals(search) || data[3].equals(search) || data[4].equals(search) || data[5].equals(search) || data[6].equals(search)){
+                        newList.add(oldList.get(i));
+                    }
+                }
+                adminVendorInfo.refreshPanel(newList,f,expandedVendorInfo);
+            }
+        });
+        adminVendorInfo.getBranchInfoButton().addActionListener(e->{
+            adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(),f,expandedReport);
+            f.replacePanel(oldPanel,adminBranchInfo.getPanel());
+            oldPanel=adminBranchInfo.getPanel();
+        });
+        adminVendorInfo.getEmployeeInfoButton().addActionListener(e->{
+            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(),f);
+            f.replacePanel(oldPanel,adminEmpInfo.getPanel());
+            oldPanel=adminEmpInfo.getPanel();
+        });
+
+        adminEmpInfo.setNames(name,name);
+        adminBranchInfo.setNames(name,name);
+        adminVendorInfo.setNames(name,name);
+
+        adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(),f,expandedReport);
+        f.replacePanel(oldPanel,adminBranchInfo.getPanel());
+        oldPanel = adminBranchInfo.getPanel();
     }
 
     public void ManagerPanels(String name, String branchID){
@@ -508,23 +743,21 @@ public class GUI_Manager
 
     public static void main(String[] args)
     {
-        GUI_Manager manager = new GUI_Manager();
-        manager.LogIn();
 
-//        Thread splashThread = new Thread(() -> {
-//            GifPlayer gifPlayer = new GifPlayer();
-//        });
-//        splashThread.start();
-//
-//        Thread GUI = new Thread(() -> {
-//            GUI_Manager g = new GUI_Manager();
-//            try {
-//                splashThread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            g.LogIn();
-//        });
-//        GUI.start();
+        Thread splashThread = new Thread(() -> {
+            GifPlayer gifPlayer = new GifPlayer();
+        });
+        splashThread.start();
+
+        Thread GUI = new Thread(() -> {
+            GUI_Manager g = new GUI_Manager();
+            try {
+                splashThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            g.LogIn();
+        });
+        GUI.start();
     }
 }

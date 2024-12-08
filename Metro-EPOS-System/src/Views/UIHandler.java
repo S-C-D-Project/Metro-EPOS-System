@@ -307,6 +307,107 @@ public class UIHandler {
         return list;
     }
 
+    public static ArrayList<String> addBranch(String bName, String city, String address){
+        // a branch should be entered and updated list should be returned like below
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
+        list.add("222,METRO,Lahore,190-C Muslim Town,0,Inactive");
+        return list;
+    }
+
+    public static String getAllBranchIDs(){
+        // return all ids there are for a branch
+        String ids = "123,456,786,101";
+        return ids;
+    }
+
+    public static ArrayList<String> getAllEmployees(){
+        // returns emp info like this
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        return list;
+    }
+
+    public static ArrayList<String> getAllVendorsList(){
+        // returns vendors info like this
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Inactive");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        return list;
+    }
+
+    public static ArrayList<String> updateAdminVendorInfo(String vID, String str){
+        // this method updates vendor info and return updated list
+        // str contains (branchID,Name,city,address,products,status) like this
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Inactive");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        return list;
+    }
+
+    public static ArrayList<String> addEmployeeforAdmin(String name, String salary, String phoneNo){
+        // add employee as this method can add manager too and return updaye list like this
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        return list;
+    }
+
+    public static ArrayList<String> addVendorforAdmin(String name, String city, String address){
+        // adds vendor and return updated list like this
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Inactive");
+        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        return list;
+    }
+
+    public static ArrayList<String> updateAdminsEmployeeInfo(int empID,String str){
+        // str contains (BranchID,name,email,password,salary,phone No,role,status)
+        // updates emp info and return updated list like this
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
+        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+        return list;
+    }
+
+    public static ArrayList<String> getAllBranchInfo(){
+        //all branch info in example down below should be returned
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        return list;
+    }
+    public static ArrayList<String> updateBranchesInfo(int BranchID,String str){
+        //Based on branch ID update Data of branchInfo
+        //str has Data like (name,city,address,employees,status) and i should get updated list
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
+        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        return list;
+    }
+
     public static int getBranchSales(int branchID,String type) {
         //I will provide with the branch id and i should get the branch Sales and in type
         //i will specify if it is daily,weekly,monthly,yearly
