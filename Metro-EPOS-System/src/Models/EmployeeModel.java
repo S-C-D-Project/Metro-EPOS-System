@@ -27,10 +27,11 @@ public class EmployeeModel {
                     return null;
                 }
                 switch (role.toLowerCase()) {
-                    case "branchmanager":
+                    case "manager":
                         employee = new BranchManager(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
-                    case "dataentryoperator":
+                    case "operator":
+
                         employee = new DataEntryOperator(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
                     case "cashier":

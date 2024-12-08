@@ -107,7 +107,7 @@ public static void superAdminlogout(){
     public static String isValidManager(String id, String pass) throws SQLException {
 
         if (branchManager != null) {
-            branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "branchManager");
+            branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "manager");
            if(branchManager!=null){
             return branchManager.getName() + "," + branchManager.getBranch().getId();
         } else{ return "not";}
@@ -133,17 +133,21 @@ public static void superAdminlogout(){
 
 
     public static String isValidDataOperator(String id, String pass) throws SQLException {
-        dataEntryOperator = (DataEntryOperator) dataEntryOperator.vallidateEmployee(id, pass, "dataEntryOperator");
+       if(dataEntryOperator!=null) {
+           dataEntryOperator = (DataEntryOperator) dataEntryOperator.vallidateEmployee(id, pass, "operator");
 
+           if (dataEntryOperator != null) {
 
-        String branch = DataBaseHandler.getEmployeeBranch(id);
-        dataEntryOperator.setBranchid(Integer.parseInt(branch));
-        if (dataEntryOperator != null) {
-            String name = dataEntryOperator.getName();
-            return name + "," + branch;
-        } else {
-            return "not";
-        }
+               String branch = DataBaseHandler.getEmployeeBranch(id);
+           dataEntryOperator.setBranchid(Integer.parseInt(branch));
+               String name = dataEntryOperator.getName();
+               return name + "," + branch;
+           } else {
+               return "not";
+           }
+       }else{
+           return "not";
+       }
     }
 
     public static ArrayList<String> getVendorsList(int branchID) {
@@ -266,20 +270,11 @@ public static void superAdminlogout(){
     }
 
     public static ArrayList<String> addEmployeeInfo(int branchID, String str) {
-        //here I provide with the empID and branchID and updated String (name,salary,phoneNo,role)
-        // it should return the updated employees list of the particular branch;
+
         String []employee=str.split(",");
         int id= branchManager.addEmployee(employee[0], "email", Integer.parseInt(employee[1]), branchID, employee[3]);
         String employeeInfo = id+","+employee[0]+","+id+"@gmail.com"+","+"123"+","+employee[1]+","+employee[2]+","+employee[3]+","+"Active";
         employeeList.add(employeeInfo);
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Inactive");
-//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-//        list.add("000,Ali,000@gmail.com,Password_123,500,12345678901,Cashier,Active");
-//        return list;
         return employeeList;
     }
 
