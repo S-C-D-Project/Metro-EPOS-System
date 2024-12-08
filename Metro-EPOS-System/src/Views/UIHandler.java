@@ -53,6 +53,19 @@ public class UIHandler {
         return cashier.isProductExist(pID, cashier.getBranch().getId(), qty);
     }
 
+    public static boolean isNewAdmin(String id, String pass){
+        return true;
+    }
+    public static boolean isNewBranchManager(String id, String pass){
+        return true;
+    }
+    public static boolean isNewCashier(String id, String pass){
+        return true;
+    }
+    public static boolean isNewOperator(String id, String pass){
+        return true;
+    }
+
     public static String getProductPrice(int qty) {
         return String.valueOf(qty * cashier.getProductPrice());
     }

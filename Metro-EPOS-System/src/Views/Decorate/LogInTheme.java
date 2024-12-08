@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class LogInTheme extends JPanel {
+    private JFrame frame;
+
     private Color firstHeading;
     private Color secondHeading;
     private Color buttonColor;
@@ -54,6 +56,7 @@ public class LogInTheme extends JPanel {
 
         setLayout(null);
         setBackground(backgorundColor);
+        saveButton = new JButton("SAVE");
 
         setHeadings();
         setLine();
@@ -327,16 +330,16 @@ public class LogInTheme extends JPanel {
     }
 
     public void displayNewUserWindow(JFrame f){
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setUndecorated(true);
         frame.setSize(979,512);
         frame.setLocationRelativeTo(f);
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
+        panel.setBorder(new LineBorder(Color.black,3));
         panel.setBackground(backgorundColor);
 
-        saveButton = new JButton("SAVE");
         saveButton.setBackground(buttonColor);
         saveButton.setForeground(Color.white);
         saveButton.setFont(new Font("Yu Gothic UI SemiBold", Font.PLAIN, 18));
@@ -357,7 +360,7 @@ public class LogInTheme extends JPanel {
         panel.add(cpass);
 
         try {
-            BufferedImage logo1 = ImageIO.read(new File(lockVectorPath));
+            BufferedImage logo1 = ImageIO.read(getClass().getClassLoader().getResourceAsStream(lockVectorPath));
             int width1 = 30;
             int height1 = 29;
             Image scaledLogo1 = logo1.getScaledInstance(width1, height1, Image.SCALE_SMOOTH);
@@ -376,7 +379,7 @@ public class LogInTheme extends JPanel {
         }
 
         try {
-            BufferedImage logo2 = ImageIO.read(new File(lockVectorPath));
+            BufferedImage logo2 = ImageIO.read(getClass().getClassLoader().getResourceAsStream(lockVectorPath));
             int width2 = 30;
             int height2 = 29;
             Image scaledLogo2 = logo2.getScaledInstance(width2, height2, Image.SCALE_SMOOTH);
@@ -394,7 +397,7 @@ public class LogInTheme extends JPanel {
             e.printStackTrace();
         }
 
-        newPass = new JTextField();
+        newPass = new JPasswordField();
         newPass.setFont(new Font("Yu Gothic UI SemiBold", Font.PLAIN, 25));
         newPass.setBorder(null);
         newPass.setBackground(backgorundColor);
@@ -422,6 +425,7 @@ public class LogInTheme extends JPanel {
         frame.add(panel);
         frame.setVisible(true);
     }
+    public void removeFrame2(){frame.dispose();}
     public String getID(){return id.getText();}
     public String getPass(){return pass.getText();}
     public String getNewPass(){return  newPass.getText();}
@@ -430,7 +434,9 @@ public class LogInTheme extends JPanel {
         return logInButton;
     }
     public JButton getSaveButton(){return saveButton;}
-
+    public JFrame getFrame2(){
+        return frame;
+    }
     public JButton getAdminButton(){return notSelectedAdminButton;}
     public JButton getManagerButton(){return notSelectedManagerButton;}
     public JButton getCashierButton(){return notSelectedCashierButton;}
