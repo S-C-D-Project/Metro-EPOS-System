@@ -191,7 +191,7 @@ public class GUI_Manager
             oldPanel = adminBranchInfo.getPanel();
         });
         expandedReport.getGenerateButtonReport().addActionListener(e->{
-            UIHandler.GenerateReport();
+            UIHandler.GenerateReport(expandedReport.getBranchID());
         });
         expandedReport.getLogoutButton().addActionListener(e->{
             expandedReport.resetFields();
@@ -212,7 +212,7 @@ public class GUI_Manager
         expandedReport.getEnterButton().addActionListener(e->{
             String start = expandedReport.getStartRange();
             String end = expandedReport.getEndRange();
-            int branchID = expandedReport.getBranchID();
+            int branchID = Integer.parseInt(expandedReport.getBranchID());
 
             if(start.equals("dd/MM/yyyy") || end.equals("dd/MM/yyyy") || start.trim().isEmpty() || end.trim().isEmpty() || !UIHandler.isValidDate(start) || !UIHandler.isValidDate(end) || !UIHandler.isStartDateBeforeOrEqual(start, end)){
                 JOptionPane.showMessageDialog(f.getFrame(),"Invalid Range","Error",JOptionPane.ERROR_MESSAGE);
