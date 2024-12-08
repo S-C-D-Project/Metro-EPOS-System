@@ -107,8 +107,11 @@ public static void superAdminlogout(){
 
         if (branchManager != null) {
             branchManager = (BranchManager) branchManager.vallidateEmployee(id, pass, "branchManager");
+           if(branchManager!=null){
             return branchManager.getName() + "," + branchManager.getBranch().getId();
-        } else {
+        } else{ return "not";}
+        }
+        else {
             return "not";
         }
     }
