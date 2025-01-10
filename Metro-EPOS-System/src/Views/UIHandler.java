@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import static Controllers.PDFGenerator.generateChartPDF;
+import static Models.VendorModel.insertVendor;
 
 
 public class UIHandler {
@@ -36,6 +37,7 @@ public class UIHandler {
     private static DataEntryOperator dataEntryOperator = new DataEntryOperator();
     private static SuperAdmin superAdmin;
 private static ArrayList<String>employeeList=new ArrayList<>();
+    private static ArrayList<String>branchList=new ArrayList<>();
 
     public static boolean isProductExist(int pID, int qty) throws SQLException {
 
@@ -109,7 +111,7 @@ public static void superAdminlogout(){
             cashier = (Cashier) cashier.vallidateEmployee(id, pass, "cashier");
             if (cashier != null) {
 
-                return cashier.getName() + "," + cashier.getEmployeeNumber();
+                return cashier.getName() + "," + cashier.getBranch().getId();
             } else {
                 return "not";
             }
@@ -120,12 +122,12 @@ public static void superAdminlogout(){
 
 
     public static String isValidDataOperator(String id, String pass) throws SQLException {
-        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"dataEntryOperator");
+        dataEntryOperator= (DataEntryOperator) dataEntryOperator.vallidateEmployee(id,pass,"operator");
         boolean result= DataBaseHandler.isValidDataOperator(id,pass);
         String name= DataBaseHandler.getEmployeeName(id);
         String branch= DataBaseHandler.getEmployeeBranch(id);
         dataEntryOperator=new DataEntryOperator();
-        dataEntryOperator.setBranchid(Integer.parseInt(branch));
+        dataEntryOperator.setid(Integer.parseInt(branch));
         if(result){
             return name+","+branch;
         }
@@ -143,13 +145,13 @@ public static void superAdminlogout(){
     public static ArrayList<String> updateVendorInfo(int id, String str) {
         String[] values = str.split(",");
         DataBaseHandler.updateVendorInfo(id, values[0], values[1], values[2], values[4]);
-        ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getBranchid());
+        ArrayList<String> list = DataBaseHandler.getVendorsList(dataEntryOperator.getid());
         return list;
     }
 
     public static ArrayList<String> addVendor(int branchId, String vendorName, String vendorAddress, String vendorCity) {
         String status = "Inactive";
-        VendorModel.insertVendor(vendorName, vendorCity, vendorAddress, status, branchId);
+        insertVendor(vendorName, vendorCity, vendorAddress, status, branchId);
         return getVendorsList(branchId);
 
     }
@@ -162,7 +164,8 @@ public static void superAdminlogout(){
         String[] values = str.split(",");
         String sample_manufaturer = values[6];
         System.out.println(sample_manufaturer);
-        int branch = dataEntryOperator.getBranchid();
+        int branch = dataEntryOperator.getid();
+        System.out.println(branch);
         DataBaseHandler.addOrUpdateProductAndPurchase(branch, values[1], values[0], sample_manufaturer, Float.parseFloat(values[2]), Integer.parseInt(values[3]),
                 Float.parseFloat(values[4]), vID, DataBaseHandler.getVendorName(vID), values[7], Integer.parseInt(values[5]));
 
@@ -246,133 +249,195 @@ public static void superAdminlogout(){
     public static ArrayList<String> getStocksDataofBranch(int branchID) {
         // i provide branchID and should get the (productsName,Stocks status). If stocks are 0
         // it should provide Out of Stock as status
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Bread,20");
-        list.add("Apple,45");
-        list.add("Eggs,5");
-        list.add("Keyboard,Out of Stock");
-        list.add("Oven,10");
+        ArrayList<String> list = DataBaseHandler.getProductsByBranchId(branchID);
         return list;
     }
 
-    public static ArrayList<String> addBranch(String bName, String city, String address) {
-        // a branch should be entered and updated list should be returned like below
-
-        ArrayList<String> list = new ArrayList<>();
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
-        list.add("222,METRO,Lahore,190-C Muslim Town,0,Inactive");
-        return list;
+    public static ArrayList<String> addBranch(String bName, String city, String address) throws SQLException {
+       int branchid=branchManager.addBranch(bName,address,city);
+       String branch=branchid+","+bName+","+city+","+address+","+0+","+"active";
+       branchList.add(branch);
+        return branchList;
     }
 
-    public static String getAllBranchIDs() {
+    public static String getAllBranchIDs() throws SQLException {
         // return all ids there are for a branch
-        String ids = "123,456,786,101";
+        String ids = branchManager.getAllBranchIds();
         return ids;
     }
 
     public static ArrayList<String> getAllEmployees() {
         // returns emp info like this
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        return list;
+       employeeList=superAdmin.getEmployees();
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+//        return list;
+   return employeeList;
     }
 
     public static ArrayList<String> getAllVendorsList() {
         // returns vendors info like this
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Inactive");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        ArrayList<String> list = DataBaseHandler.getVendorPurchaseData();
         return list;
     }
 
     public static ArrayList<String> updateAdminVendorInfo(String vID, String str) {
-        // this method updates vendor info and return updated list
-        // str contains (branchID,Name,city,address,products,status) like this
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Inactive");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+
+        String []data=str.split(",");
+        DataBaseHandler.updateVendorData(Integer.parseInt(vID),data);
+        ArrayList<String> list = DataBaseHandler.getVendorPurchaseData();
         return list;
     }
 
     public static ArrayList<String> addEmployeeforAdmin(String name, String salary, String phoneNo) {
         // add employee as this method can add manager too and return updaye list like this
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        return list;
+
+        int id= branchManager.addEmployee(name, "email", Integer.parseInt(salary), 0, null);
+        String employeeInfo = id+","+null+","+name+","+id+"@gmail.com"+","+"123"+","+salary+","+null+","+null+","+"Active";
+        employeeList.add(employeeInfo);
+        return employeeList;
     }
 
     public static ArrayList<String> addVendorforAdmin(String name, String city, String address) {
         // adds vendor and return updated list like this
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Inactive");
-        list.add("1,123,Traders,Lahore,190-C Muslim Town,2,Active");
+        insertVendor(name,city,address,"Inactive",1);
+        ArrayList<String> list = DataBaseHandler.getVendorPurchaseData();
+
         return list;
     }
 
     public static ArrayList<String> updateAdminsEmployeeInfo(int empID, String str) {
-        // str contains (BranchID,name,email,password,salary,phone No,role,status)
-        // updates emp info and return updated list like this
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
-        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
-        return list;
+        String[] data = str.split(",");
+        if (data.length != 8) {
+            throw new IllegalArgumentException("Invalid input format for employee data.");
+        }
+        System.out.println("Updating with: " + str);
+
+        Employee updatedEmployee = new BranchManager(
+                data[1],
+
+                data[3],
+                data[2],
+                empID,
+                Integer.parseInt(data[0]),
+                Integer.parseInt(data[4]),
+                "Active".equalsIgnoreCase(data[7]),
+                data[6],
+                data[5]
+        );
+        branchManager.updateEmployee(updatedEmployee);
+
+        for (int i = 0; i < employeeList.size(); i++) {
+            String[] existingData = employeeList.get(i).split(",");
+
+            if (existingData.length > 1 && Integer.parseInt(existingData[0]) == empID) {
+                String updatedRecord = String.format("%d,%d,%s,%s,%s,%d,%s,%s,%s",
+                        updatedEmployee.getEmployeeNumber(),
+                        updatedEmployee.getBranchid(),
+                        updatedEmployee.getName(),
+                        updatedEmployee.getEmail(),
+                        updatedEmployee.getPassword(),
+                        updatedEmployee.getSalary(),
+                        updatedEmployee.getPhoneNumber(),
+                        updatedEmployee.getRole(),
+                        updatedEmployee.isActive() ? "Active" : "Inactive"
+                );
+
+                employeeList.set(i, updatedRecord);
+                break;
+            }
+        }
+
+        return employeeList;
+
+
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Inactive");
+//        list.add("1,123,Asfandyar,1111@gmail.com,Password_123,500,12345678901,Manager,Active");
+//        return list;
     }
 
-    public static ArrayList<String> getAllBranchInfo() {
+    public static ArrayList<String> getAllBranchInfo() throws SQLException {
         //all branch info in example down below should be returned
 
-        ArrayList<String> list = new ArrayList<>();
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        return list;
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+        branchList=new ArrayList<>();
+String [] branches=branchManager.getAllBranches();
+        for(String data:branches){
+            branchList.add(data);
+        }
+        return branchList;
     }
 
-    public static ArrayList<String> updateBranchesInfo(int BranchID, String str) {
-        //Based on branch ID update Data of branchInfo
-        //str has Data like (name,city,address,employees,status) and i should get updated list
+    public static ArrayList<String> updateBranchesInfo(int branchID, String str) throws SQLException {
+        String[] parsedData = parseBranchData(str);
+        String name = parsedData[0];
+        String city = parsedData[1];
+        String address = parsedData[2];
+        int numberOfEmployees = Integer.parseInt(parsedData[3]);
+        Boolean status = Boolean.parseBoolean(parsedData[4]);
 
-        ArrayList<String> list = new ArrayList<>();
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
-        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
-        return list;
+        branchManager.updateBranch(branchID, name, city, address, numberOfEmployees, status);
+
+        updateBranchList(branchID, name, city, address, numberOfEmployees, parsedData[4]);
+
+
+//    ArrayList<String> list = new ArrayList<>();
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Inactive");
+//        list.add("123,METRO,Lahore,190-C Muslim Town,100,Active");
+       return branchList;
     }
+    public static String[] parseBranchData(String str) {
+        String[] data = str.split(",");
+        if (data.length == 5) {
+            return data;
+        } else {
+            throw new IllegalArgumentException("Invalid input data format. Expected format: name,city,address,employees,status");
+        }
+    }
+    private static void updateBranchList(int branchID, String name, String city, String address, int numberOfEmployees, String status) {
+        for (int i = 0; i < branchList.size(); i++) {
+            String branch = branchList.get(i);
+            String[] branchData = branch.split(",");
+            int existingBranchID = Integer.parseInt(branchData[0]);
 
+            if (existingBranchID == branchID) {
+                 String updatedBranch = String.format("%d,%s,%s,%s,%d,%s", branchID, name, city, address, numberOfEmployees, status);
+                branchList.set(i, updatedBranch);
+                return;
+            }
+        }
+        String newBranch = String.format("%d,%s,%s,%s,%d,%s", branchID, name, city, address, numberOfEmployees, status);
+        branchList.add(newBranch);
+    }
     public static int getBranchSales(int branchID, String type) {
         //I will provide with the branch id and i should get the branch Sales and in type
         //i will specify if it is daily,weekly,monthly,yearly
-        return 100;
+        System.out.println(type);
+        return DataBaseHandler.getTotalSales(branchID,type);
     }
 
     public static int getBranchRemaingingStock(int branchID, String type) {
         //I will provide with the branch id and i should get the branch remaining stocks
         // and in type i will specify if it is daily,weekly,monthly,yearly
-        return 5000;
+
+        return DataBaseHandler.getTotalStockQuantity(branchID,type);
     }
 
     public static int getBranchProfit(int branchID, String type) {
         //I will provide with the branch id and i should get the branch profit and in type
         //i will specify if it is daily,weekly,monthly,yearly
-        return 5000;
+        return DataBaseHandler.getTotalProfit(branchID,type);
     }
 
     public static int getBranchSalesRange(int branchID, String start, String end) {

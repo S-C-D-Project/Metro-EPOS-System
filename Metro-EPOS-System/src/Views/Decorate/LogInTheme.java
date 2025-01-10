@@ -325,8 +325,8 @@ public class LogInTheme extends JPanel {
     }
 
     public void resetFields(){
-        id.setText("");
-        pass.setText("");
+        id.setText(null);
+        pass.setText(null);
     }
 
     public void displayNewUserWindow(JFrame f){

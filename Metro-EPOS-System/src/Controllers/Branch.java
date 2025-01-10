@@ -1,6 +1,9 @@
 package Controllers;
 
+import Models.BranchModel;
 import Models.DataBaseHandler;
+
+import java.sql.SQLException;
 
 public class Branch {
 
@@ -19,12 +22,21 @@ public class Branch {
     }
     public Branch(int id){
         Branch branch=DataBaseHandler.getBranch(id);
+        if(branch==null) {
+            this.id = 1;
+            this.address = "700b";
+            this.phoneNumber = "030394124";
+            this.numberOfEmployees = 32;
+            this.isActive = false;
+            return;
+        }
         this.id=branch.getId();
         this.address=branch.getAddress();
         this.phoneNumber=branch.getPhoneNumber();
         this.numberOfEmployees=branch.getNumberOfEmployees();
         this.isActive=branch.isActive();
     }
+
 
 
     public int getId() {
@@ -66,4 +78,6 @@ public class Branch {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+
 }

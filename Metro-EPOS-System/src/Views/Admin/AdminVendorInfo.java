@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminVendorInfo extends Theme {
@@ -364,8 +365,7 @@ public class AdminVendorInfo extends Theme {
         add(vendorsCount);
     }
 
-    public void setValues(ArrayList<String> l, frame f, ExpandedVendorInfo expandedInfo)
-    {
+    public void setValues(ArrayList<String> l, frame f, ExpandedVendorInfo expandedInfo) throws SQLException {
         list = l;
         if(l!=null){
             vendorsCount.setText(String.valueOf(list.size()));
@@ -512,7 +512,11 @@ public class AdminVendorInfo extends Theme {
                             status.setFocusable(false);
                             status.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
-                            refreshPanel(list,f,expandedInfo);
+                            try {
+                                refreshPanel(list,f,expandedInfo);
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
 
@@ -534,7 +538,11 @@ public class AdminVendorInfo extends Theme {
                         expandedInfo.setNameBranch(user.getText(), branchID.getSelectedItem().toString());
                         expandedInfo.refreshPanel(UIHandler.getVendorProducts(Integer.parseInt(vendorID.getText())),f.getFrame(), Integer.parseInt(vendorID.getText()),false);
                         f.replacePanel(getPanel(),expandedInfo.getPanel());
-                        refreshPanel(list,f,expandedInfo);
+                        try {
+                            refreshPanel(list,f,expandedInfo);
+                        } catch (SQLException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
 
                     @Override
@@ -586,7 +594,7 @@ public class AdminVendorInfo extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, frame f, ExpandedVendorInfo expandedInfo) {
+    public void refreshPanel(ArrayList<String> newList, frame f, ExpandedVendorInfo expandedInfo) throws SQLException {
         if (scroll != null) {
             remove(scroll);
             vendorsCount.setText("");

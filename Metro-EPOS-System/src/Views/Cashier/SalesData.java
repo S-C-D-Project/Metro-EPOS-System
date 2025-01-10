@@ -429,8 +429,8 @@ public class SalesData extends Theme {
     public void refreshPanel(ArrayList<String> newList, double discount, JFrame f) {
         if (scroll != null) {
             remove(scroll);
-            total.setText("");
-            discountBox.setText("");
+            total.setText(null);
+            discountBox.setText(null);
             super.removeInfoField();
         }
         setValues(newList,discount,f);
@@ -440,12 +440,12 @@ public class SalesData extends Theme {
     }
 
     public void resetFields(){
-        discountBox.setText("");
-        productID.setText("");
-        quantity.setText("");
-        total.setText("");
-        user.setText("");
-        branchNumber.setText("");
+        discountBox.setText(null);
+        productID.setText(null);
+        quantity.setText(null);
+        total.setText(null);
+        user.setText(null);
+        branchNumber.setText(null);
     }
 
     public String getProductID(){return productID.getText();}

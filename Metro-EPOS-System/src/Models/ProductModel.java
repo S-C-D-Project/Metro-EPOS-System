@@ -2,10 +2,7 @@ package Models;
 
 import Controllers.Product;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProductModel {
@@ -37,6 +34,52 @@ public class ProductModel {
 
         return product;
     }
+    public static boolean insertProduct(int productid, int branchId, String productName, String category, String manufacturer,
+                                        double originalPrice, int salePrice, double pricePerUnit,
+                                        int stockQuantity, String productSize, double salestax) {
+
+        String enableIdentityInsert = "SET IDENTITY_INSERT Product ON";
+        String disableIdentityInsert = "SET IDENTITY_INSERT Product OFF";
+        String query = "INSERT INTO Product (ProductID, BranchId, productName, category, Manufacturer, originalPrice, " +
+                "salePrice, pricePerUnit, stockQuantity, ProductSize, salestax) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             Statement stmt = con.createStatement();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+
+            stmt.execute(enableIdentityInsert);
+
+            pstmt.setInt(1, productid);
+            pstmt.setInt(2, branchId);
+            pstmt.setString(3, productName);
+            pstmt.setString(4, category);
+            pstmt.setString(5, manufacturer);
+            pstmt.setDouble(6, originalPrice);
+            pstmt.setInt(7, salePrice);
+            pstmt.setDouble(8, pricePerUnit);
+            pstmt.setDouble(9, stockQuantity);
+            pstmt.setString(10, productSize);
+            pstmt.setDouble(11, salestax);
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            stmt.execute(disableIdentityInsert);
+
+            if (rowsAffected > 0) {
+                System.out.println("Product inserted successfully!");
+                return true;
+            } else {
+                System.out.println("Failed to insert product.");
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static ArrayList<String> getProductStockStatus(int branchid) {
         ArrayList<String> productStockList = new ArrayList<>();
 
@@ -67,14 +110,14 @@ public class ProductModel {
     public static ArrayList<String> getAllProductsLocal() {
         ArrayList<String> products = new ArrayList<>();
 
-        // Establish connection to the database
+
         try (Connection connection = DataBaseConnection.getConnection()) {
             if (connection == null) {
                 System.out.println("Failed to establish connection.");
-                return products; // Return an empty list if connection fails
+                return products;
             }
 
-            // Query to fetch all products
+
             String query = "SELECT BranchId, productName, category, Manufacturer, originalPrice, " +
                     "salePrice, pricePerUnit, stockQuantity, ProductSize, salestax FROM Product";
 

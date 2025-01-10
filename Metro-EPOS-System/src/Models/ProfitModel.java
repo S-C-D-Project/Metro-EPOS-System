@@ -200,7 +200,7 @@ public class ProfitModel {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                // Fetch all columns as strings
+
                 String billId = rs.getString("billid");
                 String cashAmount = rs.getString("cashamount");
                 String returnAmount = rs.getString("returnamount");
@@ -210,12 +210,12 @@ public class ProfitModel {
                 String billDate = rs.getString("billdate");
                 String salesTaxAmount = rs.getString("salesTaxAmount");
 
-                // Create a concatenated string for this record
+
                 String billRecord = String.format("BillID: %s, CashAmount: %s, ReturnAmount: %s, TotalBill: %s, " +
                                 "AdditionalCharges: %s, Discount: %s, BillDate: %s, SalesTaxAmount: %s",
                         billId, cashAmount, returnAmount, totalBill, additionalCharges, discount, billDate, salesTaxAmount);
 
-                // Add the record to the list
+
                 bills.add(billRecord);
             }
 
@@ -225,6 +225,31 @@ public class ProfitModel {
 
         return bills;
     }
+    public static void insertGraph(String monthlyid,String profitDate, int profit) {
+        String query = "INSERT INTO graph (monthlyid,profitDate, profit) VALUES (?,?, ?)";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1,monthlyid);
+            pstmt.setString(2, profitDate);
+            pstmt.setInt(3, profit);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+          //  e.printStackTrace();
+        }
+    }
+    public static void insertMonthlyProfit(String monthlyId, String time, int profit) {
+        String query = "INSERT INTO monthlyprofit (monthlyid, time, profit) VALUES (?, ?, ?)";
+        try (Connection con = DataBaseConnection.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setString(1, monthlyId);
+            pstmt.setString(2, time);
+            pstmt.setInt(3, profit);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+           // e.printStackTrace();
+        }
+    }
+
 
 
 }

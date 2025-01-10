@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminEmpInfo extends Theme {
@@ -374,8 +375,7 @@ public class AdminEmpInfo extends Theme {
         add(employeesCount);
     }
 
-    public void setValues(ArrayList<String> l, frame f)
-    {
+    public void setValues(ArrayList<String> l, frame f) throws SQLException {
         list = l;
         if(l!=null){
             employeesCount.setText(String.valueOf(list.size()));
@@ -547,7 +547,11 @@ public class AdminEmpInfo extends Theme {
                             role.setFocusable(false);
                             role.setEnabled(false);
                             edit.setText("<html><u>Edit</u></html>");
-                            refreshPanel(list,f);
+                            try {
+                                refreshPanel(list,f);
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
 
@@ -604,7 +608,7 @@ public class AdminEmpInfo extends Theme {
         add(scroll);
     }
 
-    public void refreshPanel(ArrayList<String> newList, frame f) {
+    public void refreshPanel(ArrayList<String> newList, frame f) throws SQLException {
         if (scroll != null) {
             remove(scroll);
             employeesCount.setText("");

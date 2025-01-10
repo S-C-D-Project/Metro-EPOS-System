@@ -21,8 +21,10 @@ public class DataBaseHandler {
         }
         return instance;
     }
-
-    public static Branch getBranch(int id) {
+    public static int getTotalProfit(int branchid,String type) {
+    return BranchModel.getTotalProfit(branchid,type);
+    }
+        public static Branch getBranch(int id) {
         return BranchModel.getBranchById(id, connection);
     }
 
@@ -37,14 +39,28 @@ public class DataBaseHandler {
     public static Product getProduct(int productId, int branchId) {
         return ProductModel.getProduct(productId, connection, branchId);
     }
-
-    public static int saveBill(Bill bill) throws SQLException {
+    public static int getTotalStockQuantity(int branchId, String type) {
+    return BranchModel.getTotalStockQuantity(branchId,type);
+    }
+    public static ArrayList<String> getVendorPurchaseData() {
+    return VendorModel.getVendorPurchaseData();
+    }
+    public static boolean updateVendorData(int vid, String[] data) {
+    return VendorModel.updateVendorData(vid,data);
+    }
+        public static ArrayList<String> getProductsByBranchId(int branchId){
+    return BranchModel.getProductsByBranchId(branchId);
+    }
+        public static int saveBill(Bill bill) throws SQLException {
         return BillModel.saveBill(connection, bill.getCashAmount(), bill.getReturnAmount(),
                 bill.getTotalbill(), bill.getAdditionalCharges(), bill.getSalesTaxAmount(),
                 bill.getDiscount(), bill.getProductList());
     }
+    public static int getTotalSales(int branchId, String type) {
+    return BranchModel.getTotalSales(branchId,type);
+    }
 
-    public static void DecreaseProductQuantity(int pid, int qty) {
+        public static void DecreaseProductQuantity(int pid, int qty) {
         ProductModel.DecreaseProductQuantity(pid, qty, connection);
     }
 
@@ -60,11 +76,36 @@ public class DataBaseHandler {
         return ProfitModel.Bills();
     }
 
-    public static boolean updateEmployee(int employeeId, String name, String email, int branch, int salary, boolean active,  String role,String phoneNumber) {
-        return EmployeeModel.updateEmployee(employeeId, name, email, branch, salary, active, role, phoneNumber,connection);
+    public static boolean updateEmployee(int employeeId, String name, String email,String password, int branch, int salary, boolean active,  String role,String phoneNumber) {
+        return EmployeeModel.updateEmployee(employeeId, name, email,password, branch, salary, active, role, phoneNumber,connection);
     }
-
-    public int insertProductData(int branchId, String productName, String category,
+    public static boolean insertProduct(int productid,int branchId, String productName, String category, String manufacturer,
+                                        double originalPrice, int salePrice,
+                                        int stockQuantity, String productSize, double salestax,double pricePerUnit) {
+        return ProductModel.insertProduct(productid,branchId,productName,category,manufacturer,originalPrice,salePrice,pricePerUnit,stockQuantity,productSize,salestax);
+    }
+    public static void insertEmployeeMigration(int empid,String name, String password, String email, int branchId, double salary,
+                                               String joiningDate, String leavingDate, boolean isActive,
+                                               boolean firstTime, String role) {
+         EmployeeModel.insertEmployeeMigration(empid,name,password,email,branchId,salary,joiningDate,leavingDate,isActive,firstTime,role);
+    }
+    public static void insertBillProductMigrationForeign(int billId, int productId, int price, int quantity) throws InterruptedException {
+    BillModel.insertBillProductMigrationForeign(billId,productId,price,quantity);
+    }
+    public static void insertGraph(String monthlyid,String profitDate, int profit) {
+    ProfitModel.insertGraph(monthlyid,profitDate,profit);
+    }
+    public static void insertPurchaseForeign(int purchaseid,int vendorId, String vendorName, int productId) {
+    PurchaseModel.insertPurchaseForeign(purchaseid,vendorId,vendorName,productId);
+    }
+        public static void insertMonthlyProfit(String monthlyId, String time, int profit) {
+    ProfitModel.insertMonthlyProfit(monthlyId,time,profit);
+    }
+        public static void insertBillMigration(int billid,int cashAmount, int returnAmount, int totalBill, int additionalCharges,
+                                           double discount, String billDate, int salesTaxAmount) {
+    BillModel.insertBillMigration(billid,cashAmount,returnAmount,totalBill,additionalCharges,discount,billDate,salesTaxAmount);
+    }
+        public int insertProductData(int branchId, String productName, String category,
                                  double originalPrice, int salePrice, double pricePerUnit, String productSize,
                                  int stockQuantity, String manufacturer) throws SQLException {
 
@@ -132,8 +173,8 @@ public class DataBaseHandler {
         return VendorModel.updateVendorInfo(id, newName, newCity, newAddress, status);
     }
 
-    public static boolean insertVendor(String vendorName, String city, String address, String status, int branchId) {
-        return VendorModel.insertVendor(vendorName, city, address, status, branchId);
+    public static boolean insertVendor(int vendorid,String vendorName, String city, String address, String status, int branchId) {
+        return VendorModel.insertVendor(vendorid,vendorName, city, address, status, branchId);
     }
 
     public static int addOrUpdateProductAndPurchase(int branchId, String productName, String category, String manufacturer, float originalPrice, int salePrice, float pricePerUnit, int vendorId, String vendorName, String size, int stocks) {
@@ -185,5 +226,23 @@ public class DataBaseHandler {
     public static ArrayList<String> getEmployeesByBranch(int branchID) {
         return EmployeeModel.getEmployeesByBranch(connection, branchID);
     }
+    public static int  addBranch(String name,String address, String city) throws SQLException {
+return BranchModel.addBranch(connection,name,address,city);
+    }
+    public static String getAllBranchIds() throws SQLException {
+        return BranchModel.getAllBranchIds(connection);
+    }
+    public static String[] getAllBranches() throws SQLException {return BranchModel.getAllBranches(connection);}
+    public static void updateBranch(int branchID,String name,String city,String address,int numberOfEmployees,Boolean status) throws SQLException {
+        BranchModel.updateBranch(branchID, name, city, address, numberOfEmployees, status,connection);
+
+    }
+    public static ArrayList<String> getEmployees(){
+return EmployeeModel.getEmployees(connection);
+    }
+    public static ArrayList<String> getAllEmployees(){
+        return EmployeeModel.getAllEmployees(connection);
+    }
 
 }
+

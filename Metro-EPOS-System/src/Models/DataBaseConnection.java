@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class DataBaseConnection {
 
-    private static final String JDBC_URL = "jdbc:sqlserver://103.31.104.114:1433;databaseName=SCD_Project;user=SCD_User;password=12345678;encrypt=true;trustServerCertificate=true;";
-    private static final String Local_URL = "jdbc:sqlserver://DESKTOP-RB5R7MQ\\SQLEXPRESS;databaseName=Test_db;user=SCD_User;password=12345678;encrypt=true;trustServerCertificate=true";
+    private static final String JDBC_URL = "Enter your global database url";
+    private static final String Local_URL = "Enter your local database url";
     private static boolean DataMigrated = false;
 
     public static Connection getConnection() {
@@ -91,128 +91,143 @@ public class DataBaseConnection {
     }
     public static void DataMigration() {
         DataMigrated = true;
-        ArrayList<String> data = getDatafromLocal();
+        ArrayList<ArrayList<String>> datalist = getDatafromLocal();
+        String[] queries = {
+                "SELECT * FROM Product",
+                "SELECT * FROM Vendor",
+                "SELECT * FROM Employee",
+                "SELECT * FROM Bill",
+                "SELECT * FROM BillProduct",
+                "SELECT * FROM graph",
+                "SELECT * FROM monthlyprofit",
+                "SELECT * FROM Purchase"
+        };
 
-        try (Connection onlineConnection = getConnection()) {
-            if (onlineConnection == null) {
-                System.out.println("Failed to connect to the online database.");
-                return;
+        for (int i = 0; i < datalist.size(); i++) {
+            if (i >= queries.length) {
+                System.out.println("No query defined for table at index: " + i);
+                continue;
             }
 
+            String query = queries[i];
+            try (Connection con = DataBaseConnection.getConnection();
+                 PreparedStatement pstmt = con.prepareStatement(query)) {
 
+                // Iterate over local rows for the current table
+                for (int j = 1; j < datalist.get(i).size(); j++) { // Start from 1 to skip the table name
+                    String[] localRow = datalist.get(i).get(j).split(",");
+                    boolean exists = false;
 
-            String[][] tables = {
-                    {"Product", "BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity, ProductSize, salestax"},
-                   // {"Branch", "Address, PhoneNumber, NumberofEmployees, isActive"},
-                    {"Vendor", "VendorName, City, Address, Status, BranchId"},
-                    {"Employee", "Name, Password, Email, BranchID, Salary, JoiningDate, LeavingDate, isActive, FirstTime, Role"},
-                    {"Bill", "CashAmount, ReturnAmount, TotalBill, AdditionalCharges, Discount, BillDate, SalesTaxAmount"},
-                    {"BillProduct", "Billid, ProductID, Price, Quantity"},
-                    {"graph", "profitDate, profit"},
-                    {"monthlyprofit", "monthlyid, time, profit"},
-                    {"Purchase", "Vendorid, VendorName, ProductId"},
-                 //   {"tax", "type, price"}
-            };
-
-            for (String[] table : tables) {
-                String tableName = table[0];
-                String columns = table[1];
-                String[] columnArray = columns.split(", ");
-
-                StringBuilder placeholders = new StringBuilder();
-                for (int i = 0; i < columnArray.length; i++) {
-                    placeholders.append("?");
-                    if (i < columnArray.length - 1) {
-                        placeholders.append(", ");
-                    }
-                }
-                String insertQuery = "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + placeholders + ")";
-
-                try (PreparedStatement preparedStatement = onlineConnection.prepareStatement(insertQuery)) {
-                    for (String rowData : data) {
-                        if (rowData.startsWith("Table: " + tableName)) {
-                            String[] values = rowData.replace("Table: " + tableName + " -> ", "").split(" \\| ");
-
-                            if (values.length == columnArray.length) {
-                                for (int i = 0; i < values.length; i++) {
-                                   /* if(tableName.equals("Product")&&i==0){
-                                       ArrayList<String> products= DataBaseHandler.getAllProductsLocal();
-                                       boolean already=false;
-                                       for(int j=0;j<products.size();j++){
-                                           String[] product=products.get(j).split(",");
-                                           if(product[0].equals(values[0])&&product[1].equals(values[1]) &&product[2].equals(values[2])&&product[3].equals(values[3])){
-                                                already=true;
-                                           }
-                                       }
-                                       if(already)
-                                           break;
-                                       else {
-
-                                           System.out.println(values[0]);
-                                       }
-                                    }
-                                    */
-                                    if (tableName.equals("Purchase") && i == 0) {
-
-                                        String localVendorName = values[1];
-
-
-                                        String vendorCheckQuery = "SELECT VendorId FROM Vendor WHERE VendorName = ?";
-                                        try (PreparedStatement vendorStmt = onlineConnection.prepareStatement(vendorCheckQuery)) {
-                                            vendorStmt.setString(1, localVendorName);
-                                            ResultSet vendorRs = vendorStmt.executeQuery();
-
-                                            if (vendorRs.next()) {
-
-                                                int onlineVendorId = vendorRs.getInt("VendorId");
-                                                preparedStatement.setInt(1, onlineVendorId);
-                                            } else {
-
-                                                String insertVendorQuery = "INSERT INTO Vendor (VendorName) VALUES (?)";
-                                                try (PreparedStatement insertVendorStmt = onlineConnection.prepareStatement(insertVendorQuery, Statement.RETURN_GENERATED_KEYS)) {
-                                                    insertVendorStmt.setString(1, localVendorName);
-                                                    insertVendorStmt.executeUpdate();
-
-
-                                                    ResultSet generatedKeys = insertVendorStmt.getGeneratedKeys();
-                                                    if (generatedKeys.next()) {
-                                                        int newVendorId = generatedKeys.getInt(1);
-                                                        preparedStatement.setInt(1, newVendorId);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        if(tableName.equals("BillProduct")){
-                                           values[0]= String.valueOf(getBillid());
-                                        }
-                                        preparedStatement.setString(i + 1, values[i].trim());
-                                    }
-                                }
-
-
-                                if (tableName.equals("Tax")) {
-                                    onlineConnection.createStatement().execute("SET IDENTITY_INSERT Tax ON");
-                                }
-                                preparedStatement.executeUpdate();
-                                if (tableName.equals("Tax")) {
-                                    onlineConnection.createStatement().execute("SET IDENTITY_INSERT Tax OFF");
-                                }
-                            } else {
-
-                            }
+                    ResultSet rs = pstmt.executeQuery();
+                    while (rs.next()) {
+                        if (tableRowMatches(i, rs, localRow)) { // Check if the local row matches the DB row
+                            exists = true;
+                            System.out.println("Row already exists: " + localRow[1]);
+                            break;
                         }
                     }
-                    System.out.println("Data migrated successfully for table: " + tableName);
-                } catch (SQLException e) {
-                    System.out.println("Error inserting data into table " + tableName + ": " + e.getMessage());
-                }
-            }
-        } catch (SQLException e) {
 
+                    if (!exists) {
+                        System.out.println("Inserting into table at index: " + i + ", row: " + localRow[1]);
+                        insertRow(i, localRow);
+                    }
+                }
+
+            } catch (SQLException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        deleteAllData();
+
+        deleteAllData(); // Optional cleanup if required
     }
+
+    /**
+     * Compare a row in the ResultSet with a row in the datalist for a specific table.
+     */
+    private static boolean tableRowMatches(int tableIndex, ResultSet rs, String[] localRow) throws SQLException {
+        switch (tableIndex) {
+            case 0: // Product
+                return localRow[1].trim().equals(rs.getString("BranchId")) &&
+                        localRow[2].trim().equals(rs.getString("productName")) &&
+                        localRow[3].trim().equals(rs.getString("category")) &&
+                        localRow[4].trim().equals(rs.getString("Manufacturer"));
+            case 1: // Vendor
+                return localRow[1].trim().equals(rs.getString("VendorName")) &&
+                        localRow[2].trim().equals(rs.getString("City")) &&
+                        localRow[5].trim().equals(rs.getString("BranchId"));
+            case 2: // Employee
+                return localRow[1].trim().equals(rs.getString("Name")) &&
+                        localRow[3].trim().equals(rs.getString("Email"));
+            case 3: // Bill
+                return localRow[1].trim().equals(rs.getString("CashAmount")) &&
+                        localRow[6].trim().equals(rs.getString("BillDate"));
+            case 4: // BillProduct
+                return localRow[1].trim().equals(rs.getString("Billid")) &&
+                        localRow[2].trim().equals(rs.getString("ProductID"));
+            case 5: // Graph
+                return localRow[1].trim().equals(rs.getString("profitDate"));
+            case 6: // MonthlyProfit
+                return localRow[1].trim().equals(rs.getString("monthlyid"));
+            case 7: // Purchase
+                return localRow[1].trim().equals(rs.getString("VendorId")) &&
+                        localRow[3].trim().equals(rs.getString("ProductId"));
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Insert a row into the corresponding table based on the table index.
+     */
+    private static void insertRow(int tableIndex, String[] localRow) throws InterruptedException {
+        switch (tableIndex) {
+            case 0:
+                DataBaseHandler.insertProduct(Integer.parseInt(localRow[0]),
+                        Integer.parseInt(localRow[1]), localRow[2], localRow[3], localRow[4],
+                        Double.parseDouble(localRow[5]), Integer.parseInt(localRow[6]),
+                        Integer.parseInt(localRow[7]), localRow[8],
+                        Double.parseDouble(localRow[9]), Double.parseDouble(localRow[10])
+
+                );
+                break;
+            case 1:
+                DataBaseHandler.insertVendor(Integer.parseInt(localRow[0]),localRow[1], localRow[2], localRow[3], localRow[4], Integer.parseInt(localRow[5]));
+                break;
+            case 2:
+                DataBaseHandler.insertEmployeeMigration(Integer.parseInt(localRow[0]),
+                        localRow[1], localRow[2], localRow[3], Integer.parseInt(localRow[4]),
+                        Double.parseDouble(localRow[5]), localRow[6], localRow[7],
+                        Boolean.parseBoolean(localRow[8]), Boolean.parseBoolean(localRow[9]), localRow[10]
+                );
+                break;
+            case 3:
+                DataBaseHandler.insertBillMigration(Integer.parseInt(localRow[0]),
+                        Integer.parseInt(localRow[1]), Integer.parseInt(localRow[2]),
+                        Integer.parseInt(localRow[3]), Integer.parseInt(localRow[4]),
+                        Double.parseDouble(localRow[5]), localRow[6], Integer.parseInt(localRow[7])
+                );
+                break;
+            case 4:
+                DataBaseHandler.insertBillProductMigrationForeign(
+                        Integer.parseInt(localRow[0]), Integer.parseInt(localRow[1]),
+                        Integer.parseInt(localRow[2]), Integer.parseInt(localRow[3])
+                );
+                break;
+            case 5:
+                DataBaseHandler.insertGraph(localRow[0],localRow[1],Integer.parseInt(localRow[2]));
+                break;
+            case 6:
+                DataBaseHandler.insertMonthlyProfit(localRow[0], localRow[1], Integer.parseInt(localRow[2]));
+                break;
+            case 7:
+                System.out.println("Reached");
+                DataBaseHandler.insertPurchaseForeign(Integer.parseInt(localRow[0]),Integer.parseInt(localRow[1]), localRow[2], Integer.parseInt(localRow[3]));
+                break;
+            default:
+                System.out.println("Insert operation not defined for table index: " + tableIndex);
+        }
+    }
+
     public static void deleteAllData() {
         String[] deleteQueries = {
                 "DELETE FROM BillProduct",
@@ -268,49 +283,60 @@ public class DataBaseConnection {
     }
 
 
-    public static ArrayList<String> getDatafromLocal() {
-        ArrayList<String> dataList = new ArrayList<>();
-        String[][] tables = {
-                {"Product", "BranchId, productName, category, Manufacturer, originalPrice, salePrice, pricePerUnit, stockQuantity, ProductSize, salestax"},
-              //  {"Branch", "Address, PhoneNumber, NumberofEmployees, isActive"},
-                {"Vendor", "VendorName, City, Address, Status, BranchId"},
-                {"Employee", "Name, Password, Email, BranchID, Salary, JoiningDate, LeavingDate, isActive, FirstTime, Role"},
-                {"Bill", "CashAmount, ReturnAmount, TotalBill, AdditionalCharges, Discount, BillDate, SalesTaxAmount"},
-                {"BillProduct", "Billid, ProductID, Price, Quantity"},
-                {"graph", "profitDate, profit"},
-                {"monthlyprofit", "monthlyid, time, profit"},
-                {"Purchase", "VendorId, VendorName, ProductId"},
-              //  {"tax", "type, price"}
-        };
+    public static ArrayList<ArrayList<String>> getDatafromLocal() {
+        ArrayList<ArrayList<String>> dataList = new ArrayList<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
 
-        try (Connection connection = getLocalConnection()) {
-            System.out.println("Connected to the database!");
+        try {
+            // Database connection details
 
-            for (String[] table : tables) {
-                String tableName = table[0];
-                String columns = table[1];
+            // Establish connection
+            connection = getLocalConnection();
 
-                String query = "SELECT " + columns + " FROM " + tableName;
-                try (Statement statement = connection.createStatement();
-                     ResultSet resultSet = statement.executeQuery(query)) {
+            // Define tables to fetch
+            String[] tables = {"Product", "Vendor", "Employee", "Bill", "BillProduct", "graph", "monthlyprofit", "Purchase"};
 
-                    while (resultSet.next()) {
-                        StringBuilder row = new StringBuilder();
-                        String[] columnArray = columns.split(", ");
-                        for (String column : columnArray) {
-                            row.append(resultSet.getString(column)).append(" | ");
+            // Fetch data for each table
+            for (String table : tables) {
+                ArrayList<String> tableData = new ArrayList<>();
+                tableData.add(table); // Add table name as the first element
+
+                // Query to fetch all data from the table
+                String query = "SELECT * FROM " + table;
+                statement = connection.createStatement();
+                resultSet = statement.executeQuery(query);
+
+                // Process the result set and convert rows to comma-separated strings
+                while (resultSet.next()) {
+                    StringBuilder rowData = new StringBuilder();
+
+                    // Get column count
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount();
+
+                    // Append column values
+                    for (int i = 1; i <= columnCount; i++) {
+                        rowData.append(resultSet.getString(i));
+                        if (i < columnCount) {
+                            rowData.append(",");
                         }
-                        dataList.add("Table: " + tableName + " -> " + row.toString());
                     }
-                } catch (SQLException e) {
-                 //   System.out.println("Error querying table " + tableName + ": " + e.getMessage());
+
+                    // Add the row data to tableData
+                    tableData.add(rowData.toString());
                 }
+
+                // Add tableData to the main dataList
+                dataList.add(tableData);
             }
         } catch (SQLException e) {
-        //    System.out.println("Database connection failed: " + e.getMessage());
+            e.printStackTrace();
         }
-
         return dataList;
     }
+
+
 
 }

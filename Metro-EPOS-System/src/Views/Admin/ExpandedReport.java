@@ -544,14 +544,14 @@ public class ExpandedReport extends Theme {
                 pName.setFocusable(false);
 
                 JTextField status = new JTextField();
-                if(data[1].equals("Out of Stock")){
-                    status.setText(data[1]);
+                if(data[1].equals("0")){
+                    status.setText("Out of Stock");
                 }
                 else{
                     status.setText(data[1] + " Units");
                 }
                 status.setFont(new Font("Yu Gothic UI SemiBold", Font.BOLD, 13));
-                if(data[1].equals("Out of Stock")){
+                if(data[1].equals("0")){
                     status.setForeground(new Color(246, 28, 28));
                 }
                 else{
@@ -563,7 +563,7 @@ public class ExpandedReport extends Theme {
                 status.setEditable(false);
                 status.setFocusable(false);
 
-                if (!data[1].equals("Out of Stock")) {
+                if (!data[1].equals("0")) {
                     label.setBackground(super.getInfoFieldColor());
                     pName.setBackground(super.getInfoFieldColor());
                     status.setBackground(super.getInfoFieldColor());

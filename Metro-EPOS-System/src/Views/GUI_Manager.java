@@ -92,7 +92,11 @@ public class GUI_Manager {
                 else {
                     adminLogIn.resetFields();
                     String[] data = repsone.split(",");
-                    AdminPanels(data[0]);
+                    try {
+                        AdminPanels(data[0]);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -266,7 +270,7 @@ public class GUI_Manager {
         });
     }
 
-    public void AdminPanels(String name) {
+    public void AdminPanels(String name) throws SQLException {
 
         //----------------------EXPANDED REPORT PANEL LOGIC-------------------//
         expandedReport.getBackButton().addActionListener(e -> {
@@ -282,14 +286,22 @@ public class GUI_Manager {
             LogIn();
         });
         expandedReport.getEmployeeInfoButton().addActionListener(e -> {
-            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            try {
+                adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             expandedReport.resetFields();
             f.replacePanel(expandedReport.getPanel(), adminEmpInfo.getPanel());
             oldPanel = adminEmpInfo.getPanel();
         });
         expandedReport.getVendorInfoButton().addActionListener(e -> {
             expandedReport.resetFields();
-            adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+            try {
+                adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(expandedReport.getPanel(), adminVendorInfo.getPanel());
             oldPanel = adminVendorInfo.getPanel();
         });
@@ -321,7 +333,11 @@ public class GUI_Manager {
         expandedVendorInfo.getBackButton().addActionListener(e -> {
             expandedVendorInfo.resetFields();
             ArrayList<String> vendorsList = UIHandler.getAllVendorsList();
-            adminVendorInfo.refreshPanel(vendorsList, f, expandedVendorInfo);
+            try {
+                adminVendorInfo.refreshPanel(vendorsList, f, expandedVendorInfo);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(expandedVendorInfo.getPanel(), adminVendorInfo.getPanel());
             oldPanel = adminVendorInfo.getPanel();
         });
@@ -332,13 +348,21 @@ public class GUI_Manager {
         });
         expandedVendorInfo.getEmployeeInfoButton().addActionListener(e -> {
             expandedVendorInfo.resetFields();
-            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            try {
+                adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(expandedVendorInfo.getPanel(), adminEmpInfo.getPanel());
             oldPanel = adminBranchInfo.getPanel();
         });
         expandedVendorInfo.getBranchInfoButton().addActionListener(e -> {
             expandedVendorInfo.resetFields();
-            adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+            try {
+                adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(expandedVendorInfo.getPanel(), adminBranchInfo.getPanel());
             oldPanel = adminBranchInfo.getPanel();
         });
@@ -349,19 +373,31 @@ public class GUI_Manager {
             LogIn();
         });
         adminBranchInfo.getVendorInfoButton().addActionListener(e -> {
-            adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+            try {
+                adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(oldPanel, adminVendorInfo.getPanel());
             oldPanel = adminVendorInfo.getPanel();
         });
         adminBranchInfo.getEmployeeInfoButton().addActionListener(e -> {
-            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            try {
+                adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(oldPanel, adminEmpInfo.getPanel());
             oldPanel = adminEmpInfo.getPanel();
         });
         adminBranchInfo.getSearchButton().addActionListener(e -> {
             String search = adminBranchInfo.getSearched();
             if (search.trim().equals("Search") || search.trim().isEmpty()) {
-                adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+                try {
+                    adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             } else {
                 ArrayList<String> newList = new ArrayList<>();
                 ArrayList<String> oldList = adminBranchInfo.getList();
@@ -382,7 +418,11 @@ public class GUI_Manager {
             if (branchName.isEmpty() || cityName.isEmpty() || address.isEmpty() || branchName.equals("  Type Name") || cityName.equals("  Enter City Name") || address.equals("  Type Address")) {
                 JOptionPane.showMessageDialog(f.getFrame(), "Invalid Branch Info", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                adminBranchInfo.refreshPanel(UIHandler.addBranch(branchName, cityName, address), f, expandedReport);
+                try {
+                    adminBranchInfo.refreshPanel(UIHandler.addBranch(branchName, cityName, address), f, expandedReport);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -400,13 +440,21 @@ public class GUI_Manager {
                 JOptionPane.showMessageDialog(f.getFrame(), "Invalid Employee Info", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 ArrayList<String> list = UIHandler.addEmployeeforAdmin(empName, salary, phone);
-                adminEmpInfo.refreshPanel(list, f);
+                try {
+                    adminEmpInfo.refreshPanel(list, f);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         adminEmpInfo.getSearchButton().addActionListener(e -> {
             String search = adminEmpInfo.getSearched();
             if (search.trim().equals("Search") || search.trim().isEmpty()) {
-                adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+                try {
+                    adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             } else {
                 ArrayList<String> newList = new ArrayList<>();
                 ArrayList<String> oldList = adminEmpInfo.getList();
@@ -416,16 +464,28 @@ public class GUI_Manager {
                         newList.add(oldList.get(i));
                     }
                 }
-                adminEmpInfo.refreshPanel(newList, f);
+                try {
+                    adminEmpInfo.refreshPanel(newList, f);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         adminEmpInfo.getBranchInfoButton().addActionListener(e -> {
-            adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+            try {
+                adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(oldPanel, adminBranchInfo.getPanel());
             oldPanel = adminBranchInfo.getPanel();
         });
         adminEmpInfo.getVendorInfoButton().addActionListener(e -> {
-            adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+            try {
+                adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(oldPanel, adminVendorInfo.getPanel());
             oldPanel = adminVendorInfo.getPanel();
         });
@@ -436,21 +496,28 @@ public class GUI_Manager {
             LogIn();
         });
         adminVendorInfo.getAddButton().addActionListener(e -> {
-            String vName = adminEmpInfo.getVendorName();
-            String city = adminEmpInfo.getVendorCity();
-            String vAddress = adminEmpInfo.getVendorAddress();
-
+            String vName = adminVendorInfo.getVendorName();
+            String city = adminVendorInfo.getVendorCity();
+            String vAddress = adminVendorInfo.getVendorAddress();
             if (vName.trim().isEmpty() || vName.equals("  Type Name") || city.trim().isEmpty() || city.equals("  Enter City Name") || vAddress.trim().isEmpty() || vAddress.equals("  Type Address")) {
                 JOptionPane.showMessageDialog(f.getFrame(), "Invalid Information Entered", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 ArrayList<String> newList = UIHandler.addVendorforAdmin(vName, vAddress, city);
-                adminVendorInfo.refreshPanel(newList, f, expandedVendorInfo);
+                try {
+                    adminVendorInfo.refreshPanel(newList, f, expandedVendorInfo);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         adminVendorInfo.getSearchButton().addActionListener(e -> {
             String search = adminVendorInfo.getSearched();
             if (search.trim().equals("Search") || search.trim().isEmpty()) {
-                adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+                try {
+                    adminVendorInfo.refreshPanel(UIHandler.getAllVendorsList(), f, expandedVendorInfo);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             } else {
                 ArrayList<String> newList = new ArrayList<>();
                 ArrayList<String> oldList = adminVendorInfo.getList();
@@ -460,16 +527,28 @@ public class GUI_Manager {
                         newList.add(oldList.get(i));
                     }
                 }
-                adminVendorInfo.refreshPanel(newList, f, expandedVendorInfo);
+                try {
+                    adminVendorInfo.refreshPanel(newList, f, expandedVendorInfo);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         adminVendorInfo.getBranchInfoButton().addActionListener(e -> {
-            adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+            try {
+                adminBranchInfo.refreshPanel(UIHandler.getAllBranchInfo(), f, expandedReport);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(oldPanel, adminBranchInfo.getPanel());
             oldPanel = adminBranchInfo.getPanel();
         });
         adminVendorInfo.getEmployeeInfoButton().addActionListener(e -> {
-            adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            try {
+                adminEmpInfo.refreshPanel(UIHandler.getAllEmployees(), f);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
             f.replacePanel(oldPanel, adminEmpInfo.getPanel());
             oldPanel = adminEmpInfo.getPanel();
         });
@@ -559,7 +638,7 @@ public class GUI_Manager {
             }
         });
         employeeInfo.getBranchInfoButton().addActionListener(e -> {
-            branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)), f, UIHandler.getBranchSales(Integer.parseInt(branchID), "today"), UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID), "today"), UIHandler.getBranchProfit(Integer.parseInt(branchID), "today"), UIHandler.DisplayChart("daily", "bar"));
+            branchInfo.refreshPanel(UIHandler.getStocksDataofBranch(Integer.parseInt(branchID)), f, UIHandler.getBranchSales(Integer.parseInt(branchID), "daily"), UIHandler.getBranchRemaingingStock(Integer.parseInt(branchID), "daily"), UIHandler.getBranchProfit(Integer.parseInt(branchID), "daily"), UIHandler.DisplayChart("daily", "bar"));
             f.replacePanel(oldPanel, branchInfo.getPanel());
             oldPanel = branchInfo.getPanel();
         });
@@ -660,7 +739,7 @@ public class GUI_Manager {
                         throw new RuntimeException(ex);
                     }
                     adds.remove();
-                    sales.resetFields();
+                   // sales.resetFields();
                     sales.refreshPanel(null, 0, f.getFrame());
                     UIHandler.deleteTempBill(file);
                 }

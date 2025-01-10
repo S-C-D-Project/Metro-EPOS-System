@@ -140,7 +140,7 @@ public class PDFGenerator {
         }
     }
 
-    private static void addChartPages(PDDocument document, ChartPanel[] chartPanels) throws IOException {
+    static void addChartPages(PDDocument document, ChartPanel[] chartPanels) throws IOException {
         for (ChartPanel chartPanel : chartPanels) {
             if (chartPanel != null) {
                 PDPage chartPage = new PDPage(PDRectangle.A4);
@@ -171,8 +171,8 @@ public class PDFGenerator {
         }
     }
 
-    private static void addDataTablesPage(PDDocument document, String title1, ArrayList<String> tableData1,
-                                          String title2, ArrayList<Integer> tableData2) throws IOException {
+    static void addDataTablesPage(PDDocument document, String title1, ArrayList<String> tableData1,
+                                  String title2, ArrayList<Integer> tableData2) throws IOException {
         PDPage dataPage = new PDPage(PDRectangle.A4);
         document.addPage(dataPage);
 

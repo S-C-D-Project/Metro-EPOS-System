@@ -32,7 +32,6 @@ public class EmployeeModel {
                         employee = new BranchManager(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
                     case "operator":
-
                         employee = new DataEntryOperator(name,password,email, employeeID, branchID,salary,joiningDate,leavingDate,isActive,firstTime,role);
                         break;
                     case "cashier":
@@ -49,6 +48,7 @@ public class EmployeeModel {
     }
 
     public static boolean changePassword(String newPassword, int employeeID, Connection connection) {
+        connection=DataBaseConnection.getConnection();
         String sql = "EXEC ChangePassword @NewPassword = ?, @EmployeeID = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, newPassword);
@@ -67,9 +67,9 @@ public class EmployeeModel {
         }
     }
 
-    public static boolean updateEmployee(int employeeId,String name, String email, int branchid, int salary, boolean active, String role,String phoneNumber ,Connection connection) {
+    public static boolean updateEmployee(int employeeId,String name, String email,String password, int branchid, int salary, boolean active, String role,String phoneNumber ,Connection connection) {
         try {
-            String sql = "EXEC UPDATEEMPLOYEE ?,?, ?, ?, ?, ?, ?, ? ";
+            String sql = "EXEC UPDATEEMPLOYEE ?,?, ?, ?, ?, ?, ?, ?,? ";
             PreparedStatement stmt = connection.prepareStatement(sql);
 
             stmt.setInt(1, employeeId);
@@ -80,6 +80,7 @@ public class EmployeeModel {
             stmt.setString(6, phoneNumber);
             stmt.setBoolean(7, active);
             stmt.setString(8, role);
+            stmt.setString(9,password);
 
             return stmt.execute();
         } catch (SQLException e){
@@ -108,7 +109,7 @@ public class EmployeeModel {
         }
     }  public static boolean isValidDataOperator(String id, String pass) {
         boolean isValid = false;
-        String sql = "SELECT * FROM employee WHERE EmployeeID = ? AND Password = ? AND Role LIKE 'DataEntryOperator'";
+        String sql = "SELECT * FROM employee WHERE EmployeeID = ? AND Password = ? AND Role LIKE 'operator'";
 
         try (Connection conn = DataBaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -189,7 +190,7 @@ public class EmployeeModel {
                 String phoneNumber = resultSet.getString("PhoneNumber");
                 String role = resultSet.getString("Role");
                 String isActive = resultSet.getBoolean("IsActive") ? "Active" : "Inactive";
-if(role.equalsIgnoreCase("cashier")||role.equalsIgnoreCase("operator")){
+if(role!=null&&role.equalsIgnoreCase("cashier")||role.equalsIgnoreCase("operator")){
                 String formattedString = String.format("%03d,%s,%s,%s,%d,%s,%s,%s",
                         employeeId, name, email, passwordFromDb, salary, phoneNumber, role, isActive);
                 employeeList.add(formattedString);
@@ -200,7 +201,111 @@ if(role.equalsIgnoreCase("cashier")||role.equalsIgnoreCase("operator")){
         }
 
         return employeeList;
+    }    public static ArrayList<String> getEmployees(Connection connection) {
+        ArrayList<String> employeeList = new ArrayList<>();
+        String storedProc = "{call GetEmployees}";
+
+        try (CallableStatement callableStatement = connection.prepareCall(storedProc)) {
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int employeeId = resultSet.getInt("Employeeid");
+                String name = resultSet.getString("Name");
+                String email = resultSet.getString("Email");
+                String passwordFromDb = resultSet.getString("Password");
+                int salary = resultSet.getInt("Salary");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                String role = resultSet.getString("Role");
+                String isActive = resultSet.getBoolean("IsActive") ? "Active" : "Inactive";
+                    String formattedString = String.format("%03d,%s,%s,%s,%d,%s,%s,%s",
+                            employeeId, name, email, passwordFromDb, salary, phoneNumber, role, isActive);
+                    employeeList.add(formattedString);
+                }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employeeList;
+    }public static ArrayList<String> getAllEmployees(Connection connection) {
+        ArrayList<String> employeeList = new ArrayList<>();
+        String storedProc = "{call GetEmployees}";
+
+        try (CallableStatement callableStatement = connection.prepareCall(storedProc)) {
+            ResultSet resultSet = callableStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int branchId = resultSet.getInt("BranchID");
+                int employeeId = resultSet.getInt("Employeeid");
+                String name = resultSet.getString("Name");
+                String email = resultSet.getString("Email");
+                String passwordFromDb = resultSet.getString("Password");
+                int salary = resultSet.getInt("Salary");
+                String phoneNumber = resultSet.getString("PhoneNumber");
+                String role = resultSet.getString("Role");
+                String isActive = resultSet.getBoolean("IsActive") ? "Active" : "Inactive";
+if(role!=null&&role.equalsIgnoreCase("superadmin")){
+    continue;
+}
+                String formattedString = String.format("%d,%d,%s,%s,%s,%d,%s,%s,%s",
+                        employeeId, branchId, name, email, passwordFromDb, salary, phoneNumber, role, isActive);
+
+                employeeList.add(formattedString);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employeeList;
     }
+
+
+    public static void insertEmployeeMigration(int empId, String name, String password, String email, int branchId, double salary,
+                                               String joiningDate, String leavingDate, boolean isActive,
+                                               boolean firstTime, String role) {
+        String enableIdentityInsert = "SET IDENTITY_INSERT Employee ON";
+        String disableIdentityInsert = "SET IDENTITY_INSERT Employee OFF";
+        String query = "INSERT INTO Employee (EmpID, Name, Password, Email, BranchID, Salary, JoiningDate, LeavingDate, isActive, FirstTime, Role) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             Statement stmt = con.createStatement();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            stmt.execute(enableIdentityInsert);
+
+
+            pstmt.setInt(1, empId);            // EmpID
+            pstmt.setString(2, name);          // Name
+            pstmt.setString(3, password);      // Password
+            pstmt.setString(4, email);         // Email
+            pstmt.setInt(5, branchId);         // BranchID
+            pstmt.setDouble(6, salary);        // Salary
+            pstmt.setString(7, joiningDate);   // JoiningDate
+            pstmt.setString(8, leavingDate);   // LeavingDate
+            pstmt.setBoolean(9, isActive);     // isActive
+            pstmt.setBoolean(10, firstTime);   // FirstTime
+            pstmt.setString(11, role);         // Role
+
+
+            int rowsInserted = pstmt.executeUpdate();
+
+
+            stmt.execute(disableIdentityInsert);
+
+            if (rowsInserted > 0) {
+                System.out.println("Employee inserted successfully!");
+            } else {
+                System.out.println("Failed to insert employee.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting employee: " + e.getMessage());
+        }
+    }
+
+
 
 
 }

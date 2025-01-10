@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.DataBaseHandler;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SuperAdmin {
     private String name;
@@ -12,7 +13,7 @@ public class SuperAdmin {
 
     private static SuperAdmin superAdmin = null;
 
-    private SuperAdmin(String name, String password, String email, int employeeNumber, boolean isActive) {
+    SuperAdmin(String name, String password, String email, int employeeNumber, boolean isActive) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -20,7 +21,7 @@ public class SuperAdmin {
         this.isActive = isActive;
     }
 
-    private SuperAdmin(String id, String password, String choice) throws SQLException {
+    SuperAdmin(String id, String password, String choice) throws SQLException {
         Object result = DataBaseHandler.getInstance().getEmployee(id, password, choice);
 
         if (result == null) {
@@ -109,5 +110,8 @@ public static void logout(){
                 ", employeeNumber=" + employeeNumber +
                 ", isActive=" + isActive +
                 '}';
+    }
+    public static ArrayList<String> getEmployees(){
+        return DataBaseHandler.getAllEmployees();
     }
 }

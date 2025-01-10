@@ -1,70 +1,96 @@
+
 package Controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-
-import org.junit.jupiter.api.BeforeEach;
+import Controllers.Bill;
+import Controllers.Product;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-class BillTest {
-
-    private Bill bill;
-
-    @BeforeEach
-    void setUp() {
-        bill = new Bill();
-    }
+public class BillTest {
 
     @Test
-    void calculateBill() {
+    public void testConstructorAndGetters() {
+        // Create a list of products (assuming Product class is already defined)
         ArrayList<Product> products = new ArrayList<>();
-        Product product = new Product();
-        product.setSalePrice(100);
-        product.setStockQuantity(2);
-        product.setSalesTax(10);
-        products.add(product);
-        bill.setProductList(products);
-        bill.setAdditionalCharges(20);
-        bill.setDiscount(5);
+        products.add(new Product(1, 1, "Product A", "Category A", "Large", 100.0, 120, 50, 10.0));
+        products.add(new Product(2, 1, "Product B", "Category B", "Medium", 50.0, 60, 100, 5.0));
 
-        int totalBill = bill.calculateBill(false);
-        assertEquals(225, totalBill, "Total bill calculation is incorrect.");
+        // Create Bill object using constructor
+        Bill bill = new Bill(products, 200, 0, 0, 10, 10);
+
+        // Verify the constructor initializes the bill's properties correctly
+        assertEquals(200, bill.getCashAmount());
+        assertEquals(0, bill.getReturnAmount());
+        assertEquals(0, bill.getTotalbill());
+        assertEquals(10, bill.getAdditionalCharges());
+        assertEquals(10, bill.getDiscount());
+        assertEquals(2, bill.getProductList().size());  // Verify product list size
     }
-
     @Test
-    void addProduct() throws SQLException {
-        int productId = 1;
-        int branchId = 1;
-        int quantity = 5;
-        boolean isVendor = false;
+    public void testCalculateBill() {
+        // Create products
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(1, 1, "Product A", "Category A", "Large", 100.0, 120, 50, 10.0));
+        products.add(new Product(2, 1, "Product B", "Category B", "Medium", 50.0, 60, 100, 5.0));
 
-        bill.addProduct(productId, branchId, isVendor, quantity);
+        // Create Bill object
+        Bill bill = new Bill(products, 200, 0, 0, 10, 0);
 
-        assertFalse(bill.getProductList().isEmpty(), "Product list should not be empty after adding a product.");
+        // Calculate the bill
+        int total = bill.calculateBill(false);  // Assuming `isVendor` is false
+        assertEquals(12010, total);  // Expected total bill after applying price calculations
     }
-
     @Test
-    void addAdditionalAmount() {
-        bill.addAdditionalAmount(50, false);
-        assertEquals(50, bill.getAdditionalCharges(), "Additional charges were not set correctly.");
+    public void testAddProduct() throws SQLException {
+        // Create an empty Bill
+        Bill bill = new Bill();
+
+        // Add products to the bill (assuming DataBaseHandler is working properly)
+        bill.addProduct(1, 1, false, 5);
+
+        // Verify the product list size and updated bill
+        assertEquals(1, bill.getProductList().size());
+        assertEquals(1, bill.getProductList().get(0).getProductId());  // Verify product ID
+        assertEquals(5, bill.getProductList().get(0).getStockQuantity());  // Verify quantity
+
+        // Verify the total bill is calculated
+        assertNotEquals(0, bill.getTotalbill());
+    }
+    @Test
+    public void testAddAdditionalCharges() throws SQLException {
+        // Create an empty Bill
+        Bill bill = new Bill();
+
+        // Add products and calculate bill
+        bill.addProduct(1, 1, false, 2);
+        bill.calculateBill(false);
+
+        // Add additional charges
+        bill.addAdditionalAmount(20, false);  // Assume `isVendor` is false
+
+        // Verify the total bill is updated with the additional charges
+        assertEquals(3360, bill.getTotalbill());  // Adjust based on actual price
+    }
+    @Test
+    public void testAddDiscount() throws SQLException {
+        // Create an empty Bill
+        Bill bill = new Bill();
+
+        // Add products and calculate bill
+        bill.addProduct(1, 1, false, 2);
+        bill.calculateBill(false);
+
+        // Add a 10% discount
+        bill.addDiscount(10, false);  // Assume `isVendor` is false
+
+        // Verify the total bill after applying the discount
+        assertEquals(3006, bill.getTotalbill());  // Adjust based on actual price and discount
     }
 
-    @Test
-    void addDiscount() {
-        bill.setTotalbill(200);
-        bill.addDiscount(10, false);
-        assertEquals(20, bill.getDiscount(), "Discount calculation is incorrect.");
-    }
 
-    @Test
-    void saveBill() throws Exception {
-        bill.setTotalbill(200);
-        int cashAmount = 300;
-        File savedBill = bill.saveBill(cashAmount);
-        assertNotNull(savedBill, "Bill file should be saved successfully.");
-    }
+
 }

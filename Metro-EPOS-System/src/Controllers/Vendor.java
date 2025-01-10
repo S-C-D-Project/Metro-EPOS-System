@@ -43,34 +43,4 @@ public class Vendor {
         return productList;
     }
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
-    }
-
-    public void addProduct(Product product) {
-        if (product != null) {
-            this.productList.add(product);
-            System.out.println("Product " + product.getProductName() + " has been added.");
-        } else {
-            System.out.println("Error: Product cannot be null.");
-        }
-    }
-
-    public void removeProduct(String productName) {
-        boolean productFound = false;
-
-        for (Product product : this.productList) {
-            if (product.getProductName().equalsIgnoreCase(productName)) {
-                this.productList.remove(product);
-                productFound = true;
-                System.out.println("Product " + productName + " has been removed.");
-                break;
-            }
-        }
-
-        if (!productFound) {
-            System.out.println("Error: Product with name '" + productName + "' not found.");
-        }
-    }
-
 }

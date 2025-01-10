@@ -54,7 +54,6 @@ public class PurchaseModel {
         try (Connection con = DataBaseConnection.getConnection()) {
             int productId;
 
-            // Check if the product exists
             try (PreparedStatement checkStmt = con.prepareStatement(checkProductQuery)) {
                 checkStmt.setInt(1, branchId);
                 checkStmt.setString(2, productName);
@@ -105,7 +104,7 @@ public class PurchaseModel {
                 }
             }
 
-            // Insert into Purchase table
+
             try (PreparedStatement purchaseStmt = con.prepareStatement(insertPurchaseQuery)) {
                 purchaseStmt.setInt(1, vendorId);
                 purchaseStmt.setString(2, vendorName);
@@ -123,5 +122,36 @@ public class PurchaseModel {
             return -1;
         }
     }
+    public static void insertPurchaseForeign(int purchaseid, int vendorId, String vendorName, int productId) {
+        String enableIdentityInsert = "SET IDENTITY_INSERT Purchase ON";
+        String disableIdentityInsert = "SET IDENTITY_INSERT Purchase OFF";
+        String query = "INSERT INTO Purchase (PurchaseID, VendorId, VendorName, ProductId) VALUES (?, ?, ?, ?)";
+
+        try (Connection con = DataBaseConnection.getConnection();
+             Statement stmt = con.createStatement();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            stmt.execute(enableIdentityInsert);
+            System.out.println(vendorName+" "+purchaseid);
+            pstmt.setInt(1, purchaseid);
+            pstmt.setInt(2, vendorId);
+            pstmt.setString(3, vendorName);
+            pstmt.setInt(4, productId);
+
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            stmt.execute(disableIdentityInsert);
+
+            if (rowsAffected > 0) {
+                System.out.println("Purchase inserted successfully!");
+            } else {
+                System.out.println("Failed to insert purchase.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

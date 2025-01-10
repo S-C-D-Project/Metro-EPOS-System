@@ -158,6 +158,139 @@ public class VendorModel {
             return false;
         }
     }
+    public static boolean insertVendor(int vendorId, String vendorName, String city, String address, String status, int branchId) {
+        String enableIdentityInsert = "SET IDENTITY_INSERT Vendor ON";
+        String disableIdentityInsert = "SET IDENTITY_INSERT Vendor OFF";
+        String query = """
+            INSERT INTO Vendor (VendorID, VendorName, City, Address, Status, BranchId)
+            VALUES (?, ?, ?, ?, ?, ?);
+            """;
+
+        try (Connection con = DataBaseConnection.getConnection();
+             Statement stmt = con.createStatement();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            stmt.execute(enableIdentityInsert);
+
+
+            pstmt.setInt(1, vendorId);      // VendorID
+            pstmt.setString(2, vendorName); // VendorName
+            pstmt.setString(3, city);       // City
+            pstmt.setString(4, address);    // Address
+            pstmt.setString(5, status);     // Status
+            pstmt.setInt(6, branchId);      // BranchId
+
+
+            int rowsInserted = pstmt.executeUpdate();
+
+
+            stmt.execute(disableIdentityInsert);
+
+
+            return rowsInserted > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting vendor: " + e.getMessage());
+            return false;
+        }
+    }
+    public static boolean updateVendorData(int vid, String[] data) {
+
+        if (data.length != 6) {
+            System.out.println("Invalid data format. Expected 6 values (BranchID, Name, City, Address, Products, Status).");
+            return false;
+        }
+
+        String query = "UPDATE Vendor SET " +
+                "BranchId = ?, " +
+                "VendorName = ?, " +
+                "City = ?, " +
+                "Address = ?, " +
+                "Status = ? " +
+                "WHERE VendorID = ?";
+
+
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+
+            stmt.setInt(1, Integer.parseInt(data[0])); // BranchID
+            stmt.setString(2, data[1]);               // Name
+            stmt.setString(3, data[2]);               // City
+            stmt.setString(4, data[3]);               // Address// Products
+            stmt.setString(5, data[5]);               // Status
+            stmt.setInt(6, vid);                      // VendorID (WHERE clause)
+
+
+            int rowsAffected = stmt.executeUpdate();
+
+
+            if (rowsAffected > 0) {
+                System.out.println("Vendor data updated successfully.");
+                return true;
+            } else {
+                System.out.println("Vendor not found or no changes made.");
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format in BranchID.");
+            return false;
+        }
+    }
+
+    public static ArrayList<String> getVendorPurchaseData() {
+        ArrayList<String> result = new ArrayList<>();
+
+
+        String query = "SELECT " +
+                "    v.vendorid, " +
+                "    v.BranchId, " +
+                "    v.VendorName, " +
+                "    v.City, " +
+                "    v.Address, " +
+                "    COUNT(p.purchaseid) AS TotalPurchases, " +
+                "    v.status " +
+                "FROM " +
+                "    Vendor v " +
+                "LEFT JOIN " +
+                "    Purchase p ON v.vendorid = p.vendorid " +
+                "GROUP BY " +
+                "    v.vendorid, v.VendorName, v.City, v.Address, v.status, v.BranchId";
+
+
+        try (Connection conn = DataBaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+
+            while (rs.next()) {
+                // Retrieve data from the current row
+                int vendorId = rs.getInt("vendorid");
+                int branchId = rs.getInt("BranchId");
+                String vendorName = rs.getString("VendorName");
+                String city = rs.getString("City");
+                String address = rs.getString("Address");
+                int totalPurchases = rs.getInt("TotalPurchases");
+                String status = rs.getString("status");
+
+
+                String row = vendorId + "," + branchId + "," + vendorName + "," +
+                        city + "," + address + "," + totalPurchases + "," + status;
+
+
+                result.add(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
     public static String getVendorName(int vendorId) {
         String vendorName = null;
 

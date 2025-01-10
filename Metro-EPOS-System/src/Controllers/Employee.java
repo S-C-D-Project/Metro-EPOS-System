@@ -167,6 +167,12 @@ public abstract class Employee {
             this.branch.setId(branchId);
         }
     }
+    public void setid(int branchId) {
+        this.branchid=branchId;
+    }
+    public int getid() {
+        return branchid;
+    }
 
     @Override
     public String toString() {
@@ -176,6 +182,8 @@ public abstract class Employee {
     }
 
     public int getBranchid() {
-        return branchid;
+        if(branch==null){
+            this.branch=new Branch(employeeNumber);     }
+        return branch.getId();
     }
 }

@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminBranchInfo extends Theme {
@@ -482,7 +483,11 @@ public class AdminBranchInfo extends Theme {
                         else
                         {
                             String improved = name.getText()+","+city.getText()+","+address.getText()+","+ employees.getText()+","+status.getSelectedItem();
-                            list = UIHandler.updateBranchesInfo(Integer.parseInt(branchID.getText()),improved);
+                            try {
+                                list = UIHandler.updateBranchesInfo(Integer.parseInt(branchID.getText()),improved);
+                            } catch (SQLException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             name.setFocusable(false);
                             name.setEditable(false);
                             city.setFocusable(false);
